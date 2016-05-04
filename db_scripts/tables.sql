@@ -36,8 +36,13 @@ CREATE TABLE Vital_signs ( --Ikai
   weight           FLOAT
 );
 
-CREATE TABLE Personal_info (
-  school_id        SERIAL8 PRIMARY KEY,
+CREATE TABLE Patient_type (
+  school_id   SERIAL8 PRIMARY KEY,
+  type TEXT
+);
+
+CREATE TABLE Patient_info (
+  school_id        INT PRIMARY KEY,
   fname            TEXT,
   mname            TEXT,
   lname            TEXT,
@@ -53,8 +58,8 @@ CREATE TABLE Personal_info (
   home_address     TEXT
 );
 
-CREATE TABLE Personal_history (
-  school_id        SERIAL8 PRIMARY KEY,
+CREATE TABLE Patient_history (
+  school_id        INT PRIMARY KEY,
   smoking          TEXT,
   allergies        TEXT,
   alcohol          TEXT,
@@ -64,7 +69,7 @@ CREATE TABLE Personal_history (
 
 
 CREATE TABLE Pulmonary (
-  school_id   SERIAL8 PRIMARY KEY,
+  school_id   INT PRIMARY KEY,
   cough       TEXT,
   dyspnea     TEXT,
   hemoptysis  TEXT,
@@ -72,7 +77,7 @@ CREATE TABLE Pulmonary (
 );
 
 CREATE TABLE Gut (
-  school_id        SERIAL8 PRIMARY KEY,
+  school_id        INT PRIMARY KEY,
   frequency        TEXT,
   flank_plan       TEXT,
   discharge        TEXT,
@@ -82,7 +87,7 @@ CREATE TABLE Gut (
 );
 
 CREATE TABLE Illness (
-  school_id     SERIAL8 PRIMARY KEY,
+  school_id     INT PRIMARY KEY,
   asthma        TEXT,
   ptb           TEXT,
   heart_problem TEXT,
@@ -93,7 +98,7 @@ CREATE TABLE Illness (
 );
 
 CREATE TABLE Cardiac (
-  school_id         SERIAL8 PRIMARY KEY,
+  school_id         INT PRIMARY KEY,
   chest_pain        TEXT,
   palpitations      TEXT,
   pedal_edema       TEXT,
@@ -102,7 +107,7 @@ CREATE TABLE Cardiac (
 );
 
 CREATE TABLE Neurologic (
-  school_id             SERIAL8 UNIQUE PRIMARY KEY,
+  school_id             INT UNIQUE PRIMARY KEY,
   headache              TEXT,
   seizure               TEXT,
   dizziness             TEXT,
@@ -110,9 +115,8 @@ CREATE TABLE Neurologic (
 );
 
 CREATE TABLE Patient (
-  school_id        SERIAL8 PRIMARY KEY,
-  personal_info_id INT REFERENCES Personal_info (school_id),
-  personal_history_id INT REFERENCES Personal_history(school_id),
+  school_id INT REFERENCES Patient_info (school_id) PRIMARY KEY,
+  personal_history_id INT REFERENCES Patient_history(school_id),
   pulmonary_id     INT REFERENCES Pulmonary (school_id),
   gut_id           INT REFERENCES Gut (school_id),
   illness_id       INT REFERENCES Illness (school_id),
@@ -120,7 +124,6 @@ CREATE TABLE Patient (
   neurologic_id    INT REFERENCES Neurologic (school_id),
   is_active        BOOLEAN DEFAULT TRUE
 );
-
 
 CREATE TABLE Assessment ( --Ikai
   id                      INT PRIMARY KEY,
@@ -135,3 +138,4 @@ CREATE TABLE Assessment ( --Ikai
   attendingphysician      INT REFERENCES Userinfo (id),
   is_done                 BOOLEAN  DEFAULT FALSE
 );
+

@@ -52,25 +52,26 @@ def store_user(data):
                 store_user = spcalls.spcall('store_user', (fname, mname, lname, username, pw_hash.hexdigest(), email, role_id), True )
 
                 if store_user[0][0] == 'OK':
-                    return jsonify({'status':'OK', 'message':'Successfully add ' + str(fname)})
+                    return jsonify({'status': 'OK', 'message': 'Successfully add ' + str(fname)})
 
                 elif store_user[0][0] == 'Error':
-                    return jsonify({'status':'failed', 'message':'failed to add ' + str(fname)})
+                    return jsonify({'status': 'failed', 'message': 'failed to add ' + str(fname)})
 
                 else:
-                    return jsonify({'ERROR':'404'})
+                    return jsonify({'ERROR': '404'})
 
             else:
-                return jsonify({'status':'failed', 'message':'Please input required fields!'})
+                return jsonify({'status': 'failed', 'message': 'Please input required fields!'})
 
         else:
-            return jsonify({'status':'failed', 'message':'Invalid email input!'})
+            return jsonify({'status': 'failed', 'message': 'Invalid email input!'})
 
     elif check_username_exist[0][0] == 'EXISTED':
-        return jsonify({'status ':'failed', 'message':'username already exist'})
+        return jsonify({'status ': 'failed', 'message': 'username already exist'})
 
     elif check_email_exist[0][0] == 'EXISTED':
-        return jsonify({'status ':'failed', 'message':'email already exist'})
+        return jsonify({'status ': 'failed', 'message': 'email already exist'})
 
     else:
-        return jsonify({'failed':'failed'})
+        return jsonify({'failed': 'failed'})
+
