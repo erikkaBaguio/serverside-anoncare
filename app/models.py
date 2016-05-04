@@ -11,9 +11,11 @@ if connection == 'local':
 	        self.conn = engine.connect()
 	        self.trans = self.conn.begin()
 
+
 	    def getcursor(self):
 	        cursor = self.conn.connection.cursor()
 	        return cursor
+
 
 	    def dbcommit(self):
 	        self.trans.commit()
