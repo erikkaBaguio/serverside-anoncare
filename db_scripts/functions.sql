@@ -171,6 +171,86 @@ $$
 
 language 'plpgsql';
 
+
+create or replace function new_gut(in par_school_id int, in par_freq text, in par_flank_plan text, in par_discharge text,
+                                    in par_dysuria text, in par_nocturia text, in par_dec_urine_amt text) returns text as
+
+$$
+declare local_response text;
+    begin
+
+      insert into
+       Gut(school_id, frequency, flank_plan, discharge, dysuria, nocturia, dec_urine_amount)
+      values
+        (par_school_id, par_freq, par_flank_plan, par_discharge, par_dysuria, par_nocturia, par_dec_urine_amt);
+      local_response = 'OK';
+      return local_response;
+
+    end;
+$$
+
+language 'plpgsql';
+
+
+create or replace function new_illness(in par_school_id int, in par_asthma text, in par_ptb text, in par_heart_prob text,
+                                        in hepa_a_b text, in par_chicken_pox text, in par_mumps text, in par_typ_fever text) returns text as
+
+$$
+declare local_response text;
+    begin
+
+      insert into
+       Illness(school_id, asthma, ptb, heart_problem, hepatitis_a_b, chicken_pox, mumps, typhoid_fever)
+      values
+        (par_school_id, par_asthma, par_ptb, par_heart_prob, par_hepa_a_b, par_chicken_pox, par_mumps, par_typ_fever);
+      local_response = 'OK';
+      return local_response;
+
+    end;
+$$
+
+language 'plpgsql';
+
+
+create or replace function new_cardiac(in par_school_id int, in par_chest_pain text, in par_palp text, in par_pedal_edema text,
+                                        in par_orthopnea text, in par_noct_dysp text) returns text as
+
+$$
+declare local_response text;
+    begin
+
+      insert into
+       Cardiac(school_id, chest_pain, palpitations, pedal_edema, orthopnea, nocturnal_dyspnea)
+      values
+        (par_school_id, par_chest_pain, par_palp, par_pedal_emeda, par_orthopnea, par_noct_dysp);
+      local_response = 'OK';
+      return local_response;
+
+    end;
+$$
+
+language 'plpgsql';
+
+
+create or replace function new_neurologic(in par_school_id int, in par_headache text, in par_seizure text, in par_dizziness text,
+                                          in par_loss_of_consciousness text) returns text as
+
+$$
+declare local_response text;
+    begin
+
+      insert into
+       Neurologic(school_id, headache, seizure, dizziness, loss_of_consciousness)
+      values
+        (par_school_id, par_headache, par_seizure, par_dizziness, par_loss_of_consciousness );
+      local_response = 'OK';
+      return local_response;
+
+    end;
+$$
+
+language 'plpgsql';
+
 --
 -- --[GET] patient file
 -- --select * from get_patientfileId(1);
