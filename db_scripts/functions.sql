@@ -77,7 +77,8 @@ create or replace function check_mail(in par_mail text) returns text as
 -- [POST] Insert user
 -- select store_user('remarc', 'espinosa', 'balisi', 'apps-user', 'admin', 'remarc.balisi@gmail.com', 2);
 create or replace function store_user(in par_fname text, in par_mname text, in par_lname text, in par_username text, in par_password text, in par_email text, in par_role_id int8) returns text as
-  $$ declare local_response text;
+  $$
+  declare local_response text;
     begin
 
       insert into Userinfo(fname, mname, lname, username, password, email, role_id) values (par_fname, par_mname, par_lname, par_username, par_password, par_email, par_role_id);
@@ -115,9 +116,9 @@ $$
 create or replace function new_store_patient(in par_school_id int, in par_fname text, in par_mname text, in par_lname text,
                                               in par_age int, in par_sex text, in par_dept_id int, in ptnt_type_id int,
                                               in par_height text, in par_weight float, in par_date_of_birth date,
-                                              in par_civil_status text, in par_name_of_gdn text, in par_home_addr text)
-  returns text as
-$$ declare local_response text;
+                                              in par_civil_status text, in par_name_of_gdn text, in par_home_addr text) returns text as
+$$
+declare local_response text;
     begin
 
       insert into
@@ -133,7 +134,25 @@ $$
 language 'plpgsql';
 
 
-create or replace function
+create or replace function new_patient_history(in par_school_id int, in par_smoking text, in par_allergies text,
+                                                in par_alcohol text, in par_meds text, in par_drugs text) returns text as
+
+$$
+declare local_response text;
+    begin
+
+      insert into
+       Patient_history(school_id, smoking, allergies, alcohol, medication_taken, drugs)
+      values
+        (par_school_id, par_smoking, par_allergies, par_alcohol, par_meds, par_drugs);
+      local_response = 'OK';
+      return local_response;
+
+    end;
+$$
+
+language 'plpgsql';
+
 --
 -- --[GET] patient file
 -- --select * from get_patientfileId(1);
