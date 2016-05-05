@@ -153,6 +153,24 @@ $$
 
 language 'plpgsql';
 
+create or replace function new_pulmonary(in par_school_id int, in par_cough text, in par_dyspnea text, in par_hemop text, in par_tb_exposure text) returns text as
+
+$$
+declare local_response text;
+    begin
+
+      insert into
+       Pulmonary(school_id, cough, dyspnea, hemoptysis, tb_exposure)
+      values
+        (par_school_id, par_cough, par_dyspnea, par_hemop, par_tb_exposure);
+      local_response = 'OK';
+      return local_response;
+
+    end;
+$$
+
+language 'plpgsql';
+
 --
 -- --[GET] patient file
 -- --select * from get_patientfileId(1);
