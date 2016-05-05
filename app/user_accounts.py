@@ -11,8 +11,8 @@ from spcalls import SPcalls
 
 def store_user(data):
 
-    data = json.loads(request.data)
-    print "my data is ", data
+    # data = json.loads(request.data)
+    # print "my data is ", data
     username = data['username']
     email = data['email']
     spcalls = SPcalls()
