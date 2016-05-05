@@ -37,6 +37,7 @@ def storeuser():
     return add_user
 
 
+# @app.route('/api/anoncare/user', methods=['POST'])
 
 @app.after_request
 def add_cors(resp):
