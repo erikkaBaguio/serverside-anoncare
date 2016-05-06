@@ -7,7 +7,8 @@ from app import *
 import re                   #this is for verifying if the email is valid
 import hashlib
 from flask.ext.httpauth import HTTPBasicAuth
-from user_accounts import store_user
+from user_accounts import *
+from patient_files import *
 from spcalls import SPcalls
 
 
@@ -27,17 +28,41 @@ def get_password(username):
 
 
 @app.route('/api/anoncare/user', methods=['POST'])
-def storeuser():
+def store_new_user():
     data = json.loads(request.data)
-    # print 'data is', data
+    print 'data is', data
+
+    dictlist = []
+
+    for key, value in data.iteritems():
+        temp = [key, value]
+        dictlist.append(value)
+
+    dictlist = str(dictlist)
+
+    print "dictlist", dictlist
 
     add_user = store_user(data)
-    print "add_user", add_user
 
     return add_user
 
 
-# @app.route('/api/anoncare/user', methods=['POST'])
+@app.route('/api/anoncare/patient', methods=['POST'])
+def store_patient():
+    data = json.loads(request.data)
+    print "data is", data
+    school_id = data['school_id']
+
+    new_patient = store_patient_info(school_id, data)
+    patient_history = store_patient_history(school_id, data)
+
+    returns = [new_patient, patient_history]
+
+    print "new_patient, patient_history", returns
+
+    return jsonify({'new_patient': returns})
+    # return new_patient, patient_history
+
 
 @app.after_request
 def add_cors(resp):

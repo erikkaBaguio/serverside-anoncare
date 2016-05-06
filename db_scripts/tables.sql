@@ -41,6 +41,7 @@ CREATE TABLE Patient_type (
   type TEXT
 );
 
+
 CREATE TABLE Patient_info (
   school_id        INT PRIMARY KEY,
   fname            TEXT,
@@ -52,11 +53,13 @@ CREATE TABLE Patient_info (
   patient_type_id  INT REFERENCES Patient_type (school_id),
   height           TEXT,
   weight           FLOAT,
-  date_of_birth    DATE,
-  civil_status     TEXT,  
+  date_of_birth    TEXT,
+--   date_of_birth    DATE,
+  civil_status     TEXT,
   name_of_guardian TEXT,
   home_address     TEXT
 );
+
 
 CREATE TABLE Patient_history (
   school_id        INT PRIMARY KEY,
@@ -138,4 +141,3 @@ CREATE TABLE Assessment ( --Ikai
   attendingphysician      INT REFERENCES Userinfo (id),
   is_done                 BOOLEAN  DEFAULT FALSE
 );
-

@@ -114,8 +114,9 @@ $$
 -------------------------------------------------------- Patient File -----------------------------------------------------
 --[POST] Create patient file
 create or replace function new_store_patient(in par_school_id int, in par_fname text, in par_mname text, in par_lname text,
-                                              in par_age int, in par_sex text, in par_dept_id int, in ptnt_type_id int,
-                                              in par_height text, in par_weight float, in par_date_of_birth date,
+                                              in par_age int, in par_sex text, in par_dept_id int, in par_ptnt_type_id int,
+                                              in par_height text, in par_weight float, in par_date_of_birth text,
+--                                               in par_height text, in par_weight float, in par_date_of_birth date,
                                               in par_civil_status text, in par_name_of_gdn text, in par_home_addr text) returns text as
 $$
 declare local_response text;
