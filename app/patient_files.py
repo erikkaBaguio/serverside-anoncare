@@ -8,12 +8,7 @@ import hashlib
 from flask import jsonify
 from spcalls import SPcalls
 
-
-# def get_school_id():
-#     data = json.loads(request.data)
-#     school_id = data['school_id']
-#
-#     return school_id
+spcalls = SPcalls()
 
 def names_empty(fname, mname, lname):
     if fname is '' or mname is '' or lname is '':
@@ -37,7 +32,7 @@ def extra_info_empty(dept_id, ptnt_id, civil_status, name_of_guardian, home_addr
 
 
 def store_patient_info(school_id, patient):
-    spcalls = SPcalls()
+
 
     fname = patient['fname']
     mname = patient['mname']
@@ -65,8 +60,6 @@ def store_patient_info(school_id, patient):
                                                              ptnt_id, height, weight, date_of_birth, civil_status,
                                                              guardian, home_addr), True)
 
-        print "store_patient[0][0]", store_patient[0][0]
-
         if store_patient[0][0] == 'OK':
             return jsonify({'status': 'OK', 'message': 'Successfully add ' + str(fname)})
 
@@ -81,7 +74,6 @@ def store_patient_info(school_id, patient):
 
 
 def store_patient_history(school_id, history):
-    spcalls = SPcalls()
 
     smoking = history['smoking']
     allergies = history['allergies']
@@ -111,7 +103,6 @@ def store_patient_history(school_id, history):
 
 
 def store_pulmonary(school_id, pulmonary):
-    spcalls = SPcalls()
 
     cough = pulmonary['cough']
     dyspnea = pulmonary['dyspnea']
@@ -139,7 +130,6 @@ def store_pulmonary(school_id, pulmonary):
 
 
 def store_gut(school_id, gut):
-    spcalls = SPcalls()
 
     frequency = gut['frequency']
     flank_plan = gut['flank_plan']
@@ -148,3 +138,21 @@ def store_gut(school_id, gut):
     nocturia = gut['nocturia']
     dec_urine_amount = gut['dec_urine_amount']
 
+    empty_fields = frequency is '' or flank_plan is '' or discharge is '' or dysuria is '' or nocturia is '' or dec_urine_amount is ''
+
+    if empty_fields is False:
+        store_gut = spcalls.spcall('new_pulmonary',
+                                       (school_id, cough, dyspnea, hemoptysis, tb_exposure), True)
+
+
+        if store_pulmonary[0][0] == 'OK':
+            return jsonify({'status': 'OK', 'message': 'Successfully add history'})
+
+        elif store_pulmonary[0][0] == 'Error':
+            return jsonify({'status': 'failed', 'message': 'failed to add history'})
+
+        else:
+            return jsonify({'ERROR': '404'})
+
+    else:
+        return jsonify({'status': 'failed', 'message': 'Please input required fields!'})
