@@ -13,7 +13,7 @@ from spcalls import SPcalls
 
 
 auth = HTTPBasicAuth()
-
+spcall = SPcalls()
 
 @app.route('/')
 # @auth.login_required
@@ -23,7 +23,6 @@ def index2():
 
 @auth.get_password
 def get_password(username):
-    spcall = SPcalls()
     return spcall.spcall('get_password', (username,))[0][0]
 
 
@@ -50,6 +49,13 @@ def store_patient():
     returns = [new_patient, patient_history]
 
     return jsonify({'data': data})
+
+@app.route('/api/anoncare/user', methods = ['GET'])
+def show_users():
+
+    users = show_all_users()
+
+    return users
 
 
 @app.after_request

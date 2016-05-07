@@ -8,8 +8,8 @@ import hashlib
 from flask import jsonify
 from spcalls import SPcalls
 
-
 spcalls = SPcalls()
+
 
 
 def store_user(data):
@@ -18,7 +18,7 @@ def store_user(data):
     # print "my data is ", data
     username = data['username']
     email = data['email']
-    # spcalls = SPcalls()
+
     print "spcall", spcalls
 
     check_username_exist = spcalls.spcall('check_username', (username,))
@@ -75,3 +75,27 @@ def store_user(data):
     else:
         return jsonify({'failed': 'FAILED'})
 
+
+def show_all_users():
+    records = spcalls.spcall('show_all_users',())
+    print "records", records
+    entries = []
+
+    if 'Error' in str(records[0][0]):
+        return jsonify({'status': 'error', 'message': records[0][0]})
+
+    elif len(records) != 0:
+        for row in records:
+            entries.append({
+                "fname": row[0],
+                "mname": row[1],
+                "lname": row[2],
+                "email": row[4],
+                "username": row[3],
+                "role_id": row[5]
+            })
+
+        return jsonify({"status": "OK", "message":"OK", "entires":entries, "count": len(entries)})
+
+    else:
+        return jsonify({"status": 'OK', "message": "No Users Found"})
