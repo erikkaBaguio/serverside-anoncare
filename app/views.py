@@ -62,6 +62,7 @@ def store_patient():
     return jsonify({'new_patient': returns})
     # return new_patient, patient_history
 
+
 @app.route('/api/anoncare/user', methods = ['GET'])
 def show_users():
 
