@@ -72,3 +72,28 @@ def store_user(data):
     else:
         return jsonify({'failed': 'failed'})
 
+def show_user_id(id):
+    spcalls = SPcalls()
+    print "spcall", spcalls
+    #when you have only one parameter you need to user "," comma.
+    #example: spcals('show_user_id', (id,) )
+    user_id = spcalls.spcall('show_user_id', (id,))
+    data = [] 
+
+    if len(user_id) == 0: 
+        return jsonify({"status": "FAILED", "message": "No User Found", "data": []})
+
+    else:
+        r = user_id[0]
+        data.append({"fname": r[0],
+                     "mname":r[1],
+                     "lname":r[2],
+                     "email":r[3],
+                     "username":r[4],
+                     "role_id":r[5]})
+        return jsonify({"status": "OK", "message": "OK", "data": data})
+
+
+
+
+
