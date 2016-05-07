@@ -72,3 +72,5 @@ def store_user(data):
     else:
         return jsonify({'failed': 'failed'})
 
+
+

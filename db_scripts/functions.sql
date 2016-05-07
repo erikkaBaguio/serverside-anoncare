@@ -112,10 +112,10 @@ $$
 
 -- [GET] Retrieve all users
 -- select show_all_users();
-create or replace function show_all_users(out bigint, out text, out text, out text, out text, out text, out text, out int)
+create or replace function show_all_users(out bigint, out text, out text, out text, out text, out text, out int)
   returns setOf record as
 $$
-  select *
+  select id, fname, mname, lname, username, email, role_id
   from Userinfo
 $$
   language 'sql';
