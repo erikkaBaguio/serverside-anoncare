@@ -1,43 +1,96 @@
 import os
-from flask import Flask, jsonify, request, session, redirect, url_for
+from flask import Flask, jsonify, request
 from os import sys
 from models import DBconn
 import json, flask
-from app import *
+from app import app
 import re                   #this is for verifying if the email is valid
 import hashlib
 from flask.ext.httpauth import HTTPBasicAuth
 from user_accounts import store_user
 from spcalls import SPcalls
+from datetime import timedelta
+from itsdangerous import URLSafeTimedSerializer
 
-
+SECRET_KEY = "a_random_secret_key_$%#!@"
 auth = HTTPBasicAuth()
 
+#Login_serializer used to encryt and decrypt the cookie token for the remember
+#me option of flask-login
+login_serializer = URLSafeTimedSerializer(SECRET_KEY)
 
-# def spcall(qry, param, commit=False):
-#     try:
-#         dbo = DBconn()
-#         cursor = dbo.getcursor()
-#         cursor.callproc(qry, param)
-#         res = cursor.fetchall()
-#         if commit:
-#             dbo.dbcommit()
-#         return res
-#     except:
-#         res = [("Error: " + str(sys.exc_info()[0]) + " " + str(sys.exc_info()[1]),)]
-#     return res
+def get_auth_token(username, password):
 
+    """
+    Encode a secure token for cookie
+    """
 
-@app.route('/')
-# @auth.login_required
-def index2():
-    return 'Hello world!'
+    data = [username, password]
+    return login_serializer.dumps(data)
+
+def load_token(token):
+    """
+
+    The Token was encrypted using itsdangerous.URLSafeTimedSerializer which 
+    allows us to have a max_age on the token itself.  When the cookie is stored
+    on the users computer it also has a exipry date, but could be changed by
+    the user, so this feature allows us to enforce the exipry date of the token
+    server side and not rely on the users cookie to exipre. 
+
+    source: http://thecircuitnerd.com/flask-login-tokens/
+    """
+    days = timedelta(days=14)
+    max_age = days.total_seconds()
+
+    #Decrypt the Security Token, data = [username, hashpass]
+    data = login_serializer.loads(token, max_age=max_age)
+
+    return data[0]+':'+data[1]
+
+def spcall(qry, param, commit=False):
+    try:
+        dbo = DBconn()
+        cursor = dbo.getcursor()
+        cursor.callproc(qry, param)
+        res = cursor.fetchall()
+        if commit:
+            dbo.dbcommit()
+        return res
+    except:
+        res = [("Error: " + str(sys.exc_info()[0]) + " " + str(sys.exc_info()[1]),)]
+    return res
 
 
 @auth.get_password
 def get_password(username):
     spcall = SPcalls()
     return spcall.spcall('get_password', (username,))[0][0]
+
+
+@app.route('/decrypt', methods=['POST'])
+def decr():
+    credentials = json.loads(request.data)
+    token = credentials['token']
+
+    print token
+
+    return jsonify({'status':'OK', 'token':load_token(token)})
+
+
+@app.route('/auth', methods=['POST'])
+def authentication():
+    credentials = json.loads(request.data)
+    username = credentials['username']
+    password = credentials['password']
+    token = get_auth_token(username, password)
+
+    return jsonify({'status':'OK', 'token':token})
+
+
+@app.route('/api/anoncare/home', methods=['GET'])
+@auth.login_required
+def index():
+    return 'Hello world!'
 
 
 @app.route('/api/anoncare/user', methods=['POST'])
