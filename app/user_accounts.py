@@ -73,27 +73,26 @@ def store_user(data):
         return jsonify({'failed': 'failed'})
 
 
-    def show_all_users():
-        users = spcalls.spcall('show_all_users',())
-        entries = []
+def show_all_users():
+    records = spcalls.spcall('show_all_users',())
+    print "records", records
+    entries = []
 
-        if 'Error' in str(users[0][0]):
-            return jsonify({'status': 'error', 'message': users[0][0]})
+    if 'Error' in str(records[0][0]):
+        return jsonify({'status': 'error', 'message': records[0][0]})
 
-        elif len(users) != 0:
-            row = users[0]
+    elif len(records) != 0:
+        for row in records:
             entries.append({
-                "fname":  row[0],
+                "fname": row[0],
                 "mname": row[1],
                 "lname": row[2],
-                "email": row[3],
-                "username": row[4],
-                "role_id": row[6]
+                "email": row[4],
+                "username": row[3],
+                "role_id": row[5]
             })
 
-            return jsonify({"status": "OK", "message":"OK", "entires":entries, "count": len(entries)})
+        return jsonify({"status": "OK", "message":"OK", "entires":entries, "count": len(entries)})
 
-        else:
-            return jsonify({"status": 'OK', "message": "No Users Found"})
-
-
+    else:
+        return jsonify({"status": 'OK', "message": "No Users Found"})
