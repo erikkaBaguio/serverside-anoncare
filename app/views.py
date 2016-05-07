@@ -32,16 +32,6 @@ def store_new_user():
     data = json.loads(request.data)
     print 'data is', data
 
-    dictlist = []
-
-    for key, value in data.iteritems():
-        temp = [key, value]
-        dictlist.append(value)
-
-    dictlist = str(dictlist)
-
-    print "dictlist", dictlist
-
     add_user = store_user(data)
 
     return add_user
@@ -55,13 +45,11 @@ def store_patient():
 
     new_patient = store_patient_info(school_id, data)
     patient_history = store_patient_history(school_id, data)
+    patient_pulmonary = store_pulmonary(school_id, data)
 
     returns = [new_patient, patient_history]
 
-    print "new_patient, patient_history", returns
-
-    return jsonify({'new_patient': returns})
-    # return new_patient, patient_history
+    return jsonify({'data': data})
 
 
 @app.after_request

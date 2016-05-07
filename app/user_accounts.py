@@ -9,13 +9,16 @@ from flask import jsonify
 from spcalls import SPcalls
 
 
+spcalls = SPcalls()
+
+
 def store_user(data):
 
     # data = json.loads(request.data)
     # print "my data is ", data
     username = data['username']
     email = data['email']
-    spcalls = SPcalls()
+    # spcalls = SPcalls()
     print "spcall", spcalls
 
     check_username_exist = spcalls.spcall('check_username', (username,))
@@ -52,23 +55,23 @@ def store_user(data):
                     return jsonify({'status': 'OK', 'message': 'Successfully add ' + str(fname)})
 
                 elif store_user[0][0] == 'Error':
-                    return jsonify({'status': 'failed', 'message': 'failed to add ' + str(fname)})
+                    return jsonify({'status': 'FAILED', 'message': 'failed to add ' + str(fname)})
 
                 else:
-                    return jsonify({'ERROR': '404'})
+                    return jsonify({'status': '404'})
 
             else:
-                return jsonify({'status': 'failed', 'message': 'Please input required fields!'})
+                return jsonify({'status': 'FAILED', 'message': 'Please input required fields!'})
 
         else:
-            return jsonify({'status': 'failed', 'message': 'Invalid email input!'})
+            return jsonify({'status': 'FAILED', 'message': 'Invalid email input!'})
 
     elif check_username_exist[0][0] == 'EXISTED':
-        return jsonify({'status ': 'failed', 'message': 'username already exist'})
+        return jsonify({'status ': 'FAILED', 'message': 'username already exist'})
 
     elif check_email_exist[0][0] == 'EXISTED':
-        return jsonify({'status ': 'failed', 'message': 'email already exist'})
+        return jsonify({'status ': 'FAILED', 'message': 'email already exist'})
 
     else:
-        return jsonify({'failed': 'failed'})
+        return jsonify({'failed': 'FAILED'})
 
