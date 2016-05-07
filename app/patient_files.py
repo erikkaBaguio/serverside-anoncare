@@ -141,15 +141,102 @@ def store_gut(school_id, gut):
     empty_fields = frequency is '' or flank_plan is '' or discharge is '' or dysuria is '' or nocturia is '' or dec_urine_amount is ''
 
     if empty_fields is False:
-        store_gut = spcalls.spcall('new_pulmonary',
-                                       (school_id, cough, dyspnea, hemoptysis, tb_exposure), True)
+        store_gut = spcalls.spcall('new_gut',
+                                       (school_id, frequency, flank_plan, discharge, dysuria, nocturia, dec_urine_amount), True)
 
 
         if store_pulmonary[0][0] == 'OK':
-            return jsonify({'status': 'OK', 'message': 'Successfully add history'})
+            return jsonify({'status': 'OK', 'message': 'Successfully add gut'})
 
         elif store_pulmonary[0][0] == 'Error':
-            return jsonify({'status': 'failed', 'message': 'failed to add history'})
+            return jsonify({'status': 'failed', 'message': 'failed to add gut'})
+
+        else:
+            return jsonify({'ERROR': '404'})
+
+    else:
+        return jsonify({'status': 'failed', 'message': 'Please input required fields!'})
+
+
+def store_illness(school_id, illness):
+
+    asthma = illness['asthma']
+    ptb = illness['ptb']
+    heart_problem = illness['heart_problem']
+    hepa_a_b = illness['hepatitis_a_b']
+    chicken_pox = illness['chicken_pox']
+    mumps = illness['mumps']
+    typhoid_fever = illness['typhoid_fever']
+
+    empty_fields = asthma is '' or ptb is '' or heart_problem is '' or hepa_a_b is '' or \
+                                chicken_pox is '' or mumps is '' or typhoid_fever is ''
+
+    if empty_fields is False:
+        store_illness = spcalls.spcall('new_illness',
+                                       (school_id, asthma, ptb, heart_problem, hepa_a_b,
+                                        chicken_pox, mumps, typhoid_fever), True)
+
+
+        if store_pulmonary[0][0] == 'OK':
+            return jsonify({'status': 'OK', 'message': 'Successfully add gut'})
+
+        elif store_pulmonary[0][0] == 'Error':
+            return jsonify({'status': 'failed', 'message': 'failed to add gut'})
+
+        else:
+            return jsonify({'ERROR': '404'})
+
+    else:
+        return jsonify({'status': 'failed', 'message': 'Please input required fields!'})
+
+
+def store_cardiac(school_id, cardiac):
+
+    chest_pain = cardiac['chest_pain']
+    palpitations = cardiac['palpitations']
+    pedal_edema = cardiac['pedal_edema']
+    orthopnea = cardiac['orthopnea']
+    nocturnal_dyspnea = cardiac['nocturnal_dyspnea']
+
+    empty_fields = chest_pain is '' or palpitations is '' or pedal_edema is '' or orthopnea is '' or nocturnal_dyspnea is ''
+
+    if empty_fields is False:
+        store_cardiac = spcalls.spcall('new_cardiac',
+                                       (school_id, chest_pain, palpitations, pedal_edema, orthopnea, nocturnal_dyspnea), True)
+
+
+        if store_pulmonary[0][0] == 'OK':
+            return jsonify({'status': 'OK', 'message': 'Successfully add gut'})
+
+        elif store_pulmonary[0][0] == 'Error':
+            return jsonify({'status': 'failed', 'message': 'failed to add gut'})
+
+        else:
+            return jsonify({'ERROR': '404'})
+
+    else:
+        return jsonify({'status': 'failed', 'message': 'Please input required fields!'})
+
+
+def store_neurologic(school_id, neurologic):
+
+    headache = neurologic['headache']
+    seizure = neurologic['seizure']
+    dizziness = neurologic['dizziness']
+    loss_of_consciousness = neurologic['loss_of_consciousness']
+
+    empty_fields = headache is '' or seizure is '' or dizziness is '' or loss_of_consciousness is ''
+
+    if empty_fields is False:
+        store_neurologic = spcalls.spcall('new_neurologic',
+                                       (school_id, headache, seizure, dizziness, loss_of_consciousness), True)
+
+
+        if store_pulmonary[0][0] == 'OK':
+            return jsonify({'status': 'OK', 'message': 'Successfully add gut'})
+
+        elif store_pulmonary[0][0] == 'Error':
+            return jsonify({'status': 'failed', 'message': 'failed to add gut'})
 
         else:
             return jsonify({'ERROR': '404'})

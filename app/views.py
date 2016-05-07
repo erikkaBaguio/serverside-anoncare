@@ -50,8 +50,10 @@ def store_patient():
     new_patient = store_patient_info(school_id, data)
     patient_history = store_patient_history(school_id, data)
     patient_pulmonary = store_pulmonary(school_id, data)
-
-    returns = [new_patient, patient_history]
+    patient_gut = store_gut(school_id, data)
+    patient_illness = store_illness(school_id, data)
+    patient_cardiac = store_cardiac(school_id, data)
+    patient_neurologic = store_neurologic(school_id, data)
 
     return jsonify({'data': data})
 
