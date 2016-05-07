@@ -35,6 +35,11 @@ def store_new_user():
 
     return add_user
 
+@app.route('/api/anoncare/user/<int:id>/', methods= ['GET'])
+def show_userId(id):
+    get_user = show_user_id(id)
+
+    return get_user
 
 @app.route('/api/anoncare/patient', methods=['POST'])
 def store_patient():

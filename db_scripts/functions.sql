@@ -26,8 +26,24 @@ END;
 $$
 LANGUAGE 'plpgsql';
 
+-------------------------------------------------------------------------------------------------------------------------
+Create or replace function show_user_id(in par_id int, out text, out text, out text, out text, out text, out int) RETURNS SETOF RECORD AS
+$$
+SELECT
+  fname, 
+  mname,
+  lname,
+  email,
+  username, 
+  role_id 
+FROM Userinfo
+WHERE par_id = id;
+$$
+LANGUAGE 'sql';
 
---------------------------------------------------------------- USER ---------------------------------------------------------------
+
+
+--------------------------------------------------------------- USER -----------------------------------------------------------
 -- Check if user exists via username
 -- return 'OK' if user does not exist
 -- Otherwise, 'EXISTED'.
