@@ -62,7 +62,8 @@ def store_patient_info(school_id, patient):
 
     if empty_fields is False:
         store_patient = spcalls.spcall('new_store_patient', (school_id, fname, mname, lname, age, sex, dept_id,
-                                                             ptnt_id, height, weight, date_of_birth, civil_status, guardian, home_addr), True)
+                                                             ptnt_id, height, weight, date_of_birth, civil_status,
+                                                             guardian, home_addr), True)
 
         print "store_patient[0][0]", store_patient[0][0]
 
@@ -76,7 +77,7 @@ def store_patient_info(school_id, patient):
             return jsonify({'ERROR': '404'})
 
     else:
-            return jsonify({'status': 'failed', 'message': 'Please input required fields!'})
+        return jsonify({'status': 'failed', 'message': 'Please input required fields!'})
 
 
 def store_patient_history(school_id, history):
@@ -91,7 +92,8 @@ def store_patient_history(school_id, history):
     empty_fields = smoking is '' or allergies is '' or alcohol is '' or medications_taken is '' or drugs is ''
 
     if empty_fields is False:
-        store_patient = spcalls.spcall('new_patient_history', (school_id, smoking, allergies, alcohol, medications_taken, drugs), True)
+        store_patient = spcalls.spcall('new_patient_history',
+                                       (school_id, smoking, allergies, alcohol, medications_taken, drugs), True)
 
         print "store_patient[0][0]", store_patient[0][0]
 
@@ -105,4 +107,44 @@ def store_patient_history(school_id, history):
             return jsonify({'ERROR': '404'})
 
     else:
-            return jsonify({'status': 'failed', 'message': 'Please input required fields!'})
+        return jsonify({'status': 'failed', 'message': 'Please input required fields!'})
+
+
+def store_pulmonary(school_id, pulmonary):
+    spcalls = SPcalls()
+
+    cough = pulmonary['cough']
+    dyspnea = pulmonary['dyspnea']
+    hemoptysis = pulmonary['hemoptysis']
+    tb_exposure = pulmonary['tb_exposure']
+
+    empty_fields = cough is '' or dyspnea is '' or hemoptysis is '' or tb_exposure is ''
+
+    if empty_fields is False:
+        store_pulmonary = spcalls.spcall('new_pulmonary',
+                                       (school_id, cough, dyspnea, hemoptysis, tb_exposure), True)
+
+
+        if store_pulmonary[0][0] == 'OK':
+            return jsonify({'status': 'OK', 'message': 'Successfully add history'})
+
+        elif store_pulmonary[0][0] == 'Error':
+            return jsonify({'status': 'failed', 'message': 'failed to add history'})
+
+        else:
+            return jsonify({'ERROR': '404'})
+
+    else:
+        return jsonify({'status': 'failed', 'message': 'Please input required fields!'})
+
+
+def store_gut(school_id, gut):
+    spcalls = SPcalls()
+
+    frequency = gut['frequency']
+    flank_plan = gut['flank_plan']
+    discharge = gut['discharge']
+    dysuria = gut['dysuria']
+    nocturia = gut['nocturia']
+    dec_urine_amount = gut['dec_urine_amount']
+
