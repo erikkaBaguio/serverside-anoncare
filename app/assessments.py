@@ -25,15 +25,20 @@ def store_assessment(data):
     diagnosis = data['diagnosis']
     recommendation = data['recommendation']
     attending_physician = data['attending_physician']
+    print 'school id', school_id
+    print 'school id', type(school_id)
+    a = str()
+    print 'school id', a
+    print 'school id', type(a)
 
-    if (str(school_id) == '' or
-        str(age) == '' or
-        str(temperature) == '' or
-        str(pulse_rate) == '' or
-        str(respiration_rate) == '' or
-        blood_pressure == '' or
-        str(weight) == '' or
-        str(attending_physician) == '' or
+    if (school_id is None or
+        age is None or
+        temperature is None or
+        pulse_rate is None or
+        pulse_rate is None or
+        blood_pressure is None or
+        weight is None or
+        attending_physician is None or
         chief_complaint == '' or
         history_of_present_illness == '' or
         medications_taken == '' or

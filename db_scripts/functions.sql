@@ -567,6 +567,32 @@ LANGUAGE 'sql';
 
 
 ------------------------------------------------------------ ASSESSMENTS -----------------------------------------------------------
+-- Check if school_id exists
+-- return 'OK' if user does not exist
+-- Otherwise, 'EXISTED'.
+create or replace function check_schoolID(in par_schoolID int) returns text as
+  $$
+  declare
+    local_response text;
+    local_id int;
+  begin
+
+      select into local_id school_id
+      from Patient_info
+      where school_id = par_schoolID;
+
+      if local_id isnull then
+        local_response := 'OK';
+      else
+        local_response := 'EXISTED';
+
+      end if;
+
+      return local_response;
+
+    end;
+  $$
+  language 'plpgsql';
 
 -- [POST] Insert vital signs data of a patient
 -- select update_vitalSigns(3,37.1, 80, 19, '90/70', 48)
