@@ -28,7 +28,7 @@ CREATE TABLE Department ( --Ikai
 );
 
 CREATE TABLE Vital_signs ( --Ikai
-  id               INT PRIMARY KEY,
+  id               SERIAL8 PRIMARY KEY,
   temperature      FLOAT,
   pulse_rate       FLOAT,
   respiration_rate INT,
@@ -129,7 +129,7 @@ CREATE TABLE Patient (
 );
 
 CREATE TABLE Assessment ( --Ikai
-  id                      INT PRIMARY KEY,
+  id                      SERIAL8 PRIMARY KEY,
   assessment_date         TIMESTAMP DEFAULT 'now',
   school_id               INT REFERENCES Patient (school_id),
   vital_signsID           INT REFERENCES Vital_signs (id),

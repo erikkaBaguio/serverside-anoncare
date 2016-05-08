@@ -112,7 +112,13 @@ $$
 
 -- [GET] Retrieve all users
 -- select show_all_users();
-create or replace function show_all_users(out bigint, out text, out text, out text, out text, out text, out int)
+create or replace function show_all_users(out bigint,
+                                          out text,
+                                          out text,
+                                          out text,
+                                          out text,
+                                          out text,
+                                          out int)
   returns setOf record as
 $$
   select id, fname, mname, lname, username, email, role_id
@@ -128,7 +134,28 @@ $$
 
 ------------------------------------------------------------ ASSESSMENTS -----------------------------------------------------------
 
---
+-- [POST] Insert vital signs data of a patient
+-- select store_vitalSigns()
+create or replace function store_vitalSigns(par_temperature float,
+                                            par_pulse_rate float,
+                                            par_respiration_rate int,
+                                            par_blood_pressure text,
+                                            par_weight float)
+  returns text as
+$$
+  declare
+    local_response text;
+  begin
+
+    insert into Vital_signs(temperature, pulse_rate, respiration_rate, blood_pressure, weight)
+    values (par_temperature, par_pulse_rate, par_respiration_rate, par_blood_pressure, par_weight);
+
+    local_response = 'OK';
+    return local_response;
+
+  end;
+$$
+  language 'plpgsql';
 ------------------------------------------------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------- QUERIES --------------------------------------------------------------
