@@ -25,13 +25,15 @@ def store_assessment(data):
     diagnosis = data['diagnosis']
     recommendation = data['recommendation']
     attending_physician = data['attending_physician']
-    print 'school id', school_id
-    print 'school id', type(school_id)
-    a = str()
-    print 'school id', a
-    print 'school id', type(a)
 
-    if (school_id is None or
+
+    check_schoolID = spcalls.spcall('check_schoolID',(school_id,))
+
+
+    if check_schoolID[0][0] == 'OK' :
+        return jsonify({"status": "FAILED", "message": "School ID does not exist."})
+
+    elif (school_id is None or
         age is None or
         temperature is None or
         pulse_rate is None or
