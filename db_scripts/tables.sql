@@ -89,6 +89,7 @@ CREATE TABLE Gut (
   dec_urine_amount TEXT
 );
 
+
 CREATE TABLE Illness (
   school_id     INT PRIMARY KEY,
   asthma        TEXT,

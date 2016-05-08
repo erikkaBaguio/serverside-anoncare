@@ -31,20 +31,15 @@ def store_new_user():
     data = json.loads(request.data)
     print 'data is', data
 
-    dictlist = []
-
-    for key, value in data.iteritems():
-        temp = [key, value]
-        dictlist.append(value)
-
-    dictlist = str(dictlist)
-
-    print "dictlist", dictlist
-
     add_user = store_user(data)
 
     return add_user
 
+@app.route('/api/anoncare/user/<int:id>/', methods= ['GET'])
+def show_userId(id):
+    get_user = show_user_id(id)
+
+    return get_user
 
 @app.route('/api/anoncare/patient', methods=['POST'])
 def store_patient():
@@ -54,13 +49,13 @@ def store_patient():
 
     new_patient = store_patient_info(school_id, data)
     patient_history = store_patient_history(school_id, data)
+    patient_pulmonary = store_pulmonary(school_id, data)
+    patient_gut = store_gut(school_id, data)
+    patient_illness = store_illness(school_id, data)
+    patient_cardiac = store_cardiac(school_id, data)
+    patient_neurologic = store_neurologic(school_id, data)
 
-    returns = [new_patient, patient_history]
-
-    print "new_patient, patient_history", returns
-
-    return jsonify({'new_patient': returns})
-    # return new_patient, patient_history
+    return jsonify({'data': data})
 
 
 @app.route('/api/anoncare/user', methods = ['GET'])
