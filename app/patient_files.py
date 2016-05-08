@@ -163,7 +163,7 @@ def store_patient(school_id, data):
             return True
 
     def valid_neurologic(neurologic):
-        
+
         headache = neurologic['headache']
         seizure = neurologic['seizure']
         dizziness = neurologic['dizziness']
@@ -207,7 +207,6 @@ def store_patient(school_id, data):
 
         return store_new_pulmonary[0][0]
 
-
     def store_gut():
 
         store_new_gut = spcalls.spcall('new_gut',
@@ -215,7 +214,6 @@ def store_patient(school_id, data):
                                         data['dysuria'], data['nocturia'], data['dec_urine_amount']), True)
 
         return store_new_gut[0][0]
-
 
     def store_illness():
 
@@ -226,7 +224,6 @@ def store_patient(school_id, data):
 
         return store_new_illness[0][0]
 
-
     def store_cardiac():
 
         store_new_cardiac = spcalls.spcall('new_cardiac',
@@ -234,7 +231,6 @@ def store_patient(school_id, data):
                                             data['orthopnea'], data['nocturnal_dyspnea']), True)
 
         return store_new_cardiac[0][0]
-
 
     def store_neurologic():
 
@@ -244,10 +240,8 @@ def store_patient(school_id, data):
 
         return store_new_neurologic[0][0]
 
-
     valid_data = valid_patient_info(data) and valid_patient_history(data) and valid_pulmonary(data) and valid_gut(data) and \
                  valid_illness(data) and valid_cardiac(data) and valid_neurologic(data)
-
 
     print "valid_data", valid_data
 
