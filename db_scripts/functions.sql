@@ -135,8 +135,9 @@ $$
 ------------------------------------------------------------ ASSESSMENTS -----------------------------------------------------------
 
 -- [POST] Insert vital signs data of a patient
--- select store_vitalSigns()
-create or replace function store_vitalSigns(par_temperature float,
+-- select store_vitalSigns(1,37.1, 80, 19, '90/70', 48)
+create or replace function store_vitalSigns(par_id int,
+                                            par_temperature float,
                                             par_pulse_rate float,
                                             par_respiration_rate int,
                                             par_blood_pressure text,
@@ -147,8 +148,8 @@ $$
     local_response text;
   begin
 
-    insert into Vital_signs(temperature, pulse_rate, respiration_rate, blood_pressure, weight)
-    values (par_temperature, par_pulse_rate, par_respiration_rate, par_blood_pressure, par_weight);
+    insert into Vital_signs(id, temperature, pulse_rate, respiration_rate, blood_pressure, weight)
+    values (par_id, par_temperature, par_pulse_rate, par_respiration_rate, par_blood_pressure, par_weight);
 
     local_response = 'OK';
     return local_response;
@@ -156,6 +157,7 @@ $$
   end;
 $$
   language 'plpgsql';
+
 ------------------------------------------------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------- QUERIES --------------------------------------------------------------

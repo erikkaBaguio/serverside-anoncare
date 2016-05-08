@@ -28,7 +28,7 @@ CREATE TABLE Department ( --Ikai
 );
 
 CREATE TABLE Vital_signs ( --Ikai
-  id               SERIAL8 PRIMARY KEY,
+  id               INT PRIMARY KEY,
   temperature      FLOAT,
   pulse_rate       FLOAT,
   respiration_rate INT,
@@ -132,6 +132,7 @@ CREATE TABLE Assessment ( --Ikai
   id                      SERIAL8 PRIMARY KEY,
   assessment_date         TIMESTAMP DEFAULT 'now',
   school_id               INT REFERENCES Patient (school_id),
+  age                     INT,
   vital_signsID           INT REFERENCES Vital_signs (id),
   chiefcomplaint          TEXT,
   historyofpresentillness TEXT,
@@ -139,5 +140,5 @@ CREATE TABLE Assessment ( --Ikai
   diagnosis               TEXT,
   recommendation          TEXT,
   attendingphysician      INT REFERENCES Userinfo (id),
-  is_done                 BOOLEAN  DEFAULT FALSE
+  is_read                 BOOLEAN  DEFAULT FALSE
 );
