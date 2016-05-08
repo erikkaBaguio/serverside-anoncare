@@ -47,6 +47,10 @@ def store_patient():
     print "data is", data
     school_id = data['school_id']
 
+    # exists = spcalls.spcall('school_id_exists', (school_id,))
+
+    # print "exists", exists[0][0]
+
     new_patient = store_patient_info(school_id, data)
     patient_history = store_patient_history(school_id, data)
     patient_pulmonary = store_pulmonary(school_id, data)

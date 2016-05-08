@@ -10,6 +10,7 @@ from spcalls import SPcalls
 
 spcalls = SPcalls()
 
+
 def names_empty(fname, mname, lname):
     if fname is '' or mname is '' or lname is '':
         return True
@@ -32,8 +33,6 @@ def extra_info_empty(dept_id, ptnt_id, civil_status, name_of_guardian, home_addr
 
 
 def store_patient_info(school_id, patient):
-
-
     fname = patient['fname']
     mname = patient['mname']
     lname = patient['lname']
@@ -74,7 +73,6 @@ def store_patient_info(school_id, patient):
 
 
 def store_patient_history(school_id, history):
-
     smoking = history['smoking']
     allergies = history['allergies']
     alcohol = history['alcohol']
@@ -84,15 +82,13 @@ def store_patient_history(school_id, history):
     empty_fields = smoking is '' or allergies is '' or alcohol is '' or medications_taken is '' or drugs is ''
 
     if empty_fields is False:
-        store_patient = spcalls.spcall('new_patient_history',
+        store_history = spcalls.spcall('new_patient_history',
                                        (school_id, smoking, allergies, alcohol, medications_taken, drugs), True)
 
-        print "store_patient[0][0]", store_patient[0][0]
-
-        if store_patient[0][0] == 'OK':
+        if store_history[0][0] == 'OK':
             return jsonify({'status': 'OK', 'message': 'Successfully add history'})
 
-        elif store_patient[0][0] == 'Error':
+        elif store_history[0][0] == 'Error':
             return jsonify({'status': 'failed', 'message': 'failed to add history'})
 
         else:
@@ -103,7 +99,6 @@ def store_patient_history(school_id, history):
 
 
 def store_pulmonary(school_id, pulmonary):
-
     cough = pulmonary['cough']
     dyspnea = pulmonary['dyspnea']
     hemoptysis = pulmonary['hemoptysis']
@@ -113,8 +108,7 @@ def store_pulmonary(school_id, pulmonary):
 
     if empty_fields is False:
         store_pulmonary = spcalls.spcall('new_pulmonary',
-                                       (school_id, cough, dyspnea, hemoptysis, tb_exposure), True)
-
+                                         (school_id, cough, dyspnea, hemoptysis, tb_exposure), True)
 
         if store_pulmonary[0][0] == 'OK':
             return jsonify({'status': 'OK', 'message': 'Successfully add history'})
@@ -130,7 +124,6 @@ def store_pulmonary(school_id, pulmonary):
 
 
 def store_gut(school_id, gut):
-
     frequency = gut['frequency']
     flank_plan = gut['flank_plan']
     discharge = gut['discharge']
@@ -142,13 +135,13 @@ def store_gut(school_id, gut):
 
     if empty_fields is False:
         store_gut = spcalls.spcall('new_gut',
-                                       (school_id, frequency, flank_plan, discharge, dysuria, nocturia, dec_urine_amount), True)
+                                   (school_id, frequency, flank_plan, discharge, dysuria, nocturia, dec_urine_amount),
+                                   True)
 
-
-        if store_pulmonary[0][0] == 'OK':
+        if store_gut[0][0] == 'OK':
             return jsonify({'status': 'OK', 'message': 'Successfully add gut'})
 
-        elif store_pulmonary[0][0] == 'Error':
+        elif store_gut[0][0] == 'Error':
             return jsonify({'status': 'failed', 'message': 'failed to add gut'})
 
         else:
@@ -159,7 +152,6 @@ def store_gut(school_id, gut):
 
 
 def store_illness(school_id, illness):
-
     asthma = illness['asthma']
     ptb = illness['ptb']
     heart_problem = illness['heart_problem']
@@ -169,18 +161,17 @@ def store_illness(school_id, illness):
     typhoid_fever = illness['typhoid_fever']
 
     empty_fields = asthma is '' or ptb is '' or heart_problem is '' or hepa_a_b is '' or \
-                                chicken_pox is '' or mumps is '' or typhoid_fever is ''
+                   chicken_pox is '' or mumps is '' or typhoid_fever is ''
 
     if empty_fields is False:
         store_illness = spcalls.spcall('new_illness',
                                        (school_id, asthma, ptb, heart_problem, hepa_a_b,
                                         chicken_pox, mumps, typhoid_fever), True)
 
-
-        if store_pulmonary[0][0] == 'OK':
+        if store_illness[0][0] == 'OK':
             return jsonify({'status': 'OK', 'message': 'Successfully add gut'})
 
-        elif store_pulmonary[0][0] == 'Error':
+        elif store_illness[0][0] == 'Error':
             return jsonify({'status': 'failed', 'message': 'failed to add gut'})
 
         else:
@@ -191,7 +182,6 @@ def store_illness(school_id, illness):
 
 
 def store_cardiac(school_id, cardiac):
-
     chest_pain = cardiac['chest_pain']
     palpitations = cardiac['palpitations']
     pedal_edema = cardiac['pedal_edema']
@@ -202,13 +192,13 @@ def store_cardiac(school_id, cardiac):
 
     if empty_fields is False:
         store_cardiac = spcalls.spcall('new_cardiac',
-                                       (school_id, chest_pain, palpitations, pedal_edema, orthopnea, nocturnal_dyspnea), True)
+                                       (school_id, chest_pain, palpitations, pedal_edema, orthopnea, nocturnal_dyspnea),
+                                       True)
 
-
-        if store_pulmonary[0][0] == 'OK':
+        if store_cardiac[0][0] == 'OK':
             return jsonify({'status': 'OK', 'message': 'Successfully add gut'})
 
-        elif store_pulmonary[0][0] == 'Error':
+        elif store_cardiac[0][0] == 'Error':
             return jsonify({'status': 'failed', 'message': 'failed to add gut'})
 
         else:
@@ -219,7 +209,6 @@ def store_cardiac(school_id, cardiac):
 
 
 def store_neurologic(school_id, neurologic):
-
     headache = neurologic['headache']
     seizure = neurologic['seizure']
     dizziness = neurologic['dizziness']
@@ -229,13 +218,12 @@ def store_neurologic(school_id, neurologic):
 
     if empty_fields is False:
         store_neurologic = spcalls.spcall('new_neurologic',
-                                       (school_id, headache, seizure, dizziness, loss_of_consciousness), True)
+                                          (school_id, headache, seizure, dizziness, loss_of_consciousness), True)
 
-
-        if store_pulmonary[0][0] == 'OK':
+        if store_neurologic[0][0] == 'OK':
             return jsonify({'status': 'OK', 'message': 'Successfully add gut'})
 
-        elif store_pulmonary[0][0] == 'Error':
+        elif store_neurologic[0][0] == 'Error':
             return jsonify({'status': 'failed', 'message': 'failed to add gut'})
 
         else:

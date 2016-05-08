@@ -221,7 +221,7 @@ language 'plpgsql';
 
 
 create or replace function new_illness(in par_school_id int, in par_asthma text, in par_ptb text, in par_heart_prob text,
-                                        in hepa_a_b text, in par_chicken_pox text, in par_mumps text, in par_typ_fever text) returns text as
+                                        in par_hepa_a_b text, in par_chicken_pox text, in par_mumps text, in par_typ_fever text) returns text as
 
 $$
 declare local_response text;
@@ -250,7 +250,7 @@ declare local_response text;
       insert into
        Cardiac(school_id, chest_pain, palpitations, pedal_edema, orthopnea, nocturnal_dyspnea)
       values
-        (par_school_id, par_chest_pain, par_palp, par_pedal_emeda, par_orthopnea, par_noct_dysp);
+        (par_school_id, par_chest_pain, par_palp, par_pedal_edema, par_orthopnea, par_noct_dysp);
       local_response = 'OK';
       return local_response;
 
@@ -275,6 +275,30 @@ declare local_response text;
       return local_response;
 
     end;
+$$
+
+language 'plpgsql';
+
+
+create or replace function school_id_exists(in par_school_id int) returns text as
+
+$$
+  declare
+    loc_id text;
+
+  begin
+    select into loc_id par_school_id from Patient_info where school_id = par_school_id;
+    if loc_id isnull then
+      loc_id = FALSE;
+    else
+      loc_id = TRUE;
+
+    end if;
+
+    return loc_id;
+
+  end;
+
 $$
 
 language 'plpgsql';
