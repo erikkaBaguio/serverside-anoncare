@@ -12,7 +12,7 @@ spcalls = SPcalls()
 
 
 def store_assessment(data):
-    school_id = data['id']
+    school_id = data['school_id']
     age = data['age']
     temperature = data['temperature']
     pulse_rate = data['pulse_rate']
@@ -52,7 +52,7 @@ def store_assessment(data):
                                                          recommendation,
                                                          attending_physician), True)
 
-        vital_signs_id = int(assessment)
+        vital_signs_id = int(assessment[0][0])
 
         if 'Error' in str(assessment[0][0]):
             return jsonify({"status": "FAILED"})
@@ -64,7 +64,7 @@ def store_assessment(data):
                                                                pulse_rate,
                                                                respiration_rate,
                                                                blood_pressure,
-                                                               weight))
+                                                               weight), True)
             if 'Error' in str(vital_signs[0][0]):
                 return jsonify({"status":"FAILED", "message":vital_signs[0][0]})
 
