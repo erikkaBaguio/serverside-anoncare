@@ -179,8 +179,8 @@ def store_patient(school_id, data):
     def store_patient_info():
 
         store_new_patient = spcalls.spcall('new_store_patient',
-                                            (data['fname'], data['mname'], data['lname'],
-                                                data['age'], data['sex'], data['department_id'], data['patient_type_id'],
+                                            (school_id,data['fname'], data['mname'], data['lname'],
+                                             data['age'], data['sex'], data['department_id'], data['patient_type_id'],
                                                 data['height'], data['weight'], data['date_of_birth'],
                                                 data['civil_status'], data['name_of_guardian'], data['home_address']), True)
 
@@ -207,7 +207,7 @@ def store_patient(school_id, data):
     def store_gut():
 
         store_new_gut = spcalls.spcall('new_gut',
-                                      (data['frequency'], data['flank_plan'], data['discharge'],
+                                      (school_id, data['frequency'], data['flank_plan'], data['discharge'],
                                         data['dysuria'], data['nocturia'], data['dec_urine_amount']), True)
 
         return store_new_gut[0][0]
@@ -216,7 +216,7 @@ def store_patient(school_id, data):
     def store_illness():
 
         store_new_illness = spcalls.spcall('new_illness',
-                                           (data['asthma'], data['ptb'], data['heart_problem'],
+                                           (school_id, data['asthma'], data['ptb'], data['heart_problem'],
                                             data['hepatitis_a_b'], data['chicken_pox'],
                                             data['mumps'], data['typhoid_fever']), True)
 
@@ -226,7 +226,7 @@ def store_patient(school_id, data):
     def store_cardiac():
 
         store_new_cardiac = spcalls.spcall('new_cardiac',
-                                           (data['chest_pain'], data['palpitations'], data['pedal_edema'],
+                                           (school_id, data['chest_pain'], data['palpitations'], data['pedal_edema'],
                                             data['orthopnea'], data['nocturnal_dyspnea']), True)
 
         return store_new_cardiac[0][0]
@@ -234,14 +234,16 @@ def store_patient(school_id, data):
 
     def store_neurologic():
 
-        store_new_neurologic = spcalls.spcall('new_neuologic',
-                                              (data['headache'], data['seizure'],
-                                                data['dizziness'], data['loss_of_consciousness']), True)
+        store_new_neurologic = spcalls.spcall('new_neurologic',
+                                              (school_id, data['headache'], data['seizure'],
+                                               data['dizziness'], data['loss_of_consciousness']), True)
 
         return store_new_neurologic[0][0]
 
 
-    valid_data = valid_patient_info(data) and valid_patient_history(data) and valid_pulmonary(data) and valid_gut(data) and valid_illness(data) and valid_cardiac(data) and valid_neurologic(data)
+    valid_data = valid_patient_info(data) and valid_patient_history(data) and valid_pulmonary(data) and valid_gut(data) and \
+                 valid_illness(data) and valid_cardiac(data) and valid_neurologic(data)
+
 
     print "valid_data", valid_data
 

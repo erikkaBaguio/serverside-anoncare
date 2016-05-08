@@ -41,8 +41,6 @@ WHERE par_id = id;
 $$
 LANGUAGE 'sql';
 
-
-
 --------------------------------------------------------------- USER -----------------------------------------------------------
 -- Check if user exists via username
 -- return 'OK' if user does not exist
@@ -156,9 +154,13 @@ declare local_response text;
     begin
 
       insert into
-       Patient_info(school_id, fname, mname, lname, age, sex, department_id, patient_type_id, height, weight, date_of_birth, civil_status, name_of_guardian, home_address)
+       Patient_info(school_id, fname, mname, lname, age, sex,
+                    department_id, patient_type_id, height, weight,
+                    date_of_birth, civil_status, name_of_guardian, home_address)
       values
-        (par_school_id, par_fname, par_mname, par_lname, par_age, par_sex, par_dept_id, par_ptnt_type_id, par_height, par_weight, par_date_of_birth, par_civil_status, par_name_of_gdn, par_home_addr);
+        (par_school_id, par_fname, par_mname, par_lname, par_age, par_sex,
+         par_dept_id, par_ptnt_type_id, par_height, par_weight, par_date_of_birth,
+          par_civil_status, par_name_of_gdn, par_home_addr);
       local_response = 'OK';
       return local_response;
 
