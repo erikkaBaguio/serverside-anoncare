@@ -28,7 +28,7 @@ def store_patient(school_id, data):
 
     def extra_info_empty(dept_id, ptnt_id, civil_status, name_of_guardian, home_addr):
         if dept_id is None or ptnt_id is None or civil_status is '' or name_of_guardian is '' or home_addr is '':
-        return True
+            return True
         else:
             return False
 
@@ -232,3 +232,4 @@ def store_patient(school_id, data):
 
         else:
             return jsonify({'status': 'failed', 'message': 'Please input required fields!'})
+        
