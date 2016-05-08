@@ -1,17 +1,19 @@
-def test(*args):
-    length = len(args)
+def outer_function(id, name):
 
-    for a in args:
-        if a is not '' or a is not None:
-            print 'a', a
-            pass
-        else:
-            return True
+    id = id
+    name = name
+
+    def inner_function(id, name):
+
+        return id + ' ' + name
+
+    inner = inner_function(id, name)
 
 
-first = 'first'
-second = None
-third = ''
-fourth = 'fourth'
 
-print test(first, second, third, fourth)
+    return inner
+
+
+outer = outer_function('Hello, ', 'Josiah')
+
+print 'outer', outer
