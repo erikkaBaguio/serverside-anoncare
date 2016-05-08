@@ -135,21 +135,29 @@ $$
 ------------------------------------------------------------ ASSESSMENTS -----------------------------------------------------------
 
 -- [POST] Insert vital signs data of a patient
--- select store_vitalSigns(1,37.1, 80, 19, '90/70', 48)
-create or replace function store_vitalSigns(par_id int,
-                                            par_temperature float,
-                                            par_pulse_rate float,
-                                            par_respiration_rate int,
-                                            par_blood_pressure text,
-                                            par_weight float)
+-- select update_vitalSigns(1,37.1, 80, 19, '90/70', 48)
+create or replace function update_vitalSigns(in par_id int,
+                                             in par_temperature float,
+                                             in par_pulse_rate float,
+                                             in par_respiration_rate int,
+                                             in par_blood_pressure text,
+                                             in par_weight float)
   returns text as
 $$
   declare
     local_response text;
   begin
 
-    insert into Vital_signs(id, temperature, pulse_rate, respiration_rate, blood_pressure, weight)
-    values (par_id, par_temperature, par_pulse_rate, par_respiration_rate, par_blood_pressure, par_weight);
+    update Vital_signs
+    set
+      id = par_id,
+      temperature = par_temperature,
+      pulse_rate = par_pulse_rate,
+      respiration_rate = par_respiration_rate,
+      blood_pressure = par_blood_pressure,
+      weight = par_weight
+    where
+      id = par_id;
 
     local_response = 'OK';
     return local_response;
