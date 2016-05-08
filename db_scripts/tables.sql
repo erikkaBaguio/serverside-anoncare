@@ -41,6 +41,7 @@ CREATE TABLE Patient_type (
   type TEXT
 );
 
+
 CREATE TABLE Patient_info (
   school_id        INT PRIMARY KEY,
   fname            TEXT,
@@ -52,11 +53,13 @@ CREATE TABLE Patient_info (
   patient_type_id  INT REFERENCES Patient_type (school_id),
   height           TEXT,
   weight           FLOAT,
-  date_of_birth    DATE,
-  civil_status     TEXT,  
+  date_of_birth    TEXT,
+--   date_of_birth    DATE,
+  civil_status     TEXT,
   name_of_guardian TEXT,
   home_address     TEXT
 );
+
 
 CREATE TABLE Patient_history (
   school_id        INT PRIMARY KEY,
@@ -85,6 +88,7 @@ CREATE TABLE Gut (
   nocturia         TEXT,
   dec_urine_amount TEXT
 );
+
 
 CREATE TABLE Illness (
   school_id     INT PRIMARY KEY,
@@ -126,9 +130,10 @@ CREATE TABLE Patient (
 );
 
 CREATE TABLE Assessment ( --Ikai
-  id                      INT PRIMARY KEY,
+  id                      SERIAL8 PRIMARY KEY,
   assessment_date         TIMESTAMP DEFAULT 'now',
   school_id               INT REFERENCES Patient (school_id),
+  age                     INT,
   vital_signsID           INT REFERENCES Vital_signs (id),
   chiefcomplaint          TEXT,
   historyofpresentillness TEXT,
@@ -136,6 +141,5 @@ CREATE TABLE Assessment ( --Ikai
   diagnosis               TEXT,
   recommendation          TEXT,
   attendingphysician      INT REFERENCES Userinfo (id),
-  is_done                 BOOLEAN  DEFAULT FALSE
+  is_read                 BOOLEAN  DEFAULT FALSE
 );
-

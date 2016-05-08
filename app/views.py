@@ -7,13 +7,15 @@ from app import app
 import re                   #this is for verifying if the email is valid
 import hashlib
 from flask.ext.httpauth import HTTPBasicAuth
-from user_accounts import store_user
+from user_accounts import *
+from patient_files import *
 from spcalls import SPcalls
 from datetime import timedelta
 from itsdangerous import URLSafeTimedSerializer
 
 SECRET_KEY = "a_random_secret_key_$%#!@"
 auth = HTTPBasicAuth()
+<<<<<<< HEAD
 
 #Login_serializer used to encryt and decrypt the cookie token for the remember
 #me option of flask-login
@@ -24,6 +26,9 @@ def get_auth_token(username, password):
     """
     Encode a secure token for cookie
     """
+=======
+spcall = SPcalls()
+>>>>>>> afdb67b22b68abac8ee75cdd11c02b6a11a5a010
 
     data = [username, password]
     return login_serializer.dumps(data)
@@ -63,7 +68,6 @@ def spcall(qry, param, commit=False):
 
 @auth.get_password
 def get_password(username):
-    spcall = SPcalls()
     return spcall.spcall('get_password', (username,))[0][0]
 
 
@@ -94,15 +98,43 @@ def index():
 
 
 @app.route('/api/anoncare/user', methods=['POST'])
-def storeuser():
+def store_new_user():
     data = json.loads(request.data)
-    # print 'data is', data
+    print 'data is', data
 
     add_user = store_user(data)
-    print "add_user", add_user
 
     return add_user
 
+@app.route('/api/anoncare/user/<int:id>/', methods= ['GET'])
+def show_userId(id):
+    get_user = show_user_id(id)
+
+    return get_user
+
+@app.route('/api/anoncare/patient', methods=['POST'])
+def store_patient():
+    data = json.loads(request.data)
+    print "data is", data
+    school_id = data['school_id']
+
+    new_patient = store_patient_info(school_id, data)
+    patient_history = store_patient_history(school_id, data)
+    patient_pulmonary = store_pulmonary(school_id, data)
+    patient_gut = store_gut(school_id, data)
+    patient_illness = store_illness(school_id, data)
+    patient_cardiac = store_cardiac(school_id, data)
+    patient_neurologic = store_neurologic(school_id, data)
+
+    return jsonify({'data': data})
+
+
+@app.route('/api/anoncare/user', methods = ['GET'])
+def show_users():
+
+    users = show_all_users()
+
+    return users
 
 
 @app.after_request
