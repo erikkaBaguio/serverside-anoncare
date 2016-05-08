@@ -66,6 +66,7 @@ def store_patient(school_id, data):
             return True
 
     def valid_patient_history(history):
+
         smoking = history['smoking']
         allergies = history['allergies']
         alcohol = history['alcohol']
@@ -121,6 +122,7 @@ def store_patient(school_id, data):
             return True
 
     def valid_illness(illness):
+
         asthma = illness['asthma']
         ptb = illness['ptb']
         heart_problem = illness['heart_problem']
@@ -142,6 +144,7 @@ def store_patient(school_id, data):
             return True
 
     def valid_cardiac(cardiac):
+
         chest_pain = cardiac['chest_pain']
         palpitations = cardiac['palpitations']
         pedal_edema = cardiac['pedal_edema']
@@ -160,6 +163,7 @@ def store_patient(school_id, data):
             return True
 
     def valid_neurologic(neurologic):
+        
         headache = neurologic['headache']
         seizure = neurologic['seizure']
         dizziness = neurologic['dizziness']
