@@ -15,21 +15,17 @@ from itsdangerous import URLSafeTimedSerializer
 
 SECRET_KEY = "a_random_secret_key_$%#!@"
 auth = HTTPBasicAuth()
-<<<<<<< HEAD
 
 #Login_serializer used to encryt and decrypt the cookie token for the remember
 #me option of flask-login
 login_serializer = URLSafeTimedSerializer(SECRET_KEY)
+
 
 def get_auth_token(username, password):
 
     """
     Encode a secure token for cookie
     """
-=======
-spcall = SPcalls()
->>>>>>> afdb67b22b68abac8ee75cdd11c02b6a11a5a010
-
     data = [username, password]
     return login_serializer.dumps(data)
 
@@ -68,6 +64,8 @@ def spcall(qry, param, commit=False):
 
 @auth.get_password
 def get_password(username):
+
+    spcall = SPcalls()
     return spcall.spcall('get_password', (username,))[0][0]
 
 
