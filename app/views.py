@@ -66,6 +66,17 @@ def show_users():
     return users
 
 
+@app.route('/api/anoncare/assessment', methods = ['POST'])
+def add_assessments():
+
+    data = json.loads(request.data)
+    print 'data is', data
+
+    assessment = store_assessment(data)
+
+    return assessment
+
+
 @app.after_request
 def add_cors(resp):
     resp.headers['Access-Control-Allow-Origin'] = flask.request.headers.get('Origin', '*')
