@@ -9,6 +9,7 @@ import hashlib
 from flask.ext.httpauth import HTTPBasicAuth
 from user_accounts import *
 from patient_files import *
+from assessment import *
 from spcalls import SPcalls
 from datetime import timedelta
 from itsdangerous import URLSafeTimedSerializer
