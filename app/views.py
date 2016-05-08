@@ -64,6 +64,12 @@ def show_users():
 
     return users
 
+@app.route('/api/anoncare/assessment/<int:school_id>/<int:assessment_id>/', methods=['GET'])
+def show_assessmentId(school_id, assessment_id):
+
+    get_assessment_id = show_assessment_id(school_id, assessment_id)
+
+    return get_assessment_id
 
 @app.after_request
 def add_cors(resp):

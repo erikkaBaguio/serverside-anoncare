@@ -85,7 +85,7 @@ def show_user_id(id):
     data = [] 
 
     if len(user_id) == 0: 
-        return jsonify({"status": "FAILED", "message": "No User Found", "data": []})
+        return jsonify({"status": "FAILED", "message": "No User Found", "entries": []})
 
     else:
         r = user_id[0]
@@ -95,7 +95,7 @@ def show_user_id(id):
                      "email":r[3],
                      "username":r[4],
                      "role_id":r[5]})
-        return jsonify({"status": "OK", "message": "OK", "data": data})
+        return jsonify({"status": "OK", "message": "OK", "entries": data})
 
 
 def show_all_users():
