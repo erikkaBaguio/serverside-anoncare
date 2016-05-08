@@ -227,7 +227,7 @@ language 'plpgsql';
 
 
 create or replace function new_illness(in par_school_id int, in par_asthma text, in par_ptb text, in par_heart_prob text,
-                                        in hepa_a_b text, in par_chicken_pox text, in par_mumps text, in par_typ_fever text) returns text as
+                                        in par_hepa_a_b text, in par_chicken_pox text, in par_mumps text, in par_typ_fever text) returns text as
 
 $$
 declare local_response text;
@@ -256,7 +256,7 @@ declare local_response text;
       insert into
        Cardiac(school_id, chest_pain, palpitations, pedal_edema, orthopnea, nocturnal_dyspnea)
       values
-        (par_school_id, par_chest_pain, par_palp, par_pedal_emeda, par_orthopnea, par_noct_dysp);
+        (par_school_id, par_chest_pain, par_palp, par_pedal_edema, par_orthopnea, par_noct_dysp);
       local_response = 'OK';
       return local_response;
 
@@ -281,6 +281,30 @@ declare local_response text;
       return local_response;
 
     end;
+$$
+
+language 'plpgsql';
+
+
+create or replace function school_id_exists(in par_school_id int) returns text as
+
+$$
+  declare
+    loc_id text;
+
+  begin
+    select into loc_id par_school_id from Patient_info where school_id = par_school_id;
+    if loc_id isnull then
+      loc_id = FALSE;
+    else
+      loc_id = TRUE;
+
+    end if;
+
+    return loc_id;
+
+  end;
+
 $$
 
 language 'plpgsql';
@@ -545,7 +569,7 @@ LANGUAGE 'sql';
 ------------------------------------------------------------ ASSESSMENTS -----------------------------------------------------------
 
 -- [POST] Insert vital signs data of a patient
--- select update_vitalSigns(1,37.1, 80, 19, '90/70', 48)
+-- select update_vitalSigns(3,37.1, 80, 19, '90/70', 48)
 create or replace function update_vitalSigns(in par_id int,
                                              in par_temperature float,
                                              in par_pulse_rate float,
@@ -577,6 +601,7 @@ $$
   language 'plpgsql';
 
 -- [POST] Insert assessment of patient
+--select store_assessment(20130000,19,'cp','hpi','mt','d','r',1);
 create or replace function store_assessment(in par_schoolID                 INT,
                                             in par_age                      INT,
                                             in par_chiefcomplaint           TEXT,
@@ -585,16 +610,16 @@ create or replace function store_assessment(in par_schoolID                 INT,
                                             in par_diagnosis                TEXT,
                                             in par_recommendation           TEXT,
                                             in par_attendingphysician       INT)
-  returns text as
+  returns bigint as
   $$
     declare
-      local_response text;
+      local_response bigint;
     begin
 
       insert into Assessment (school_id, age, chiefcomplaint, historyofpresentillness, medicationstaken, diagnosis, recommendation, attendingphysician)
       values (par_schoolID, par_age, par_chiefcomplaint, par_historyofpresentillness, par_medicationstaken, par_diagnosis, par_recommendation, par_attendingphysician);
 
-      local_response = 'OK';
+      SELECT INTO local_response currval(pg_get_serial_sequence('Assessment','id'));
 
       return local_response;
 

@@ -9,7 +9,7 @@ import hashlib
 from flask.ext.httpauth import HTTPBasicAuth
 from user_accounts import *
 from patient_files import *
-from assessment import *
+from assessments import *
 from spcalls import SPcalls
 from datetime import timedelta
 from itsdangerous import URLSafeTimedSerializer
@@ -117,6 +117,10 @@ def store_patient():
     print "data is", data
     school_id = data['school_id']
 
+    # exists = spcalls.spcall('school_id_exists', (school_id,))
+
+    # print "exists", exists[0][0]
+
     new_patient = store_patient_info(school_id, data)
     patient_history = store_patient_history(school_id, data)
     patient_pulmonary = store_pulmonary(school_id, data)
@@ -141,6 +145,17 @@ def show_assessmentId(school_id, assessment_id):
     get_assessment_id = show_assessment_id(school_id, assessment_id)
 
     return get_assessment_id
+
+@app.route('/api/anoncare/assessment', methods = ['POST'])
+def add_assessments():
+
+    data = json.loads(request.data)
+    print 'data is', data
+
+    assessment = store_assessment(data)
+
+    return assessment
+
 
 @app.after_request
 def add_cors(resp):
