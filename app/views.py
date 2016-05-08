@@ -111,18 +111,16 @@ def show_userId(id):
     return get_user
 
 @app.route('/api/anoncare/patient', methods=['POST'])
-def store_patient():
+def store_new_patient():
     data = json.loads(request.data)
     print "data is", data
     school_id = data['school_id']
 
-    new_patient = store_patient_info(school_id, data)
-    patient_history = store_patient_history(school_id, data)
-    patient_pulmonary = store_pulmonary(school_id, data)
-    patient_gut = store_gut(school_id, data)
-    patient_illness = store_illness(school_id, data)
-    patient_cardiac = store_cardiac(school_id, data)
-    patient_neurologic = store_neurologic(school_id, data)
+    exists = spcalls.spcall('school_id_exists', (school_id,))
+
+    print "exists", exists[0][0]
+
+    new_patient = store_patient(school_id, data)
 
     return jsonify({'data': data})
 

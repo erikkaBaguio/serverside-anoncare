@@ -445,51 +445,51 @@ language 'plpgsql';
 --   LANGUAGE 'plpgsql';
 
 
-[GET] Retrieve assessment of a specific patient
+-- [GET] Retrieve assessment of a specific patient
 --select getassessmentID(20130000,1);
-CREATE OR REPLACE FUNCTION show_assessment_id(IN par_schoolID INT,
-                                           IN par_id INT,
-                                           OUT INT,
-                                           OUT TIMESTAMP,
-                                           OUT INT,
-                                           OUT INT,
-                                           OUT TEXT,
-                                           OUT TEXT,
-                                           OUT TEXT,
-                                           OUT TEXT,
-                                           OUT TEXT,
-                                           OUT INT,
-                                           OUT BOOLEAN,
-                                           OUT FLOAT,
-                                           OUT FLOAT,
-                                           OUT INT,
-                                           OUT TEXT,
-                                           OUT FLOAT,
-                                           OUT TEXT,
-                                           OUT TEXT)
-  RETURNS SETOF RECORD AS
-$$
-
-select Assessment.*,
-         Vital_signs.temperature,
-         Vital_signs.pulse_rate,
-         Vital_signs.respiration_rate,
-         Vital_signs.blood_pressure,
-         Vital_signs.weight,
-         Userinfo.fname,
-         Userinfo.lname
-  FROM Assessment
-  INNER JOIN Vital_signs ON (
-    Assessment.vital_signsID = Vital_signs.id
-    )
-  INNER JOIN Userinfo ON (
-    Assessment.attendingphysician = Userinfo.id
-    )
-  WHERE Assessment.id = par_id
-  AND Assessment.school_id = par_schoolID
-
-$$
-LANGUAGE 'sql';
+-- CREATE OR REPLACE FUNCTION show_assessment_id(IN par_schoolID INT,
+--                                            IN par_id INT,
+--                                            OUT BIGINT,
+--                                            OUT TIMESTAMP,
+--                                            OUT INT,
+--                                            OUT INT,
+--                                            OUT INT,
+--                                            OUT TEXT,
+--                                            OUT TEXT,
+--                                            OUT TEXT,
+--                                            OUT TEXT,
+--                                            OUT TEXT,
+--                                            OUT INT,
+--                                            OUT BOOLEAN,
+--                                            OUT FLOAT,
+--                                            OUT FLOAT,
+--                                            OUT INT,
+--                                            OUT TEXT,
+--                                            OUT FLOAT,
+--                                            OUT TEXT)
+--   RETURNS SETOF RECORD AS
+-- $$
+--
+-- select Assessment.*,
+--          Vital_signs.temperature,
+--          Vital_signs.pulse_rate,
+--          Vital_signs.respiration_rate,
+--          Vital_signs.blood_pressure,
+--          Vital_signs.weight,
+--          Userinfo.fname,
+--          Userinfo.lname
+--   FROM Assessment
+--   INNER JOIN Vital_signs ON (
+--     Assessment.vital_signsID = Vital_signs.id
+--     )
+--   INNER JOIN Userinfo ON (
+--     Assessment.attendingphysician = Userinfo.id
+--     )
+--   WHERE Assessment.id = par_id
+--   AND Assessment.school_id = par_schoolID
+--
+-- $$
+-- LANGUAGE 'sql';
 
 
 -- -- [GET] Retrieve all assessment of a specific patient
