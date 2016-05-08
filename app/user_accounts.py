@@ -117,7 +117,7 @@ def show_all_users():
                 "role_id": row[5]
             })
 
-        return jsonify({"status": "OK", "message":"OK", "entires":entries, "count": len(entries)})
+        return jsonify({"status": "OK", "message":"OK", "entries":entries, "count": len(entries)})
 
     else:
         return jsonify({"status": 'OK', "message": "No Users Found"})

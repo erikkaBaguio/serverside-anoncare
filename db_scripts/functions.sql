@@ -128,7 +128,13 @@ $$
 
 -- [GET] Retrieve all users
 -- select show_all_users();
-create or replace function show_all_users(out bigint, out text, out text, out text, out text, out text, out int)
+create or replace function show_all_users(out bigint,
+                                          out text,
+                                          out text,
+                                          out text,
+                                          out text,
+                                          out text,
+                                          out int)
   returns setOf record as
 $$
   select id, fname, mname, lname, username, email, role_id
@@ -534,6 +540,68 @@ LANGUAGE 'sql';
 -- END;
 -- $$
 --   LANGUAGE 'plpgsql';
+
+
+------------------------------------------------------------ ASSESSMENTS -----------------------------------------------------------
+
+-- [POST] Insert vital signs data of a patient
+-- select update_vitalSigns(1,37.1, 80, 19, '90/70', 48)
+create or replace function update_vitalSigns(in par_id int,
+                                             in par_temperature float,
+                                             in par_pulse_rate float,
+                                             in par_respiration_rate int,
+                                             in par_blood_pressure text,
+                                             in par_weight float)
+  returns text as
+$$
+  declare
+    local_response text;
+  begin
+
+    update Vital_signs
+    set
+      id = par_id,
+      temperature = par_temperature,
+      pulse_rate = par_pulse_rate,
+      respiration_rate = par_respiration_rate,
+      blood_pressure = par_blood_pressure,
+      weight = par_weight
+    where
+      id = par_id;
+
+    local_response = 'OK';
+    return local_response;
+
+  end;
+$$
+  language 'plpgsql';
+
+-- [POST] Insert assessment of patient
+create or replace function store_assessment(in par_schoolID                 INT,
+                                            in par_age                      INT,
+                                            in par_chiefcomplaint           TEXT,
+                                            in par_historyofpresentillness  TEXT,
+                                            in par_medicationstaken         TEXT,
+                                            in par_diagnosis                TEXT,
+                                            in par_recommendation           TEXT,
+                                            in par_attendingphysician       INT)
+  returns text as
+  $$
+    declare
+      local_response text;
+    begin
+
+      insert into Assessment (school_id, age, chiefcomplaint, historyofpresentillness, medicationstaken, diagnosis, recommendation, attendingphysician)
+      values (par_schoolID, par_age, par_chiefcomplaint, par_historyofpresentillness, par_medicationstaken, par_diagnosis, par_recommendation, par_attendingphysician);
+
+      local_response = 'OK';
+
+      return local_response;
+
+    end;
+  $$
+    language 'plpgsql';
+------------------------------------------------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------- QUERIES --------------------------------------------------------------
 select store_role('admin');
