@@ -227,7 +227,7 @@ language 'plpgsql';
 
 
 create or replace function new_illness(in par_school_id int, in par_asthma text, in par_ptb text, in par_heart_prob text,
-                                        in hepa_a_b text, in par_chicken_pox text, in par_mumps text, in par_typ_fever text) returns text as
+                                        in par_hepa_a_b text, in par_chicken_pox text, in par_mumps text, in par_typ_fever text) returns text as
 
 $$
 declare local_response text;
@@ -256,7 +256,7 @@ declare local_response text;
       insert into
        Cardiac(school_id, chest_pain, palpitations, pedal_edema, orthopnea, nocturnal_dyspnea)
       values
-        (par_school_id, par_chest_pain, par_palp, par_pedal_emeda, par_orthopnea, par_noct_dysp);
+        (par_school_id, par_chest_pain, par_palp, par_pedal_edema, par_orthopnea, par_noct_dysp);
       local_response = 'OK';
       return local_response;
 
@@ -281,6 +281,30 @@ declare local_response text;
       return local_response;
 
     end;
+$$
+
+language 'plpgsql';
+
+
+create or replace function school_id_exists(in par_school_id int) returns text as
+
+$$
+  declare
+    loc_id text;
+
+  begin
+    select into loc_id par_school_id from Patient_info where school_id = par_school_id;
+    if loc_id isnull then
+      loc_id = FALSE;
+    else
+      loc_id = TRUE;
+
+    end if;
+
+    return loc_id;
+
+  end;
+
 $$
 
 language 'plpgsql';
@@ -421,53 +445,53 @@ language 'plpgsql';
 --   LANGUAGE 'plpgsql';
 
 
---[GET] Retrieve assessment of a specific patient
--- --select getassessmentID(20130000,1);
--- CREATE OR REPLACE FUNCTION getassessmentID(IN par_schoolID INT,
---                                            IN par_id INT,
---                                            OUT INT,
---                                            OUT TIMESTAMP,
---                                            OUT INT,
---                                            OUT INT,
---                                            OUT TEXT,
---                                            OUT TEXT,
---                                            OUT TEXT,
---                                            OUT TEXT,
---                                            OUT TEXT,
---                                            OUT INT,
---                                            OUT BOOLEAN,
---                                            OUT FLOAT,
---                                            OUT FLOAT,
---                                            OUT INT,
---                                            OUT TEXT,
---                                            OUT FLOAT,
---                                            OUT TEXT,
---                                            OUT TEXT)
---   RETURNS SETOF RECORD AS
--- $$
---
--- select Assessment.*,
---          Vital_signs.temperature,
---          Vital_signs.pulse_rate,
---          Vital_signs.respiration_rate,
---          Vital_signs.blood_pressure,
---          Vital_signs.weight,
---          Userinfo.fname,
---          Userinfo.lname
---   FROM Assessment
---   INNER JOIN Vital_signs ON (
---     Assessment.vital_signsID = Vital_signs.id
---     )
---   INNER JOIN Userinfo ON (
---     Assessment.attendingphysician = Userinfo.id
---     )
---   WHERE Assessment.id = par_id
---   AND Assessment.school_id = par_schoolID
---
--- $$
--- LANGUAGE 'sql';
---
---
+[GET] Retrieve assessment of a specific patient
+--select getassessmentID(20130000,1);
+CREATE OR REPLACE FUNCTION show_assessment_id(IN par_schoolID INT,
+                                           IN par_id INT,
+                                           OUT INT,
+                                           OUT TIMESTAMP,
+                                           OUT INT,
+                                           OUT INT,
+                                           OUT TEXT,
+                                           OUT TEXT,
+                                           OUT TEXT,
+                                           OUT TEXT,
+                                           OUT TEXT,
+                                           OUT INT,
+                                           OUT BOOLEAN,
+                                           OUT FLOAT,
+                                           OUT FLOAT,
+                                           OUT INT,
+                                           OUT TEXT,
+                                           OUT FLOAT,
+                                           OUT TEXT,
+                                           OUT TEXT)
+  RETURNS SETOF RECORD AS
+$$
+
+select Assessment.*,
+         Vital_signs.temperature,
+         Vital_signs.pulse_rate,
+         Vital_signs.respiration_rate,
+         Vital_signs.blood_pressure,
+         Vital_signs.weight,
+         Userinfo.fname,
+         Userinfo.lname
+  FROM Assessment
+  INNER JOIN Vital_signs ON (
+    Assessment.vital_signsID = Vital_signs.id
+    )
+  INNER JOIN Userinfo ON (
+    Assessment.attendingphysician = Userinfo.id
+    )
+  WHERE Assessment.id = par_id
+  AND Assessment.school_id = par_schoolID
+
+$$
+LANGUAGE 'sql';
+
+
 -- -- [GET] Retrieve all assessment of a specific patient
 -- --select getallassessmentID(20130000);
 -- CREATE OR REPLACE FUNCTION getallassessmentID(IN par_schoolID INT,
@@ -508,10 +532,10 @@ language 'plpgsql';
 --     )
 --   WHERE Assessment.school_id = par_schoolID
 --   ORDER BY id DESC;
---
+
 -- $$
 --   LANGUAGE 'sql';
---
+
 -- --[PUT] Update assessment of patient
 -- --select update_assessment(1,20130000, 'medication1f', 'diagnosis11f','recommendation11', 1);
 -- CREATE OR REPLACE FUNCTION update_assessment(IN par_id                 INT,

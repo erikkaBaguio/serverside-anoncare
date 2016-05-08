@@ -117,6 +117,10 @@ def store_patient():
     print "data is", data
     school_id = data['school_id']
 
+    # exists = spcalls.spcall('school_id_exists', (school_id,))
+
+    # print "exists", exists[0][0]
+
     new_patient = store_patient_info(school_id, data)
     patient_history = store_patient_history(school_id, data)
     patient_pulmonary = store_pulmonary(school_id, data)
@@ -135,6 +139,12 @@ def show_users():
 
     return users
 
+@app.route('/api/anoncare/assessment/<int:school_id>/<int:assessment_id>/', methods=['GET'])
+def show_assessmentId(school_id, assessment_id):
+
+    get_assessment_id = show_assessment_id(school_id, assessment_id)
+
+    return get_assessment_id
 
 @app.route('/api/anoncare/assessment', methods = ['POST'])
 def add_assessments():

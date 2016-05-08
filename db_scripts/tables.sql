@@ -27,15 +27,6 @@ CREATE TABLE Department ( --Ikai
   is_active       BOOLEAN DEFAULT TRUE
 );
 
-CREATE TABLE Vital_signs ( --Ikai
-  id               INT PRIMARY KEY,
-  temperature      FLOAT,
-  pulse_rate       FLOAT,
-  respiration_rate INT,
-  blood_pressure   TEXT,
-  weight           FLOAT
-);
-
 CREATE TABLE Patient_type (
   school_id   SERIAL8 PRIMARY KEY,
   type TEXT
@@ -118,15 +109,13 @@ CREATE TABLE Neurologic (
   loss_of_consciousness TEXT
 );
 
-CREATE TABLE Patient (
-  school_id INT REFERENCES Patient_info (school_id) PRIMARY KEY,
-  personal_history_id INT REFERENCES Patient_history(school_id),
-  pulmonary_id     INT REFERENCES Pulmonary (school_id),
-  gut_id           INT REFERENCES Gut (school_id),
-  illness_id       INT REFERENCES Illness (school_id),
-  cardiac_id       INT REFERENCES Cardiac (school_id),
-  neurologic_id    INT REFERENCES Neurologic (school_id),
-  is_active        BOOLEAN DEFAULT TRUE
+CREATE TABLE Vital_signs ( --Ikai
+  id               INT PRIMARY KEY,
+  temperature      FLOAT,
+  pulse_rate       FLOAT,
+  respiration_rate INT,
+  blood_pressure   TEXT,
+  weight           FLOAT
 );
 
 CREATE TABLE Assessment ( --Ikai
