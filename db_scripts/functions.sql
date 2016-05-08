@@ -166,6 +166,31 @@ $$
 $$
   language 'plpgsql';
 
+-- [POST] Insert assessment of patient
+create or replace function store_assessment(in par_schoolID                 INT,
+                                            in par_age                      INT,
+                                            in par_chiefcomplaint           TEXT,
+                                            in par_historyofpresentillness  TEXT,
+                                            in par_medicationstaken         TEXT,
+                                            in par_diagnosis                TEXT,
+                                            in par_recommendation           TEXT,
+                                            in par_attendingphysician       INT)
+  returns text as
+  $$
+    declare
+      local_response text;
+    begin
+
+      insert into Assessment (school_id, age, chiefcomplaint, historyofpresentillness, medicationstaken, diagnosis, recommendation, attendingphysician)
+      values (par_schoolID, par_age, par_chiefcomplaint, par_historyofpresentillness, par_medicationstaken, par_diagnosis, par_recommendation, par_attendingphysician);
+
+      local_response = 'OK';
+
+      return local_response;
+
+    end;
+  $$
+    language 'plpgsql';
 ------------------------------------------------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------- QUERIES --------------------------------------------------------------
