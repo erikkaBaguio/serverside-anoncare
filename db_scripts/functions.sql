@@ -309,64 +309,64 @@ $$
 
 language 'plpgsql';
 
---
--- --[GET] patient file
--- --select * from get_patientfileId(1);
--- CREATE OR REPLACE FUNCTION get_patientfileId(IN par_id INT, OUT TEXT, OUT TEXT, OUT TEXT, OUT INT, OUT TEXT,
---                                              OUT       TEXT, OUT FLOAT, OUT TEXT, OUT TEXT, OUT TEXT,
---                                              OUT       TEXT, OUT TEXT, OUT TEXT, OUT TEXT, OUT TEXT,
---                                              OUT       TEXT, OUT TEXT, OUT TEXT, OUT TEXT, OUT TEXT,
---                                              OUT       TEXT, OUT TEXT, OUT TEXT, OUT TEXT, OUT TEXT,
---                                              OUT       TEXT, OUT TEXT, OUT TEXT, OUT TEXT, OUT TEXT,
---                                              OUT       TEXT, OUT TEXT, OUT TEXT, OUT TEXT, OUT TEXT,
---                                              OUT       TEXT, OUT TEXT)
---   RETURNS SETOF RECORD AS
--- $$
--- SELECT
---   Patient.fname,
---   Patient.mname,
---   Patient.lname,
---   Patient.age,
---   Patient.sex,
---   Personal_info.height,
---   Personal_info.weight,
---   Personal_info.date_of_birth,
---   Personal_info.civil_status,
---   Personal_info.name_of_guardian,
---   Personal_info.home_address,
---   Pulmonary.cough,
---   Pulmonary.dyspnea,
---   Pulmonary.hemoptysis,
---   Pulmonary.tb_exposure,
---   Gut.frequency,
---   Gut.flank_plan,
---   Gut.discharge,
---   Gut.dysuria,
---   Gut.nocturia,
---   Gut.dec_urine_amount,
---   Illness.asthma,
---   Illness.ptb,
---   Illness.heart_problem,
---   Illness.hepatitis_a_b,
---   Illness.chicken_pox,
---   Illness.mumps,
---   Illness.typhoid_fever,
---   Cardiac.chest_pain,
---   Cardiac.palpitations,
---   Cardiac.pedal_edema,
---   Cardiac.orthopnea,
---   Cardiac.nocturnal_dyspnea,
---   Neurologic.headache,
---   Neurologic.seizure,
---   Neurologic.dizziness,
---   Neurologic.loss_of_consciousness
--- FROM Patient, Personal_info, Pulmonary, Gut, Illness, Cardiac, Neurologic
--- WHERE Patient.id = par_id AND Personal_info.id = Patient.personal_info_id AND Pulmonary.id = Patient.pulmonary_id AND
---       Gut.id = Patient.gut_id AND Illness.id = Patient.illness_id AND Cardiac.id = Patient.cardiac_id AND
---       Neurologic.id = Patient.neurologic_id;
--- $$
--- LANGUAGE 'sql';
---
+
+--[GET] patient file
+--select * from get_patientfileId(1);
+CREATE OR REPLACE FUNCTION get_patientfileId(IN par_id INT, OUT TEXT, OUT TEXT, OUT TEXT, OUT INT, OUT TEXT,
+                                             OUT       TEXT, OUT FLOAT, OUT TEXT, OUT TEXT, OUT TEXT,
+                                             OUT       TEXT, OUT TEXT, OUT TEXT, OUT TEXT, OUT TEXT,
+                                             OUT       TEXT, OUT TEXT, OUT TEXT, OUT TEXT, OUT TEXT,
+                                             OUT       TEXT, OUT TEXT, OUT TEXT, OUT TEXT, OUT TEXT,
+                                             OUT       TEXT, OUT TEXT, OUT TEXT, OUT TEXT, OUT TEXT,
+                                             OUT       TEXT, OUT TEXT, OUT TEXT, OUT TEXT, OUT TEXT,
+                                             OUT       TEXT, OUT TEXT)
+  RETURNS SETOF RECORD AS
+$$
+SELECT
+  Patient.fname,
+  Patient.mname,
+  Patient.lname,
+  Patient.age,
+  Patient.sex,
+  Personal_info.height,
+  Personal_info.weight,
+  Personal_info.date_of_birth,
+  Personal_info.civil_status,
+  Personal_info.name_of_guardian,
+  Personal_info.home_address,
+  Pulmonary.cough,
+  Pulmonary.dyspnea,
+  Pulmonary.hemoptysis,
+  Pulmonary.tb_exposure,
+  Gut.frequency,
+  Gut.flank_plan,
+  Gut.discharge,
+  Gut.dysuria,
+  Gut.nocturia,
+  Gut.dec_urine_amount,
+  Illness.asthma,
+  Illness.ptb,
+  Illness.heart_problem,
+  Illness.hepatitis_a_b,
+  Illness.chicken_pox,
+  Illness.mumps,
+  Illness.typhoid_fever,
+  Cardiac.chest_pain,
+  Cardiac.palpitations,
+  Cardiac.pedal_edema,
+  Cardiac.orthopnea,
+  Cardiac.nocturnal_dyspnea,
+  Neurologic.headache,
+  Neurologic.seizure,
+  Neurologic.dizziness,
+  Neurologic.loss_of_consciousness
+FROM Patient, Personal_info, Pulmonary, Gut, Illness, Cardiac, Neurologic
+WHERE Patient.id = par_id AND Personal_info.id = Patient.personal_info_id AND Pulmonary.id = Patient.pulmonary_id AND
+      Gut.id = Patient.gut_id AND Illness.id = Patient.illness_id AND Cardiac.id = Patient.cardiac_id AND
+      Neurologic.id = Patient.neurologic_id;
+$$
+LANGUAGE 'sql';
+
 -- --[GET] Retrieve the type of patient.
 -- --select getpatienttypeID(1);
 -- CREATE OR REPLACE FUNCTION getpatienttypeID(IN par_id INT, OUT TEXT)
@@ -377,7 +377,7 @@ language 'plpgsql';
 -- WHERE id = par_id;
 -- $$
 -- LANGUAGE 'sql';
---
+
 -- -----------------------------------------------------END of Patient File --------------------------------------------------
 --
 -- -------------------------------------------------------- Assessment -------------------------------------------------------
