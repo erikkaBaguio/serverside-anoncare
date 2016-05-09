@@ -569,9 +569,36 @@ language 'plpgsql';
 
 
 ------------------------------------------------------------ ASSESSMENTS -----------------------------------------------------------
+-- Check if school_id exists
+-- return 'OK' if user does not exist
+-- Otherwise, 'EXISTED'.
+--select check_schoolID(20130000);
+create or replace function check_schoolID(in par_schoolID int) returns text as
+  $$
+  declare
+    local_response text;
+    local_id int;
+  begin
+
+      select into local_id school_id
+      from Patient_info
+      where school_id = par_schoolID;
+
+      if local_id isnull then
+        local_response := 'OK';
+      else
+        local_response := 'EXISTED';
+
+      end if;
+
+      return local_response;
+
+    end;
+  $$
+  language 'plpgsql';
 
 -- [POST] Insert vital signs data of a patient
--- select update_vitalSigns(1,37.1, 80, 19, '90/70', 48)
+-- select update_vitalSigns(3,37.1, 80, 19, '90/70', 48)
 create or replace function update_vitalSigns(in par_id int,
                                              in par_temperature float,
                                              in par_pulse_rate float,
@@ -603,6 +630,7 @@ $$
   language 'plpgsql';
 
 -- [POST] Insert assessment of patient
+--select store_assessment(20130000,19,'cp','hpi','mt','d','r',1);
 create or replace function store_assessment(in par_schoolID                 INT,
                                             in par_age                      INT,
                                             in par_chiefcomplaint           TEXT,
@@ -611,16 +639,16 @@ create or replace function store_assessment(in par_schoolID                 INT,
                                             in par_diagnosis                TEXT,
                                             in par_recommendation           TEXT,
                                             in par_attendingphysician       INT)
-  returns text as
+  returns bigint as
   $$
     declare
-      local_response text;
+      local_response bigint;
     begin
 
       insert into Assessment (school_id, age, chiefcomplaint, historyofpresentillness, medicationstaken, diagnosis, recommendation, attendingphysician)
       values (par_schoolID, par_age, par_chiefcomplaint, par_historyofpresentillness, par_medicationstaken, par_diagnosis, par_recommendation, par_attendingphysician);
 
-      local_response = 'OK';
+      SELECT INTO local_response currval(pg_get_serial_sequence('Assessment','id'));
 
       return local_response;
 

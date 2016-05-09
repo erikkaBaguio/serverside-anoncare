@@ -9,6 +9,7 @@ import hashlib
 from flask.ext.httpauth import HTTPBasicAuth
 from user_accounts import *
 from patient_files import *
+from assessments import *
 from spcalls import SPcalls
 from datetime import timedelta
 from itsdangerous import URLSafeTimedSerializer
@@ -135,6 +136,16 @@ def show_assessmentId(school_id, assessment_id):
     get_assessment_id = show_assessment_id(school_id, assessment_id)
 
     return get_assessment_id
+
+@app.route('/api/anoncare/assessment', methods = ['POST'])
+def add_assessments():
+
+    data = json.loads(request.data)
+    print 'data is', data
+
+    assessment = store_assessment(data)
+
+    return assessment
 
 
 @app.after_request
