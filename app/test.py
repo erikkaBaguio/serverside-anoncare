@@ -1,17 +1,6 @@
-def test(*args):
-    length = len(args)
+a = None
+b = 'hello'
 
-    for a in args:
-        if a is not '' or a is not None:
-            print 'a', a
-            pass
-        else:
-            return True
+c = a and b is True
 
-
-first = 'first'
-second = None
-third = ''
-fourth = 'fourth'
-
-print test(first, second, third, fourth)
+print "c", c
