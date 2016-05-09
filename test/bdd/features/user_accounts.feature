@@ -19,10 +19,10 @@ Feature: User Accounts
 ########
 # RAINY CASES
 ########
-  #Scenario: Retrieve a user's details that does not exist
-  	#Given user with id '30'
-  	#When the admin enter with an id '30'
-  	#Then it should have a '200' response
-  	#And it should have a field 'status' containing 'FAILED'
-  	#And it should have a field 'message' containing 'No User Found'
+  Scenario: Retrieve a user's details that does not exist
+  	Given user with id '30'
+  	When the admin enter with an id '30'
+  	Then it should have a '200' response
+  	And it should have a field 'status' containing 'FAILED'
+  	And it should have a field 'message' containing 'No User Found'
   	

@@ -14,7 +14,6 @@ def before_all():
 def given_user_with_id_group1(step, id):
 	world.user = world.app.get('/api/anoncare/user/{}/'.format(id))
 	world.response_json = json.loads(world.user.data)
-	assert_equals(world.response_json['status'], 'OK')
 
 @step(u'When the admin enter with an id \'([^\']*)\'')
 def when_the_admin_enter_with_an_id_group1(step, id):
