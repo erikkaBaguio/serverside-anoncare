@@ -16,19 +16,19 @@ def store_patient(school_id, data):
     school_id_exists = spcalls.spcall('school_id_exists', (school_id,), True)
 
     def names_empty(fname, mname, lname):
-        if fname is '' or mname is '' or lname is '':
+        if school_id is None and fname is None and mname and None and lname and None:
             return True
         else:
             return False
 
     def bio_empty(age, sex, height, weight, date_of_birth):
-        if age is None or sex is '' or height is '' or weight is None or date_of_birth is '':
+        if age is None and sex is None and height is None and weight is None and date_of_birth is None:
             return True
         else:
             return False
 
     def extra_info_empty(dept_id, ptnt_id, civil_status, name_of_guardian, home_addr):
-        if dept_id is None or ptnt_id is None or civil_status is '' or name_of_guardian is '' or home_addr is '':
+        if dept_id is None and ptnt_id is None and civil_status is None and name_of_guardian is None and home_addr is None:
             return True
         else:
             return False
@@ -52,15 +52,11 @@ def store_patient(school_id, data):
         empty_bio = bio_empty(age, sex, height, weight, date_of_birth)
         empty_extra_info = extra_info_empty(dept_id, ptnt_id, civil_status, guardian, home_addr)
 
-        empty_fields = empty_names and empty_bio and empty_extra_info
-        print "empty_fields", empty_fields
+        complete_fields = empty_names and empty_bio and empty_extra_info
+        print "valid_patient_info complete_fields", complete_fields
 
-        if empty_fields is False:
-
-            if school_id_exists[0][0] is 'true':
-                return False
-            else:
-                return True
+        if complete_fields is False:
+            return False
 
         else:
             return True
@@ -73,14 +69,11 @@ def store_patient(school_id, data):
         medications_taken = history['medications_taken']
         drugs = history['drugs']
 
-        empty_fields = smoking is '' or allergies is '' or alcohol is '' or medications_taken is '' or drugs is ''
+        complete_fields = school_id is None and smoking is None and allergies is None and alcohol is None and medications_taken\
+                                                                                     is None and drugs is None
 
-        if empty_fields is False:
-
-            if school_id_exists[0][0] is 'true':
-                return False
-            else:
-                return True
+        if complete_fields is False:
+            return False
 
         else:
             return True
@@ -91,13 +84,11 @@ def store_patient(school_id, data):
         hemoptysis = pulmonary['hemoptysis']
         tb_exposure = pulmonary['tb_exposure']
 
-        empty_fields = cough is '' or dyspnea is '' or hemoptysis is '' or tb_exposure is ''
+        complete_fields = school_id is None and cough is None and dyspnea is None and hemoptysis is None and tb_exposure is None
 
-        if empty_fields is False:
-            if school_id_exists[0][0] is 'true':
-                return False
-            else:
-                return True
+        if complete_fields is False:
+
+            return False
 
         else:
             return True
@@ -110,13 +101,12 @@ def store_patient(school_id, data):
         nocturia = gut['nocturia']
         dec_urine_amount = gut['dec_urine_amount']
 
-        empty_fields = frequency is '' or flank_plan is '' or discharge is '' or dysuria is '' or nocturia is '' or dec_urine_amount is ''
+        complete_fields = school_id is None and frequency is None and flank_plan is None and discharge is None\
+                       and dysuria is None and nocturia is None and dec_urine_amount is None
 
-        if empty_fields is False:
-            if school_id_exists[0][0] is 'true':
-                return False
-            else:
-                return True
+        if complete_fields is False:
+
+            return False
 
         else:
             return True
@@ -131,14 +121,14 @@ def store_patient(school_id, data):
         mumps = illness['mumps']
         typhoid_fever = illness['typhoid_fever']
 
-        empty_fields = asthma is '' or ptb is '' or heart_problem is '' or hepa_a_b is '' or \
-                       chicken_pox is '' or mumps is '' or typhoid_fever is ''
+        complete_fields = school_id is None and asthma is None and ptb is None and heart_problem is None and hepa_a_b is None and \
+                       chicken_pox is None and mumps is None and typhoid_fever is None
 
-        if empty_fields is False:
-            if school_id_exists[0][0] is 'true':
-                return False
-            else:
-                return True
+        print "valid_illness complete_fields", complete_fields
+
+        if complete_fields is False:
+
+            return False
 
         else:
             return True
@@ -151,13 +141,12 @@ def store_patient(school_id, data):
         orthopnea = cardiac['orthopnea']
         nocturnal_dyspnea = cardiac['nocturnal_dyspnea']
 
-        empty_fields = chest_pain is '' or palpitations is '' or pedal_edema is '' or orthopnea is '' or nocturnal_dyspnea is ''
+        complete_fields = school_id is None and chest_pain is None and palpitations is None and pedal_edema is None and \
+                       orthopnea is None and nocturnal_dyspnea is None
 
-        if empty_fields is False:
-            if school_id_exists[0][0] is 'true':
-                return False
-            else:
-                return True
+        if complete_fields is False:
+
+            return False
 
         else:
             return True
@@ -169,13 +158,11 @@ def store_patient(school_id, data):
         dizziness = neurologic['dizziness']
         loss_of_consciousness = neurologic['loss_of_consciousness']
 
-        empty_fields = headache is '' or seizure is '' or dizziness is '' or loss_of_consciousness is ''
+        complete_fields = school_id is None and headache is None and seizure is None and dizziness is None and loss_of_consciousness is None
 
-        if empty_fields is False:
-            if school_id_exists[0][0] is 'true':
-                return False
-            else:
-                return True
+        if complete_fields is False:
+
+            return False
 
         else:
             return True
@@ -243,21 +230,38 @@ def store_patient(school_id, data):
     valid_data = valid_patient_info(data) and valid_patient_history(data) and valid_pulmonary(data) and valid_gut(data) and \
                  valid_illness(data) and valid_cardiac(data) and valid_neurologic(data)
 
+    print "valid_patient_info", valid_patient_info(data)
+    print "valid_patient_history", valid_patient_history(data)
+    print "valid_pulmonary", valid_pulmonary(data)
+    print "valid_gut", valid_gut(data)
+    print "valid_illness", valid_illness(data)
+    print "valid_cardiac", valid_cardiac(data)
+    print "valid_neurologic", valid_neurologic(data)
+
+    print "\n\n"
+
     print "valid_data", valid_data
 
-    if valid_data is True:
+    print "not school_id", not school_id
 
-        store_patient_info()
-        store_patient_history()
-        store_pulmonary()
-        store_gut()
-        store_illness()
-        store_cardiac()
-        store_neurologic()
+    if school_id_exists is 'false' and valid_data is True:
 
-        return jsonify({'status': 'OK', 'message': 'Successfully added new patient'})
+        try:
+
+            store_patient_info()
+            store_patient_history()
+            store_pulmonary()
+            store_gut()
+            store_illness()
+            store_cardiac()
+            store_neurologic()
+
+            return jsonify({'status': 'OK', 'message': 'Successfully added new patient'})
+
+        except ValueError:
+
+            return jsonify({'status': 'OK', 'message': 'Please type correct inputs'})
 
     else:
 
-        return jsonify({'status': 'FAILED', 'message': 'Failed to add gut'})
-
+        return jsonify({'status': 'OK', 'message': 'Please type correct inputs'})

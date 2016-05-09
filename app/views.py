@@ -4,7 +4,7 @@ from os import sys
 from models import DBconn
 import json, flask
 from app import app
-import re                   #this is for verifying if the email is valid
+import re  # this is for verifying if the email is valid
 import hashlib
 from flask.ext.httpauth import HTTPBasicAuth
 from user_accounts import *
@@ -16,18 +16,18 @@ from itsdangerous import URLSafeTimedSerializer
 SECRET_KEY = "a_random_secret_key_$%#!@"
 auth = HTTPBasicAuth()
 
-#Login_serializer used to encryt and decrypt the cookie token for the remember
-#me option of flask-login
+# Login_serializer used to encryt and decrypt the cookie token for the remember
+# me option of flask-login
 login_serializer = URLSafeTimedSerializer(SECRET_KEY)
 
 
 def get_auth_token(username, password):
-
     """
     Encode a secure token for cookie
     """
     data = [username, password]
     return login_serializer.dumps(data)
+
 
 def load_token(token):
     """
@@ -43,10 +43,11 @@ def load_token(token):
     days = timedelta(days=14)
     max_age = days.total_seconds()
 
-    #Decrypt the Security Token, data = [username, hashpass]
+    # Decrypt the Security Token, data = [username, hashpass]
     data = login_serializer.loads(token, max_age=max_age)
 
-    return data[0]+':'+data[1]
+    return data[0] + ':' + data[1]
+
 
 def spcall(qry, param, commit=False):
     try:
@@ -64,7 +65,6 @@ def spcall(qry, param, commit=False):
 
 @auth.get_password
 def get_password(username):
-
     spcall = SPcalls()
     return spcall.spcall('get_password', (username,))[0][0]
 
@@ -76,7 +76,7 @@ def decr():
 
     print token
 
-    return jsonify({'status':'OK', 'token':load_token(token)})
+    return jsonify({'status': 'OK', 'token': load_token(token)})
 
 
 @app.route('/auth', methods=['POST'])
@@ -86,7 +86,7 @@ def authentication():
     password = credentials['password']
     token = get_auth_token(username, password)
 
-    return jsonify({'status':'OK', 'token':token})
+    return jsonify({'status': 'OK', 'token': token})
 
 
 @app.route('/api/anoncare/home', methods=['GET'])
@@ -104,11 +104,13 @@ def store_new_user():
 
     return add_user
 
-@app.route('/api/anoncare/user/<int:id>/', methods= ['GET'])
+
+@app.route('/api/anoncare/user/<int:id>/', methods=['GET'])
 def show_userId(id):
     get_user = show_user_id(id)
 
     return get_user
+
 
 @app.route('/api/anoncare/patient', methods=['POST'])
 def store_new_patient():
@@ -116,28 +118,24 @@ def store_new_patient():
     print "data is", data
     school_id = data['school_id']
 
-    exists = spcalls.spcall('school_id_exists', (school_id,))
-
-    print "exists", exists[0][0]
-
     new_patient = store_patient(school_id, data)
 
-    return jsonify({'data': data})
+    return new_patient
 
 
-@app.route('/api/anoncare/user', methods = ['GET'])
+@app.route('/api/anoncare/user', methods=['GET'])
 def show_users():
-
     users = show_all_users()
 
     return users
 
+
 @app.route('/api/anoncare/assessment/<int:school_id>/<int:assessment_id>/', methods=['GET'])
 def show_assessmentId(school_id, assessment_id):
-
     get_assessment_id = show_assessment_id(school_id, assessment_id)
 
     return get_assessment_id
+
 
 @app.after_request
 def add_cors(resp):

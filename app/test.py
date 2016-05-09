@@ -1,19 +1,6 @@
-def outer_function(id, name):
+a = None
+b = 'hello'
 
-    id = id
-    name = name
+c = a and b is True
 
-    def inner_function(id, name):
-
-        return id + ' ' + name
-
-    inner = inner_function(id, name)
-
-
-
-    return inner
-
-
-outer = outer_function('Hello, ', 'Josiah')
-
-print 'outer', outer
+print "c", c
