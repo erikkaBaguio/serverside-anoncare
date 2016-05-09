@@ -10,6 +10,12 @@ from spcalls import SPcalls
 
 spcalls = SPcalls()
 
+def check_schoolID(school_id):
+    """Returns OK response if school id does not exist"""
+    schoolID_response = spcalls.spcall('check_schoolID', (school_id,))
+
+    return schoolID_response[0][0]
+
 
 def store_assessment(data):
     school_id = data['school_id']
@@ -26,12 +32,12 @@ def store_assessment(data):
     recommendation = data['recommendation']
     attending_physician = data['attending_physician']
 
-    check_schoolID = spcalls.spcall('check_schoolID', (school_id,))
+    check_schoolID_exists = check_schoolID(school_id)
 
     if not school_id:
         return jsonify({"status": "FAILED", "message": "Please input school ID."})
 
-    elif check_schoolID[0][0] == 'OK':
+    elif check_schoolID_exists == 'OK':
         return jsonify({"status": "FAILED", "message": "School ID does not exist."})
 
     elif type(school_id) != int:

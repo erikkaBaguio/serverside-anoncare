@@ -34,7 +34,12 @@ def given_the_nurse_have_the_following_assessment_details(step):
     world.assessment = step.hashes[0]
 
 
-@step(u'When  the nurse clicks the add button')
-def when_the_nurse_clicks_the_add_button(step):
+@step(u'And   school id \'([^\']*)\' exists')
+def and_school_id_group1_exists(step, school_id):
+
+
+
+@step(u'When  the nurse clicks the send button')
+def when_the_nurse_clicks_the_send_button(step):
     world.browser = TestApp(app)
     world.response = world.app.post('/api/anoncare/assessment', data=json.dumps(world.assessment))
