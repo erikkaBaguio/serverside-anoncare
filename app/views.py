@@ -85,9 +85,27 @@ def authentication():
     credentials = json.loads(request.data)
     username = credentials['username']
     password = credentials['password']
-    token = get_auth_token(username, password)
+    spcall = SPcalls()
 
-    return jsonify({'status': 'OK', 'token': token})
+    get_user = spcall.spcall('check_username_password', (username, password))
+
+    if( get_user[0][0] == 'FAILED' ):
+        return jsonify({'status':'FAILED', 'message':'Invalid username or password'})
+
+    if( get_user[0][0] == 'OK' ):
+
+        user = spcall.spcall('show_user_username', (username,))
+        data = []
+
+        for u in user:
+            data.append({'fname':u[0], 'mname':u[1], 'lname':u[2], 'email':u[3], 'role':u[5]})
+
+        token = get_auth_token(username, password)
+
+        return jsonify({'status':'OK', 'message':'Successfully logged in','token':token, 'data':data})
+
+    else:
+        return jsonify({'status':'ERROR', 'message':'404'})
 
 
 @app.route('/api/anoncare/home', methods=['GET'])
@@ -136,6 +154,13 @@ def show_assessmentId(school_id, assessment_id):
     get_assessment_id = show_assessment_id(school_id, assessment_id)
 
     return get_assessment_id
+
+
+@app.route('/api/anoncare/assessment/<int:school_id>')
+def show_assessment(school_id):
+
+    return show_assessment(school_id)
+
 
 @app.route('/api/anoncare/assessment', methods = ['POST'])
 def add_assessments():
