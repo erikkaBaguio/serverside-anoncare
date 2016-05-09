@@ -22,3 +22,19 @@ def then_it_should_get_a_group1_response(step, expected_status_code):
 def and_it_should_get_a_field_group1_containing_group2(step, field, expected_value):
     world.response_json = json.loads(world.response.data)
     assert_equals(str(world.response_json[field]), expected_value)
+
+
+""" Feature : Assessment """
+
+""" Scenario: Create assessment successfully """
+
+
+@step(u'Given the nurse have the following assessment details:')
+def given_the_nurse_have_the_following_assessment_details(step):
+    world.assessment = step.hashes[0]
+
+
+@step(u'When  the nurse clicks the add button')
+def when_the_nurse_clicks_the_add_button(step):
+    world.browser = TestApp(app)
+    world.response = world.app.post('/api/anoncare/assessment', data=json.dumps(world.assessment))
