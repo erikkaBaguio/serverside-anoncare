@@ -41,7 +41,29 @@ WHERE par_id = id;
 $$
 LANGUAGE 'sql';
 
+--this will show the user information via username parameter
+create or replace function show_user_username(in par_username text, out text, out text, out text, out text, out text, out int) returns setof record as
+  $$
+    select fname, mname, lname, email, username, role_id from Userinfo where username = par_username;
+  $$
+  language 'sql';
 
+
+create or replace function check_username_password(in par_username text, in par_password text) returns text as
+  $$  declare local_response text;
+    begin
+      select into local_response username from Userinfo where username = par_username and password = par_password;
+
+      if local_response isnull then
+        local_response = 'FAILED';
+      else
+        local_response = 'OK';
+      end if;
+
+      return local_response;
+    end;
+  $$
+  language 'plpgsql';
 
 --------------------------------------------------------------- USER -----------------------------------------------------------
 -- Check if user exists via username
@@ -492,49 +514,49 @@ $$
 LANGUAGE 'sql';
 
 
--- -- [GET] Retrieve all assessment of a specific patient
--- --select getallassessmentID(20130000);
--- CREATE OR REPLACE FUNCTION getallassessmentID(IN par_schoolID INT,
---                                            OUT INT,
---                                            OUT TIMESTAMP,
---                                            OUT INT,
---                                            OUT INT,
---                                            OUT TEXT,
---                                            OUT TEXT,
---                                            OUT TEXT,
---                                            OUT TEXT,
---                                            OUT TEXT,
---                                            OUT INT,
---                                            OUT BOOLEAN,
---                                            OUT FLOAT,
---                                            OUT FLOAT,
---                                            OUT INT,
---                                            OUT TEXT,
---                                            OUT FLOAT,
---                                            OUT TEXT,
---                                            OUT TEXT)
---   RETURNS SETOF RECORD AS
--- $$
---   SELECT Assessment.*,
---          Vital_signs.temperature,
---          Vital_signs.pulse_rate,
---          Vital_signs.respiration_rate,
---          Vital_signs.blood_pressure,
---          Vital_signs.weight,
---          Userinfo.fname,
---          Userinfo.lname
---   FROM Assessment
---   INNER JOIN Vital_signs ON (
---     Assessment.vital_signsID = Vital_signs.id
---     )
---   INNER JOIN Userinfo ON (
---     Assessment.attendingphysician = Userinfo.id
---     )
---   WHERE Assessment.school_id = par_schoolID
---   ORDER BY id DESC;
+-- [GET] Retrieve all assessment of a specific patient
+--select getallassessmentID(20130000);
+CREATE OR REPLACE FUNCTION getallassessmentID(IN par_schoolID INT,
+                                           OUT INT,
+                                           OUT TIMESTAMP,
+                                           OUT INT,
+                                           OUT INT,
+                                           OUT TEXT,
+                                           OUT TEXT,
+                                           OUT TEXT,
+                                           OUT TEXT,
+                                           OUT TEXT,
+                                           OUT INT,
+                                           OUT BOOLEAN,
+                                           OUT FLOAT,
+                                           OUT FLOAT,
+                                           OUT INT,
+                                           OUT TEXT,
+                                           OUT FLOAT,
+                                           OUT TEXT,
+                                           OUT TEXT)
+  RETURNS SETOF RECORD AS
+$$
+  SELECT Assessment.*,
+         Vital_signs.temperature,
+         Vital_signs.pulse_rate,
+         Vital_signs.respiration_rate,
+         Vital_signs.blood_pressure,
+         Vital_signs.weight,
+         Userinfo.fname,
+         Userinfo.lname
+  FROM Assessment
+  INNER JOIN Vital_signs ON (
+    Assessment.vital_signsID = Vital_signs.id
+    )
+  INNER JOIN Userinfo ON (
+    Assessment.attendingphysician = Userinfo.id
+    )
+  WHERE Assessment.school_id = par_schoolID
+  ORDER BY id DESC;
 
--- $$
---   LANGUAGE 'sql';
+$$
+  LANGUAGE 'sql';
 
 -- --[PUT] Update assessment of patient
 -- --select update_assessment(1,20130000, 'medication1f', 'diagnosis11f','recommendation11', 1);

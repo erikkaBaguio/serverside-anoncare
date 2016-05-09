@@ -103,3 +103,10 @@ def show_assessment_id(school_id, assessment_id):
                      "recommendation": r[9],
                      "attending_physician": r[17] + ' ' + r[18]})
         return jsonify({"status": "OK", "message": "OK", "entries": data})
+
+
+def show_assessment(school_id):
+    
+    assessments = spcalls.spcall('show_assessment', (school_id,) )
+
+    return jsonify({'status':'test'})
