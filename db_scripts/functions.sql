@@ -570,6 +570,7 @@ LANGUAGE 'sql';
 -- Check if school_id exists
 -- return 'OK' if user does not exist
 -- Otherwise, 'EXISTED'.
+--select check_schoolID(20130000);
 create or replace function check_schoolID(in par_schoolID int) returns text as
   $$
   declare

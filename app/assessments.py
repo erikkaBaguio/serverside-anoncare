@@ -26,28 +26,44 @@ def store_assessment(data):
     recommendation = data['recommendation']
     attending_physician = data['attending_physician']
 
+    check_schoolID = spcalls.spcall('check_schoolID', (school_id,))
 
-    check_schoolID = spcalls.spcall('check_schoolID',(school_id,))
+    if not school_id:
+        return jsonify({"status": "FAILED", "message": "Please input school ID."})
 
-
-    if check_schoolID[0][0] == 'OK' :
+    elif check_schoolID[0][0] == 'OK':
         return jsonify({"status": "FAILED", "message": "School ID does not exist."})
 
-    elif (school_id is None or
-        age is None or
-        temperature is None or
-        pulse_rate is None or
-        pulse_rate is None or
-        blood_pressure is None or
-        weight is None or
-        attending_physician is None or
-        chief_complaint == '' or
-        history_of_present_illness == '' or
-        medications_taken == '' or
-        diagnosis == '' or
-        recommendation == ''):
+    elif type(school_id) != int:
+        return jsonify({"status": "FAILED", "message": "Invalid school ID."})
 
-        return jsonify({"status":"FAILED" , "message":"Please fill the required fields"})
+    elif (type(age) != int or
+          type(temperature) != float or
+          type(pulse_rate) != int or
+          type(respiration_rate) != int or
+          type(weight) != float or
+          type(attending_physician) != int
+          ):
+
+        return jsonify({"status": "FAILED", "message": "Invalid input."})
+
+        """
+            Checks if json data is null
+        """
+    elif (not age or
+          not attending_physician or
+          not temperature or
+          not pulse_rate or
+          not weight or
+          blood_pressure == '' or
+          attending_physician is None or
+          chief_complaint == '' or
+          history_of_present_illness == '' or
+          medications_taken == '' or
+          diagnosis == '' or
+          recommendation == ''):
+
+        return jsonify({"status": "FAILED", "message": "Please fill the required fields"})
 
     else:
         assessment = spcalls.spcall('store_assessment', (school_id,
@@ -73,8 +89,7 @@ def store_assessment(data):
                                                                blood_pressure,
                                                                weight), True)
             if 'Error' in str(vital_signs[0][0]):
-                return jsonify({"status":"FAILED", "message":vital_signs[0][0]})
+                return jsonify({"status": "FAILED", "message": vital_signs[0][0]})
 
             else:
-                return jsonify({"status": "OK", "message":vital_signs[0][0]})
-
+                return jsonify({"status": "OK", "message": vital_signs[0][0]})
