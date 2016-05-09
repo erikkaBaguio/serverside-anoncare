@@ -2,5 +2,12 @@
 Feature: Assessment
   As a nurse, I want to assess the patient.
 
-  Scenario: # Enter scenario name here
-    # Enter steps here
+  Scenario: Create assessment successfully.
+      Given the nurse have the following assessment details:
+                | school_id| age | temperature | pulse_rate  | respiration_rate  | blood_pressure  | weight |chiefcomplaint |historyofpresentillness | medicationstaken | diagnosis   | reccomendation | attendingphysician|
+                | 20130000 | 19  | 37.1        | 80          | 19                | 90/70           | 48.5   | complaint     | history                | medication1      | diagnosis1  | recommendation1| 1                 |
+
+      When  the nurse clicks the add button
+      Then  it should have a '200' response
+      And   it should have a field 'status' containing 'OK'
+      And   it should have a field 'message' containing 'OK'
