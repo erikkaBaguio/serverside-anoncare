@@ -156,9 +156,9 @@ def add_assessments():
     return assessment
 
 
-@app.route('api/anoncare/school_id_exists/<int:school_id>/', methods=['GET'])
+@app.route('/api/anoncare/school_id_exists/<int:school_id>/', methods=['GET'])
 def check_schoolID_exists(school_id):
-    school_id_exists = check_schoolID(school_id)
+    school_id_exists = jsonify_check_schoolID(school_id)
 
     return school_id_exists
 

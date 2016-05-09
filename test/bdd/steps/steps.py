@@ -36,7 +36,7 @@ def given_the_nurse_have_the_following_assessment_details(step):
 
 @step(u'And   school id \'([^\']*)\' exists')
 def and_school_id_group1_exists(step, school_id):
-
+    world.check_schoolID  = world.app.get('/app/anoncare/school_id_exists/{}/'.format(school_id))
 
 
 @step(u'When  the nurse clicks the send button')

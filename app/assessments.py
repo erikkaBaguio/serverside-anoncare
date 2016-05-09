@@ -17,6 +17,16 @@ def check_schoolID(school_id):
     return schoolID_response[0][0]
 
 
+def jsonify_check_schoolID(school_id):
+    response = check_schoolID(school_id)
+
+    if response == 'OK' :
+        return jsonify({"status":"OK", "message":"Does not exists"})
+
+    else:
+        return jsonify({"status":"OK", "message":"Exists"})
+
+
 def store_assessment(data):
     school_id = data['school_id']
     age = data['age']
