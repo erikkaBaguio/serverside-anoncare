@@ -8,7 +8,9 @@ import json
 def before_all():
     world.app = app.test_client()
 
-""" Common steps for jsonify response """
+""" Feature: User Accounts """
+
+""" Scenario: Retrieve a user's details """
 
 @step(u'Given user with id \'([^\']*)\'')
 def given_user_with_id_group1(step, id):
@@ -32,3 +34,5 @@ def and_it_should_have_a_field_group1_containing_group2(step, field, expected_st
 def and_the_following_user_details_will_be_returned(step):
 	resp = json.loads(world.response.data)
 	assert_equals(world.resp['entries'], resp['entries'])
+
+
