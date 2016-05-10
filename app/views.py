@@ -94,10 +94,23 @@ def authentication():
         return jsonify({'status':'ERROR', 'message':'404'})
 
 
-@app.route('/api/anoncare/home', methods=['GET'])
+@app.route('/api/anoncare/home/<string:token>', methods=['GET'])
 @auth.login_required
-def index():
-    return 'Hello world!'
+def index(token):
+    days = timedelta(days=14)
+    max_age = days.total_seconds()
+    # Decrypt the Security Token, data = [username, hashpass]
+    username = login_serializer.loads(token, max_age=max_age)
+    spcall = SPcalls()
+
+    user = spcall.spcall('show_user_username', (username[0],))
+    data = []
+
+    for u in user:
+        data.append({'fname':u[0], 'mname':u[1], 'lname':u[2], 'email':u[3], 'role':u[5]})
+
+    print data[0]
+    return jsonify({'status':'OK', 'message':'Welcome user', 'data':data})
 
 
 @app.route('/api/anoncare/user', methods=['POST'])
