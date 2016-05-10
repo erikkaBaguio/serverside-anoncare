@@ -368,34 +368,6 @@ create or replace function show_patient_info(in par_school_id int,
 
 
 ------------------------------------------------------------ ASSESSMENTS -----------------------------------------------------------
--- Check if school_id exists
--- return 'OK' if user does not exist
--- Otherwise, 'EXISTED'.
---select check_schoolID(20130000);
-create or replace function check_schoolID(in par_schoolID int) returns text as
-  $$
-  declare
-    local_response text;
-    local_id int;
-  begin
-
-      select into local_id school_id
-      from Patient_info
-      where school_id = par_schoolID;
-
-      if local_id isnull then
-        local_response := 'OK';
-      else
-        local_response := 'EXISTED';
-
-      end if;
-
-      return local_response;
-
-    end;
-  $$
-  language 'plpgsql';
-
 -- [POST] Insert vital signs data of a patient
 -- select update_vitalSigns(3,37.1, 80, 19, '90/70', 48)
 create or replace function update_vitalSigns(in par_id int,
@@ -455,6 +427,53 @@ create or replace function store_assessment(in par_schoolID                 INT,
     end;
   $$
     language 'plpgsql';
+
+
+--[GET] Retrieve all assessments of a specific patient
+--select show_assessment(20130000);
+create or replace function show_assessment(IN par_schoolID INT,
+                                           OUT BIGINT,
+                                           OUT TIMESTAMP,
+                                           OUT INT,
+                                           OUT INT,
+                                           OUT INT,
+                                           OUT TEXT,
+                                           OUT TEXT,
+                                           OUT TEXT,
+                                           OUT TEXT,
+                                           OUT TEXT,
+                                           OUT INT,
+                                           OUT BOOLEAN,
+                                           OUT FLOAT,
+                                           OUT INT,
+                                           OUT INT,
+                                           OUT TEXT,
+                                           OUT FLOAT,
+                                           OUT TEXT,
+                                           OUT TEXT)
+  RETURNS SETOF RECORD AS
+$$
+
+  select Assessment.*,
+         Vital_signs.temperature,
+         Vital_signs.pulse_rate,
+         Vital_signs.respiration_rate,
+         Vital_signs.blood_pressure,
+         Vital_signs.weight,
+         Userinfo.fname,
+         Userinfo.lname
+  FROM Assessment
+  INNER JOIN Vital_signs ON (
+    Assessment.vital_signsID = Vital_signs.id
+    )
+  INNER JOIN Userinfo ON (
+    Assessment.attendingphysician = Userinfo.id
+    )
+  WHERE Assessment.school_id = par_schoolID
+  ORDER BY id DESC;
+
+$$
+  LANGUAGE 'sql';
 ------------------------------------------------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------- QUERIES --------------------------------------------------------------
