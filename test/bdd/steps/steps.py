@@ -43,3 +43,8 @@ def and_school_id_group1_exists(step, school_id):
 def when_the_nurse_clicks_the_send_button(step):
     world.browser = TestApp(app)
     world.response = world.app.post('/api/anoncare/assessment', data=json.dumps(world.assessment))
+
+
+@step(u'And   school id \'([^\']*)\' does not exists')
+def and_school_id_group1_does_not_exists(step, school_id):
+    world.check_schoolID = world.app.get('/app/anoncare/school_id_exists/{}/'.format(school_id))
