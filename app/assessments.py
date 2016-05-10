@@ -10,6 +10,22 @@ from spcalls import SPcalls
 
 spcalls = SPcalls()
 
+def check_schoolID(school_id):
+    """Returns OK response if school id does not exist"""
+    schoolID_response = spcalls.spcall('check_schoolID', (school_id,))
+
+    return schoolID_response[0][0]
+
+
+def jsonify_check_schoolID(school_id):
+    response = check_schoolID(school_id)
+
+    if response == 'OK' :
+        return jsonify({"status":"OK", "message":"Does not exists"})
+
+    else:
+        return jsonify({"status":"OK", "message":"Exists"})
+
 
 def store_assessment(data):
     school_id = data['school_id']
@@ -26,12 +42,12 @@ def store_assessment(data):
     recommendation = data['recommendation']
     attending_physician = data['attending_physician']
 
-    check_schoolID = spcalls.spcall('check_schoolID', (school_id,))
+    check_schoolID_exists = check_schoolID(school_id)
 
     if not school_id:
         return jsonify({"status": "FAILED", "message": "Please input school ID."})
 
-    elif check_schoolID[0][0] == 'OK':
+    elif check_schoolID_exists == 'OK':
         return jsonify({"status": "FAILED", "message": "School ID does not exist."})
 
     elif type(school_id) != int:
@@ -126,3 +142,10 @@ def show_assessment_id(school_id, assessment_id):
                      "recommendation": r[9],
                      "attending_physician": r[17] + ' ' + r[18]})
         return jsonify({"status": "OK", "message": "OK", "entries": data})
+
+
+def show_assessment(school_id):
+    
+    assessments = spcalls.spcall('show_assessment', (school_id,) )
+
+    return jsonify({'status':'test'})
