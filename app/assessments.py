@@ -10,21 +10,22 @@ from spcalls import SPcalls
 
 spcalls = SPcalls()
 
+
 def check_schoolID(school_id):
     """Returns OK response if school id does not exist"""
-    schoolID_response = spcalls.spcall('check_schoolID', (school_id,))
+    schoolID_response = spcalls.spcall('school_id_exists', (school_id,))
 
     return schoolID_response[0][0]
 
 
-def jsonify_check_schoolID(school_id):
+def school_id_checker(school_id):
     response = check_schoolID(school_id)
 
-    if response == 'OK' :
-        return jsonify({"status":"OK", "message":"Does not exists"})
+    if response == 'OK':
+        return jsonify({"status": "OK", "message": "Does not exists"})
 
     else:
-        return jsonify({"status":"OK", "message":"Exists"})
+        return jsonify({"status": "OK", "message": "Exists"})
 
 
 def store_assessment(data):
@@ -54,11 +55,11 @@ def store_assessment(data):
         return jsonify({"status": "FAILED", "message": "Invalid school ID."})
 
     elif (type(age) != int or
-          type(temperature) != float or
-          type(pulse_rate) != int or
-          type(respiration_rate) != int or
-          type(weight) != float or
-          type(attending_physician) != int
+                  type(temperature) != float or
+                  type(pulse_rate) != int or
+                  type(respiration_rate) != int or
+                  type(weight) != float or
+                  type(attending_physician) != int
           ):
 
         return jsonify({"status": "FAILED", "message": "Invalid input."})
@@ -67,18 +68,18 @@ def store_assessment(data):
             Checks if json data is null
         """
     elif (not age or
-          not attending_physician or
-          not temperature or
-          not respiration_rate or
-          not pulse_rate or
-          not weight or
-          blood_pressure == '' or
-          attending_physician is None or
-          chief_complaint == '' or
-          history_of_present_illness == '' or
-          medications_taken == '' or
-          diagnosis == '' or
-          recommendation == ''):
+              not attending_physician or
+              not temperature or
+              not respiration_rate or
+              not pulse_rate or
+              not weight or
+                  blood_pressure == '' or
+                  attending_physician is None or
+                  chief_complaint == '' or
+                  history_of_present_illness == '' or
+                  medications_taken == '' or
+                  diagnosis == '' or
+                  recommendation == ''):
 
         return jsonify({"status": "FAILED", "message": "Please fill the required fields"})
 
@@ -109,31 +110,30 @@ def store_assessment(data):
                 return jsonify({"status": "FAILED", "message": vital_signs[0][0]})
 
             else:
-                return jsonify({"status": "OK", "message":vital_signs[0][0]})
-
+                return jsonify({"status": "OK", "message": vital_signs[0][0]})
 
 
 def show_assessment_id(school_id, assessment_id):
     spcalls = SPcalls()
     print "spcall", spcalls
-    #when you have only one parameter you need to user "," comma.
-    #example: spcals('show_user_id', (id,) )
-    assess = spcalls.spcall('show_assessment_id', (school_id,assessment_id, ))
-    data = [] 
+    # when you have only one parameter you need to user "," comma.
+    # example: spcals('show_user_id', (id,) )
+    assess = spcalls.spcall('show_assessment_id', (school_id, assessment_id,))
+    data = []
 
-    if len(assess) == 0: 
+    if len(assess) == 0:
         return jsonify({"status": "FAILED", "message": "No User Found", "entries": []})
 
     else:
         r = assess[0]
         data.append({"assessment_id": r[0],
-                     "assessment_date":r[1],
+                     "assessment_date": r[1],
                      "school_id": r[2],
-                     "age":r[3],
-                     "vital_signid":r[4],
-                     "temperature":r[11],
-                     "pulse_rate":r[12],
-                     "respiration_rate":r[13],
+                     "age": r[3],
+                     "vital_signid": r[4],
+                     "temperature": r[11],
+                     "pulse_rate": r[12],
+                     "respiration_rate": r[13],
                      "blood_pressure": r[14],
                      "weight": r[15],
                      "chief_complaint": r[16],
@@ -146,7 +146,6 @@ def show_assessment_id(school_id, assessment_id):
 
 
 def show_assessment(school_id):
-    
-    assessments = spcalls.spcall('show_assessment', (school_id,) )
+    assessments = spcalls.spcall('show_assessment', (school_id,))
 
-    return jsonify({'status':'test'})
+    return jsonify({'status': 'test'})

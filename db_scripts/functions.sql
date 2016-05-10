@@ -313,6 +313,8 @@ $$
 language 'plpgsql';
 
 
+--Check if school id exists or not
+--select school_id_exists(20130000);
 create or replace function school_id_exists(in par_school_id int) returns text as
 
 $$
@@ -363,50 +365,6 @@ create or replace function show_patient_info(in par_school_id int,
     language 'sql';
 
 -----------------------------------------------------END OF PATIENT FILE --------------------------------------------------
--- [GET] Retrieve all assessment of a specific patient
---select getallassessmentID(20130000);
-CREATE OR REPLACE FUNCTION getallassessmentID(IN par_schoolID INT,
-                                           OUT BIGINT,
-                                           OUT TIMESTAMP,
-                                           OUT INT,
-                                           OUT INT,
-                                           OUT INT,
-                                           OUT TEXT,
-                                           OUT TEXT,
-                                           OUT TEXT,
-                                           OUT TEXT,
-                                           OUT TEXT,
-                                           OUT INT,
-                                           OUT BOOLEAN,
-                                           OUT FLOAT,
-                                           OUT FLOAT,
-                                           OUT INT,
-                                           OUT TEXT,
-                                           OUT FLOAT,
-                                           OUT TEXT,
-                                           OUT TEXT)
-  RETURNS SETOF RECORD AS
-$$
-  SELECT Assessment.*,
-         Vital_signs.temperature,
-         Vital_signs.pulse_rate,
-         Vital_signs.respiration_rate,
-         Vital_signs.blood_pressure,
-         Vital_signs.weight,
-         Userinfo.fname,
-         Userinfo.lname
-  FROM Assessment
-  INNER JOIN Vital_signs ON (
-    Assessment.vital_signsID = Vital_signs.id
-    )
-  INNER JOIN Userinfo ON (
-    Assessment.attendingphysician = Userinfo.id
-    )
-  WHERE Assessment.school_id = par_schoolID
-  ORDER BY id DESC;
-
-$$
-  LANGUAGE 'sql';
 
 
 ------------------------------------------------------------ ASSESSMENTS -----------------------------------------------------------
@@ -442,7 +400,7 @@ create or replace function check_schoolID(in par_schoolID int) returns text as
 -- select update_vitalSigns(3,37.1, 80, 19, '90/70', 48)
 create or replace function update_vitalSigns(in par_id int,
                                              in par_temperature float,
-                                             in par_pulse_rate float,
+                                             in par_pulse_rate int,
                                              in par_respiration_rate int,
                                              in par_blood_pressure text,
                                              in par_weight float)
@@ -469,6 +427,7 @@ $$
   end;
 $$
   language 'plpgsql';
+
 
 -- [POST] Insert assessment of patient
 --select store_assessment(20130000,19,'cp','hpi','mt','d','r',1);
