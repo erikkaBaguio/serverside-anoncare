@@ -69,6 +69,7 @@ def store_assessment(data):
     elif (not age or
           not attending_physician or
           not temperature or
+          not respiration_rate or
           not pulse_rate or
           not weight or
           blood_pressure == '' or

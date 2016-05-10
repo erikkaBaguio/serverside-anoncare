@@ -139,7 +139,7 @@ Feature: Assessment
   Scenario: Create assessment - blood pressure field is empty
       Given the nurse have the following assessment details:
                 |school_id |age |temperature |pulse_rate |respiration_rate |blood_pressure |weight |chief_complaint    |history_of_present_illness |medications_taken |diagnosis      |recommendation      |attending_physician |
-                |20130000  |19  |37.9        |80         |19               |90/70          |48.5   |testchiefcomplaint |test history               |test medication   |test diagnosis |test recommendation |1                   |
+                |20130000  |19  |37.9        |80         |19               |               |48.5   |testchiefcomplaint |test history               |test medication   |test diagnosis |test recommendation |1                   |
 
       And   school id '20130000' does not exists
       When  the nurse clicks the send button
