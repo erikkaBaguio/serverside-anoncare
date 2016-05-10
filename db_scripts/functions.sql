@@ -336,7 +336,33 @@ $$
 
 language 'plpgsql';
 
------------------------------------------------------END of Patient File --------------------------------------------------
+
+--[GET] Retrieve specific patient info
+--select show_patient_info(20130000);
+create or replace function show_patient_info(in par_school_id int,
+                                             out int,
+                                             out text,
+                                             out text,
+                                             out text,
+                                             out int,
+                                             out text,
+                                             out int,
+                                             out int,
+                                             out text,
+                                             out float,
+                                             out text,
+                                             out text,
+                                             out text,
+                                             out text)
+  returns setof record as
+  $$
+    select *
+    from Patient_info
+    where school_id = par_school_id;
+  $$
+    language 'sql';
+
+-----------------------------------------------------END OF PATIENT FILE --------------------------------------------------
 -- [GET] Retrieve all assessment of a specific patient
 --select getallassessmentID(20130000);
 CREATE OR REPLACE FUNCTION getallassessmentID(IN par_schoolID INT,
