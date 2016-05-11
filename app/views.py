@@ -181,6 +181,13 @@ def check_school_id():
     return response
 
 
+@app.route('/api/anoncare/doctors/', methods=['GET'])
+def get_all_doctors():
+    response = show_all_doctors()
+
+    return response
+
+
 @app.after_request
 def add_cors(resp):
     resp.headers['Access-Control-Allow-Origin'] = flask.request.headers.get('Origin', '*')

@@ -119,10 +119,6 @@ def store_assessment(data):
 
 
 def show_assessment_id(school_id, assessment_id):
-    spcalls = SPcalls()
-    print "spcall", spcalls
-    # when you have only one parameter you need to user "," comma.
-    # example: spcals('show_user_id', (id,) )
     assess = spcalls.spcall('show_assessment_id', (school_id, assessment_id,))
     data = []
 
@@ -154,3 +150,24 @@ def show_assessment(school_id):
     assessments = spcalls.spcall('show_assessment', (school_id,))
 
     return jsonify({'status': 'test'})
+
+
+def show_all_doctors():
+    doctors = spcalls.spcall('show_all_doctors',())
+    entries = []
+
+    if 'Error' in str(doctors[0][0]):
+        return jsonify({"status": "FAILED", "message": doctors[0][0]})
+
+    elif len(doctors) != 0:
+        for doctor in doctors:
+            entries.append({ "id" : doctor[0],
+                             "fname": doctor[1],
+                             "mname": doctor[2],
+                             "lname": doctor[3],
+            })
+
+        return jsonify({"status":"OK", "message":"OK", "entries":entries, "count":len(entries)})
+
+    else:
+        return jsonify({"status": "FAILED", "message": "No User Found", "entries": []})
