@@ -172,7 +172,7 @@ def add_assessments():
 
 
 @app.route('/api/anoncare/school_id_exists/<int:school_id>/', methods=['GET'])
-def check_schoolID_exists(school_id):
+def check_school_id(school_id):
     response = school_id_checker(school_id)
 
     return response

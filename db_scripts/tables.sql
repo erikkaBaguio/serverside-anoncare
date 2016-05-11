@@ -132,7 +132,7 @@ CREATE TABLE Vital_signs ( --Ikai
 CREATE TABLE Assessment ( --Ikai
   id                      SERIAL8 PRIMARY KEY,
   assessment_date         TIMESTAMP DEFAULT 'now',
-  school_id               INT REFERENCES Patient (school_id),
+  school_id               INT REFERENCES Patient_info(school_id),
   age                     INT,
   vital_signsID           INT REFERENCES Vital_signs (id),
   chiefcomplaint          TEXT,

@@ -13,7 +13,7 @@ spcalls = SPcalls()
 
 def check_schoolID(school_id):
     """Returns OK response if school id does not exist"""
-    schoolID_response = spcalls.spcall('school_id_exists', (school_id,))
+    schoolID_response = spcalls.spcall('school_id_exists', (school_id,), True)
 
     return schoolID_response[0][0]
 
@@ -21,11 +21,11 @@ def check_schoolID(school_id):
 def school_id_checker(school_id):
     response = check_schoolID(school_id)
 
-    if response == 'OK':
-        return jsonify({"status": "OK", "message": "Does not exists"})
+    if response == 'f':
+        return jsonify({"status": "FAILED", "message": "School ID does not exists"})
 
     else:
-        return jsonify({"status": "OK", "message": "Exists"})
+        return jsonify({"status": "OK", "message": "School ID exists"})
 
 
 def store_assessment(data):
@@ -48,7 +48,7 @@ def store_assessment(data):
     if not school_id:
         return jsonify({"status": "FAILED", "message": "Please input school ID."})
 
-    elif check_schoolID_exists == 'OK':
+    elif check_schoolID_exists == 'f':
         return jsonify({"status": "FAILED", "message": "School ID does not exist."})
 
     elif type(school_id) != int:
