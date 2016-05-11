@@ -41,8 +41,6 @@ WHERE par_id = id;
 $$
 LANGUAGE 'sql';
 
-<<<<<<< HEAD
-=======
 --this will show the user information via username parameter
 create or replace function show_user_username(in par_username text, out text, out text, out text, out text, out text, out int) returns setof record as
   $$
@@ -67,7 +65,6 @@ create or replace function check_username_password(in par_username text, in par_
   $$
   language 'plpgsql';
 
->>>>>>> 1ae323c83bca9ac6dc1a2550034c7ceaf298f8c9
 --------------------------------------------------------------- USER -----------------------------------------------------------
 -- Check if user exists via username
 -- return 'OK' if user does not exist
@@ -475,7 +472,7 @@ LANGUAGE 'sql';
 
 
 [GET] Retrieve assessment of a specific patient
-select getassessmentID(20130000,1);
+select show_assessment_id(20130000,1);
 CREATE OR REPLACE FUNCTION show_assessment_id(IN par_schoolID INT,
                                            IN par_id INT,
                                            OUT BIGINT,
@@ -521,14 +518,13 @@ select Assessment.*,
 $$
 LANGUAGE 'sql';
 
-<<<<<<< HEAD
 
-=======
 -- [GET] Retrieve all assessment of a specific patient
---select getallassessmentID(20130000);
-CREATE OR REPLACE FUNCTION getallassessmentID(IN par_schoolID INT,
-                                           OUT INT,
+--select show_assessment(20130000);
+CREATE OR REPLACE FUNCTION show_assessment(IN par_schoolID INT,
+                                           OUT BIGINT,
                                            OUT TIMESTAMP,
+                                           OUT INT,
                                            OUT INT,
                                            OUT INT,
                                            OUT TEXT,
@@ -562,12 +558,12 @@ $$
   INNER JOIN Userinfo ON (
     Assessment.attendingphysician = Userinfo.id
     )
-  WHERE Assessment.school_id = par_schoolID
+   WHERE Assessment.school_id = par_schoolID
   ORDER BY id DESC;
 
 $$
   LANGUAGE 'sql';
->>>>>>> 8c52104bf3bc83174216bdace0ba464b1da5b8b4
+
 
 -- --[PUT] Update assessment of patient
 -- --select update_assessment(1,20130000, 'medication1f', 'diagnosis11f','recommendation11', 1);

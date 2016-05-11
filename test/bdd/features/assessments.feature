@@ -7,8 +7,8 @@ Feature: Assessment
                 |school_id |age |temperature |pulse_rate |respiration_rate |blood_pressure |weight |chief_complaint    |history_of_present_illness |medications_taken |diagnosis      |recommendation      |attending_physician |
                 |20130000  |19  |37.9        |80         |19               |90/70          |48.5   |testchiefcomplaint |test history               |test medication   |test diagnosis |test recommendation |1                  |
 
-      And   school id '20130000' exists
-      When  the nurse clicks the send button
-      Then  it should have a '200' response
-      And   it should have a field 'status' containing 'OK'
-      And   it should have a field 'message' containing 'OK'
+      And school id '20130000' exists
+      When the nurse clicks the send button
+      Then it should have a '200' response
+      And it should have a field 'status' containing 'OK'
+      And it should have a field 'message' containing 'OK'

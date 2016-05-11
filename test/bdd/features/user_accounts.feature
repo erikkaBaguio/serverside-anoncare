@@ -6,12 +6,12 @@ Feature: User Accounts
 # SUNNY CASES
 ########
   Scenario: Retrieve a user's details
-    Given user with id '1'
-    When the admin enter with an id '1'
+    Given user with id '2'
+    When the admin enter with an id '2'
     Then it should have a '200' response
     And it should have a field 'status' containing 'OK'
     And it should have a field 'message' containing 'OK'
-    And the following user details will be returned:
+    And the following details will be returned
     |fname |mname   |lname |email				   |username|role_id|
     |remarc|espinosa|balisi|remarc.balisi@gmail.com|app-user|	2	|
 

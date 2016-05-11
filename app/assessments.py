@@ -50,18 +50,18 @@ def store_assessment(data):
     elif check_schoolID_exists == 'OK':
         return jsonify({"status": "FAILED", "message": "School ID does not exist."})
 
-    elif type(school_id) != int:
-        return jsonify({"status": "FAILED", "message": "Invalid school ID."})
+    # elif type(school_id) != int:
+    #     return jsonify({"status": "FAILED", "message": "Invalid school ID."})
 
-    elif (type(age) != int or
-          type(temperature) != float or
-          type(pulse_rate) != int or
-          type(respiration_rate) != int or
-          type(weight) != float or
-          type(attending_physician) != int
-          ):
+    # elif (type(age) != int or
+    #       type(temperature) != float or
+    #       type(pulse_rate) != int or
+    #       type(respiration_rate) != int or
+    #       type(weight) != float or
+    #       type(attending_physician) != int
+    #       ):
 
-        return jsonify({"status": "FAILED", "message": "Invalid input."})
+    #     return jsonify({"status": "FAILED", "message": "Invalid input."})
 
         """
             Checks if json data is null
@@ -145,7 +145,40 @@ def show_assessment_id(school_id, assessment_id):
 
 
 def show_assessment(school_id):
+    spcalls = SPcalls()
+    print "spcall", spcalls
     
     assessments = spcalls.spcall('show_assessment', (school_id,) )
+    data = []
+ 
+    if len(assessments) == 0:
+        return jsonify({"status": "FAILED", "message": "No entries found", "entries": []})
 
-    return jsonify({'status':'test'})
+    else:
+        r = assessments[0]
+        data.append({"assessment_id": r[0],
+                     "assessment_date":r[1],
+                     "school_id": r[2],
+                     "age":r[3],
+                     "vital_signid":r[4],
+                     "temperature":r[12],
+                     "pulse_rate":r[13],
+                     "respiration_rate":r[14],
+                     "blood_pressure": r[15],
+                     "weight": r[16],
+                     "chief_complaint": r[5],
+                     "history_of_present_illness": r[6],
+                     "medications_taken": r[7],
+                     "diagnosis": r[8],
+                     "recommendation": r[9],
+                     "attending_physician": r[17] + ' ' + r[18]})
+        
+        return jsonify({"status": "OK", "message": "OK", "entries": data})
+ 
+
+
+
+
+
+
+
