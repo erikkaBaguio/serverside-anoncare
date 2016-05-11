@@ -382,6 +382,24 @@ $$
 $$
     language 'sql';
 
+
+--[GET] Retrieve specific patient history
+--select show_pulmonary(20130000);
+create or replace function show_pulmonary(in par_school_id int,
+                                                out int,
+                                                out text,
+                                                out text,
+                                                out text,
+                                                out text)
+    returns setof record as
+$$
+  select *
+  from Pulmonary
+  where schood = par_school_id;
+$$
+    language 'sql';
+
+
 -----------------------------------------------------END OF PATIENT FILE --------------------------------------------------
 
 
