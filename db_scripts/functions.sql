@@ -364,6 +364,24 @@ create or replace function show_patient_info(in par_school_id int,
   $$
     language 'sql';
 
+
+--[GET] Retrieve specific patient history
+--select show_patient_info(20130000);
+create or replace function show_patient_history(in par_school_id int,
+                                                out int,
+                                                out text,
+                                                out text,
+                                                out text,
+                                                out text,
+                                                out text)
+    returns setof record as
+$$
+  select *
+  from Patient_history
+  where school_id = par_school_id;
+$$
+    language 'sql';
+
 -----------------------------------------------------END OF PATIENT FILE --------------------------------------------------
 
 
