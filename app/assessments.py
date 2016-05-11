@@ -13,12 +13,15 @@ spcalls = SPcalls()
 
 def check_schoolID(school_id):
     """Returns OK response if school id does not exist"""
-    schoolID_response = spcalls.spcall('school_id_exists', (school_id,), True)
+    schoolID_response = spcalls.spcall('school_id_exists', (school_id,))
 
     return schoolID_response[0][0]
 
 
-def school_id_checker(school_id):
+def school_id_checker(data):
+
+    school_id = data['school_id']
+
     response = check_schoolID(school_id)
 
     if response == 'f':
@@ -55,11 +58,11 @@ def store_assessment(data):
         return jsonify({"status": "FAILED", "message": "Invalid school ID."})
 
     elif (type(age) != int or
-                  type(temperature) != float or
-                  type(pulse_rate) != int or
-                  type(respiration_rate) != int or
-                  type(weight) != float or
-                  type(attending_physician) != int
+          type(temperature) != float or
+          type(pulse_rate) != int or
+          type(respiration_rate) != int or
+          type(weight) != float or
+          type(attending_physician) != int
           ):
 
         return jsonify({"status": "FAILED", "message": "Invalid input."})
@@ -94,6 +97,8 @@ def store_assessment(data):
                                                          attending_physician), True)
 
         vital_signs_id = int(assessment[0][0])
+
+        print 'vsId', vital_signs_id
 
         if 'Error' in str(assessment[0][0]):
             return jsonify({"status": "FAILED"})

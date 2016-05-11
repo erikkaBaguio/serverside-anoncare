@@ -474,6 +474,21 @@ $$
 
 $$
   LANGUAGE 'sql';
+
+
+--[GET] Retrieve all doctors in userinfo table
+--select show_all_doctors();
+create or replace function show_all_doctors(out bigint,
+                                            out text,
+                                            out text,
+                                            out text)
+  returns setof record as
+$$
+  select id, fname, mname, lname
+  from Userinfo
+  where role_id = 2;
+$$
+  language 'sql';
 ------------------------------------------------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------- QUERIES --------------------------------------------------------------
