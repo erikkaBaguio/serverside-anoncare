@@ -10,6 +10,7 @@ from flask.ext.httpauth import HTTPBasicAuth
 from user_accounts import *
 from patient_files import *
 from assessments import *
+from send_mail import *
 from spcalls import SPcalls
 from datetime import timedelta
 from itsdangerous import URLSafeTimedSerializer
@@ -119,6 +120,8 @@ def store_new_user():
     print 'data is', data
 
     add_user = store_user(data)
+
+    send_mail(data['username'], data['email'], data['password'])
 
     return add_user
 
