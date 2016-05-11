@@ -1,6 +1,7 @@
-a = None
-b = 'hello'
+a = 'World'
+b = 'Hello'
 
-c = a and b is True
+c = a + "." + b
+c = c.lower()
 
 print "c", c
