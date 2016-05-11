@@ -10,6 +10,7 @@ from flask.ext.httpauth import HTTPBasicAuth
 from user_accounts import *
 from patient_files import *
 from assessments import *
+from send_mail import *
 from spcalls import SPcalls
 from datetime import timedelta
 from itsdangerous import URLSafeTimedSerializer
@@ -48,20 +49,6 @@ def load_token(token):
     data = login_serializer.loads(token, max_age=max_age)
 
     return data[0] + ':' + data[1]
-
-
-def spcall(qry, param, commit=False):
-    try:
-        dbo = DBconn()
-        cursor = dbo.getcursor()
-        cursor.callproc(qry, param)
-        res = cursor.fetchall()
-        if commit:
-            dbo.dbcommit()
-        return res
-    except:
-        res = [("Error: " + str(sys.exc_info()[0]) + " " + str(sys.exc_info()[1]),)]
-    return res
 
 
 @auth.get_password
@@ -135,6 +122,8 @@ def store_new_user():
     print 'data is', data
 
     add_user = store_user(data)
+
+    send_mail(data['username'], data['email'], data['password'])
 
     return add_user
 
