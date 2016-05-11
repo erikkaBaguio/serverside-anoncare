@@ -148,8 +148,42 @@ def show_assessment_id(school_id, assessment_id):
 
 def show_assessment(school_id):
     assessments = spcalls.spcall('show_assessment', (school_id,))
+    entries = []
 
-    return jsonify({'status': 'test'})
+    check_schoolID_exists = check_schoolID(school_id)
+
+    if not school_id:
+        return jsonify({"status": "FAILED", "message": "Please input school ID."})
+
+    elif check_schoolID_exists == 'f':
+        return jsonify({"status": "FAILED", "message": "School ID does not exist."})
+
+    elif 'Error' in str(assessments[0][0]):
+        return jsonify({"status": "FAILED", "message": assessments[0][0]})
+
+    elif len(assessments) != 0:
+        for r in assessments:
+            entries.append({"assessment_id": r[0],
+                     "assessment_date": r[1],
+                     "school_id": r[2],
+                     "age": r[3],
+                     "vital_signid": r[4],
+                     "temperature": r[11],
+                     "pulse_rate": r[12],
+                     "respiration_rate": r[13],
+                     "blood_pressure": r[14],
+                     "weight": r[15],
+                     "chief_complaint": r[16],
+                     "history_of_present_illness": r[6],
+                     "medications_taken": r[7],
+                     "diagnosis": r[8],
+                     "recommendation": r[9],
+                     "attending_physician": r[17] + ' ' + r[18]})
+
+        return jsonify({"status": "OK", "message": "OK", "entries": entries, "count":len(entries)})
+
+    else:
+        return jsonify({"status": "FAILED", "message": "No Assessment Found", "entries": []})
 
 
 def show_all_doctors():
@@ -170,4 +204,4 @@ def show_all_doctors():
         return jsonify({"status":"OK", "message":"OK", "entries":entries, "count":len(entries)})
 
     else:
-        return jsonify({"status": "FAILED", "message": "No User Found", "entries": []})
+        return jsonify({"status": "FAILED", "message": "No Doctor Found", "entries": []})

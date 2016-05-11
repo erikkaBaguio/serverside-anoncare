@@ -155,10 +155,11 @@ def show_assessmentId(school_id, assessment_id):
     return get_assessment_id
 
 
-@app.route('/api/anoncare/assessment/<int:school_id>')
-def show_assessment(school_id):
+@app.route('/api/anoncare/assessment/<int:school_id>/', methods = ['GET'])
+def get_assessment(school_id):
+    response = show_assessment(school_id)
 
-    return show_assessment(school_id)
+    return response
 
 
 @app.route('/api/anoncare/assessment', methods = ['POST'])
