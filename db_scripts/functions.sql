@@ -41,8 +41,7 @@ WHERE par_id = id;
 $$
 LANGUAGE 'sql';
 
-<<<<<<< HEAD
-=======
+
 --this will show the user information via username parameter
 create or replace function show_user_username(in par_username text, out text, out text, out text, out text, out text, out int) returns setof record as
   $$
@@ -54,7 +53,7 @@ create or replace function show_user_username(in par_username text, out text, ou
 create or replace function check_username_password(in par_username text, in par_password text) returns text as
   $$  declare local_response text;
     begin
-      select into local_response username from Userinfo where username = par_username and password = par_password;
+      select into local_response username from Userinfo where username = par_seizurername and password = par_password;
 
       if local_response isnull then
         local_response = 'FAILED';
@@ -67,8 +66,20 @@ create or replace function check_username_password(in par_username text, in par_
   $$
   language 'plpgsql';
 
->>>>>>> 1ae323c83bca9ac6dc1a2550034c7ceaf298f8c9
 --------------------------------------------------------------- USER -----------------------------------------------------------
+-- this will return set of users that match or slightly match your searc
+--source: http://www.tutorialspoint.com/postgresql/postgresql_like_clause.htm
+--source on concationation in postgres: http://www.postgresql.org/docs/9.1/static/functions-string.html
+create or replace function search_user(in par_search text, out text, out text, out text, out text, out text, out int) returns setof record as
+  $$
+      select fname, mname, lname, email, username, role_id from Userinfo where fname like '%'|| par_search || '%'
+        or mname like '%'|| par_search || '%'
+        or lname like '%'|| par_search || '%'
+        or email like '%'|| par_search || '%';
+  $$
+  language 'sql';
+
+
 -- Check if user exists via username
 -- return 'OK' if user does not exist
 -- Otherwise, 'EXISTED'.

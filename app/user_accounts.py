@@ -82,9 +82,9 @@ def show_user_id(id):
     #when you have only one parameter you need to user "," comma.
     #example: spcals('show_user_id', (id,) )
     user_id = spcalls.spcall('show_user_id', (id,))
-    data = [] 
+    data = []
 
-    if len(user_id) == 0: 
+    if len(user_id) == 0:
         return jsonify({"status": "FAILED", "message": "No User Found", "entries": []})
 
     else:
@@ -121,3 +121,18 @@ def show_all_users():
 
     else:
         return jsonify({"status": 'OK', "message": "No Users Found"})
+
+
+def search_user(search):
+    users = spcalls.spcall('search_user', (search['search'],) )
+
+    data = []
+
+    if users:
+
+        for u in users:
+            data.append({'fname':u[0], 'mname':u[1], 'lname':u[2], 'email':u[3], 'role':u[5]})
+
+        return jsonify({'status':'OK', 'message':'This are all the user(s) matched your search ', 'data':data})
+
+    return jsonify({'status':'FAILED', 'message':'No data matched your search'})
