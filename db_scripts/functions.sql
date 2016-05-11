@@ -41,6 +41,10 @@ WHERE par_id = id;
 $$
 LANGUAGE 'sql';
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 7c2874a2b56c02c705bae6d407f20ac0e354baf4
 --this will show the user information via username parameter
 create or replace function show_user_username(in par_username text, out text, out text, out text, out text, out text, out int) returns setof record as
   $$
@@ -518,7 +522,32 @@ select Assessment.*,
 $$
 LANGUAGE 'sql';
 
+--[GET] Retrieve specific patient info
+--select show_patient_info(20130000);
+create or replace function show_patient_info(in par_school_id int,
+                                             out int,
+                                             out text,
+                                             out text,
+                                             out text,
+                                             out int,
+                                             out text,
+                                             out int,
+                                             out int,
+                                             out text,
+                                             out float,
+                                             out text,
+                                             out text,
+                                             out text,
+                                             out text)
+  returns setof record as
+  $$
+    select *
+    from Patient_info
+    where school_id = par_school_id;
+  $$
+    language 'sql';
 
+-----------------------------------------------------END OF PATIENT FILE --------------------------------------------------
 -- [GET] Retrieve all assessment of a specific patient
 --select show_assessment(20130000);
 CREATE OR REPLACE FUNCTION show_assessment(IN par_schoolID INT,
@@ -564,7 +593,6 @@ $$
 $$
   LANGUAGE 'sql';
 
-
 -- --[PUT] Update assessment of patient
 -- --select update_assessment(1,20130000, 'medication1f', 'diagnosis11f','recommendation11', 1);
 -- CREATE OR REPLACE FUNCTION update_assessment(IN par_id                 INT,
@@ -593,6 +621,7 @@ $$
 -- END;
 -- $$
 --   LANGUAGE 'plpgsql';
+
 
 
 ------------------------------------------------------------ ASSESSMENTS -----------------------------------------------------------

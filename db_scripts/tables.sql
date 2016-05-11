@@ -123,7 +123,7 @@ CREATE TABLE Patient (
 CREATE TABLE Vital_signs ( --Ikai
   id               INT PRIMARY KEY,
   temperature      FLOAT,
-  pulse_rate       FLOAT,
+  pulse_rate       INT,
   respiration_rate INT,
   blood_pressure   TEXT,
   weight           FLOAT

@@ -61,6 +61,7 @@ def when_the_nurse_clicks_the_send_button(step):
     world.response = world.app.post('/api/anoncare/assessment', data=json.dumps(world.assessment))
 
 
+<<<<<<< HEAD
 """ Feature : View Assessment """
 """ Scenario : View Assessment of a Patient """
 
@@ -88,3 +89,24 @@ def when_the_doctor_click_view_assessment_with_an_id_group1(step, school_id):
 
 
 
+=======
+@step(u'And   school id \'([^\']*)\' does not exists')
+def and_school_id_group1_does_not_exists(step, school_id):
+    world.check_schoolID = world.app.get('/app/anoncare/school_id_exists/{}/'.format(school_id))
+
+
+""" Feature : Patient Files """
+
+""" Scenario: Create assessment successfully """
+
+
+@step(u'Given the following details of patient')
+def given_the_following_details_of_patient(step):
+    world.patient = step.hashes[0]
+
+
+@step(u'When I click the add button')
+def when_i_click_the_add_button(step):
+    world.browser = TestApp(app)
+    world.patient_response = world.app.post('/api/anoncare/patient', data=json.dumps(world.patient))
+>>>>>>> 7c2874a2b56c02c705bae6d407f20ac0e354baf4

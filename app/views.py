@@ -50,7 +50,6 @@ def load_token(token):
     return data[0] + ':' + data[1]
 
 
-
 @auth.get_password
 def get_password(username):
     spcall = SPcalls()

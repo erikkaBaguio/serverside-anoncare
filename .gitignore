@@ -1,2 +1,6 @@
 *.idea/
 .idea/
+*.py[co]
+.sass-cache
+/app/*.pyc
+*.pyc
