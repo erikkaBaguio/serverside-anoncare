@@ -136,6 +136,7 @@ def show_userId(id):
 
 
 @app.route('/api/anoncare/patient', methods=['POST'])
+@auth.login_required
 def store_new_patient():
     data = json.loads(request.data)
     print "data is", data
@@ -147,10 +148,21 @@ def store_new_patient():
 
 
 @app.route('/api/anoncare/user', methods=['GET'])
+@auth.login_required
 def show_users():
     users = show_all_users()
 
     return users
+
+
+def password_reset():
+    data = json.loads(request.data)
+
+    new_password = data['password']
+
+    reset = reset_password(new_password)
+
+    return reset
 
 
 @app.route('/api/anoncare/user/search', methods=['POST'])
