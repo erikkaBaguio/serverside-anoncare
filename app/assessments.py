@@ -118,15 +118,8 @@ def store_assessment(data):
 
 
 def show_assessment_id(school_id, assessment_id):
-<<<<<<< HEAD
-    spcalls = SPcalls()
-    print "spcall", spcalls
-    #when you have only one parameter you need to user "," comma.
-    #example: spcals('show_user_id', (id,) )
-    assess = spcalls.spcall('show_assessment_id', (school_id,assessment_id, ))
-=======
+
     assess = spcalls.spcall('show_assessment_id', (school_id, assessment_id,))
->>>>>>> 5c2ffde0ab22dd0fa0409f8fbfa75b5ff311c179
     data = []
 
     if len(assess) == 0:
