@@ -64,7 +64,6 @@ def store_assessment(data):
     #       type(attending_physician) != int
     #       ):
     #
-     return jsonify({"status": "FAILED", "message": "Invalid input."})
 
         """
             Checks if json data is null

@@ -50,7 +50,7 @@ def store_user(data):
             password = data['password']
             role_id = data['role_id']
 
-            if fname != '' and mname != '' and lname != '' and username != '' and password != '' and role_id is not None:
+            if fname is not '' and mname is not '' and lname is not '' and username is not '' and password is not '' and role_id is not None:
                 """
                 PASSWORD HASHING
                 source: https://pythonprogramming.net/password-hashing-flask-tutorial/
@@ -83,13 +83,13 @@ def store_user(data):
             return jsonify({'status': 'FAILED', 'message': 'Invalid email input!'})
 
     elif check_username_exist[0][0] == 'EXISTED':
-        return jsonify({'status': 'FAILED', 'message': 'username already exist'})
+        return jsonify({'status ': 'FAILED', 'message': 'username already exist'})
 
     elif check_email_exist[0][0] == 'EXISTED':
-        return jsonify({'status': 'FAILED', 'message': 'email already exist'})
+        return jsonify({'status ': 'FAILED', 'message': 'email already exist'})
 
     else:
-        return jsonify({'status': 'FAILED'})
+        return jsonify({'failed': 'FAILED'})
 
 
 def show_user_id(id):
@@ -105,7 +105,7 @@ def show_user_id(id):
 
     else:
         r = user_id[0]
-        data.append({"fname":r[0],
+        data.append({"fname": r[0],
                      "mname":r[1],
                      "lname":r[2],
                      "email":r[3],
