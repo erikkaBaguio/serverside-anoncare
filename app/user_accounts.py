@@ -8,6 +8,9 @@ import hashlib
 from flask import jsonify
 from send_mail import *
 from spcalls import SPcalls
+import random
+import string
+
 
 spcalls = SPcalls()
 
@@ -102,7 +105,7 @@ def show_user_id(id):
 
     else:
         r = user_id[0]
-        data.append({"fname": r[0],
+        data.append({"fname":r[0],
                      "mname":r[1],
                      "lname":r[2],
                      "email":r[3],
@@ -158,9 +161,43 @@ def change_password(username, password):
 
     spcalls.spcall("updatepassword", (username, pw_hash.hexdigest(),), True)
 
-    return jsonify({"status": "Password Changed"})
+    return jsonify({"status": "OK", "message": "Password Changed!"})
 
 
 def get_username(email):
 
-    data = spcalls.spcall("")
+    data = spcalls.spcall("show_user_email", (email,))
+
+    username = data[0][4]
+
+    return username
+
+
+def generate_password():
+    characters = string.letters + string.digits + string.punctuation
+    pwd_size = 20
+
+    new_password = ''.join((random.choice(characters)) for x in range(pwd_size))
+
+    print "characters", characters
+    print "new_password", new_password
+
+    return new_password
+
+
+def login_forgot_password(email):
+    check_email_exist = spcalls.spcall('check_mail', (email,))
+
+    if check_email_exist[0][0] == 'EXISTED':
+
+        username = get_username(email)
+        new_password = generate_password()
+
+        password_change = change_password(username, new_password)
+
+        send_mail = forgot_pass_send_email(email, new_password)
+
+        return password_change
+
+    else:
+        return jsonify({"status": "ERROR", "message": "No Email Exists"})

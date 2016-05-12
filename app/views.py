@@ -35,7 +35,6 @@ app.config.update(DEBUG=True,
 
 mail = Mail(app)
 
-
 def get_auth_token(username, password):
     """
     Encode a secure token for cookie
@@ -148,6 +147,17 @@ def store_new_user():
     return add_user
 
 
+@app.route('/api/anoncare/forgot_password', methods=['PUT'])
+def forgot_password():
+
+    data = json.loads(request.data)
+    email = data['email']
+
+    retrieve_password = login_forgot_password(email)
+
+    return retrieve_password
+
+
 @app.route('/api/anoncare/user/<int:id>/', methods=['GET'])
 def show_userId(id):
     get_user = show_user_id(id)
@@ -217,11 +227,19 @@ def show_assessmentId(school_id, assessment_id):
     return get_assessment_id
 
 
+<<<<<<< HEAD
+@app.route('/api/anoncare/assessment/<int:school_id>/', methods =['GET'])
+def show_assessment_all(school_id):
+    get_assessment = show_assessment(school_id)
+    
+    return get_assessment
+=======
 @app.route('/api/anoncare/assessment/<int:school_id>/', methods = ['GET'])
 def get_assessment(school_id):
     response = show_assessment(school_id)
 
     return response
+>>>>>>> bd715a85246d8283acd71862792a391f4e2238cf
 
 
 @app.route('/api/anoncare/assessment', methods=['POST'])
