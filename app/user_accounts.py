@@ -84,10 +84,10 @@ def store_user(data):
             return jsonify({'status': 'FAILED', 'message': 'Invalid email input!'})
 
     elif check_username_exist[0][0] == 'EXISTED':
-        return jsonify({'status ': 'FAILED', 'message': 'username already exist'})
+        return jsonify({'status': 'FAILED', 'message': 'username already exist'})
 
     elif check_email_exist[0][0] == 'EXISTED':
-        return jsonify({'status ': 'FAILED', 'message': 'email already exist'})
+        return jsonify({'status': 'FAILED', 'message': 'email already exist'})
 
     else:
         return jsonify({'status': 'FAILED'})
