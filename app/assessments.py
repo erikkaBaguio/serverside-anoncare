@@ -18,10 +18,8 @@ def check_schoolID(school_id):
     return schoolID_response[0][0]
 
 
-def school_id_checker(data):
-
-    school_id = data['school_id']
-
+def school_id_checker(school_id):
+    print 'ID > ', school_id
     response = check_schoolID(school_id)
 
     if response == 'f':
@@ -54,18 +52,18 @@ def store_assessment(data):
     elif check_schoolID_exists == 'f':
         return jsonify({"status": "FAILED", "message": "School ID does not exist."})
 
-    elif type(school_id) != int:
-        return jsonify({"status": "FAILED", "message": "Invalid school ID."})
-
-    elif (type(age) != int or
-          type(temperature) != float or
-          type(pulse_rate) != int or
-          type(respiration_rate) != int or
-          type(weight) != float or
-          type(attending_physician) != int
-          ):
-
-        return jsonify({"status": "FAILED", "message": "Invalid input."})
+    # elif type(school_id) != int:
+    #     return jsonify({"status": "FAILED", "message": "Invalid school ID."})
+    #
+    # elif (type(age) != int or
+    #       type(temperature) != float or
+    #       type(pulse_rate) != int or
+    #       type(respiration_rate) != int or
+    #       type(weight) != float or
+    #       type(attending_physician) != int
+    #       ):
+    #
+    #     return jsonify({"status": "FAILED", "message": "Invalid input."})
 
         """
             Checks if json data is null
