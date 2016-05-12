@@ -69,10 +69,10 @@ def store_user(data):
                 if store_user[0][0] == 'OK':
                     sent = send_email(data['username'], data['email'], data['password'])
 
-                    return jsonify({"status": 'OK', 'message': 'Successfully add ' + str(fname)})
+                    return jsonify({"status": 'OK', 'message': 'Successfully add new user'})
 
                 elif store_user[0][0] == 'Error':
-                    return jsonify({'status': 'FAILED', 'message': 'failed to add ' + str(fname)})
+                    return jsonify({'status': 'FAILED', 'message': 'failed to add new user'})
 
                 else:
                     return jsonify({'status': '404'})
