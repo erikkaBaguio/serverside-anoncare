@@ -23,16 +23,6 @@ auth = HTTPBasicAuth()
 # me option of flask-login
 login_serializer = URLSafeTimedSerializer(SECRET_KEY)
 
-# mail = Mail(app)
-
-# app.config.update(
-#     MAIL_SERVER='smtp.gmail.com',
-#     MAIL_PORT=465,
-#     MAIL_USE_SSL=True,
-#     MAIL_USERNAME='anoncare.iit@gmail.com',
-#     MAIL_PASSWORD='anoncareiit',
-#
-#     )
 
 app.config.update(DEBUG=True,
                   MAIL_SERVER='smtp.gmail.com',
@@ -42,12 +32,6 @@ app.config.update(DEBUG=True,
                   MAIL_USERNAME='anoncare.iit@gmail.com',
                   MAIL_PASSWORD='anoncareiit'
                   )
-#
-# app.config['MAIL_SERVER'] = 'smtp.gmail.com',
-# app.config['MAIL_PORT'] = 465,
-# app.config['MAIL_USE_SSL'] = True,
-# app.config['MAIL_USERNAME'] = 'anoncare.iit@gmail.com',
-# app.config['MAIL_PASSWORD'] = 'anoncareiit',
 
 mail = Mail(app)
 
@@ -144,20 +128,6 @@ def index(token):
     return jsonify({'status': 'OK', 'message': 'Welcome user', 'data': data})
 
 
-def send_email(username, email, password):
-    msg = Message(
-        'AnonCare Registration',
-        sender='anoncare.iit@gmail.com',
-        recipients=[email]
-    )
-
-    msg.body = "Username is: " + username + "\n" \
-                + "Password is: " + password
-    mail.send(msg)
-
-    return "Sent"
-
-
 @app.route('/api/anoncare/username/<username>/', methods=['GET'])
 def check_username(username):
 
@@ -167,14 +137,14 @@ def check_username(username):
 
 
 @app.route('/api/anoncare/user', methods=['POST'])
-@auth.login_required
+# @auth.login_required
 def store_new_user():
     data = json.loads(request.data)
     print 'data is', data
 
     add_user = store_user(data)
 
-    sent = send_mail(data['username'], data['email'], data['password'])
+    sent = send_email(data['username'], data['email'], data['password'])
     print "sent", sent
 
     return add_user
