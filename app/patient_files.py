@@ -13,7 +13,6 @@ spcalls = SPcalls()
 
 
 def store_patient(school_id, data):
-
     school_id_exists = spcalls.spcall('school_id_exists', (school_id,), True)
 
     def names_empty(fname, mname, lname):
@@ -53,14 +52,17 @@ def store_patient(school_id, data):
         empty_bio = bio_empty(age, sex, height, weight, date_of_birth)
         empty_extra_info = extra_info_empty(dept_id, ptnt_id, civil_status, guardian, home_addr)
 
+        # print "empty_names", empty_names
+        # print "empty_bio", empty_bio
+        # print "empty_extra_info", empty_extra_info
+
         complete_fields = empty_names and empty_bio and empty_extra_info
-        print "valid_patient_info complete_fields", complete_fields
 
         if complete_fields is False:
-            return False
+            return True
 
         else:
-            return True
+            return False
 
     def valid_patient_history(history):
 
@@ -70,14 +72,14 @@ def store_patient(school_id, data):
         medications_taken = history['medications_taken']
         drugs = history['drugs']
 
-        complete_fields = school_id is None and smoking is None and allergies is None and alcohol is None and medications_taken\
-                                                                                     is None and drugs is None
+        complete_fields = school_id is None and smoking is None and allergies is None and alcohol is None and medications_taken \
+                                                                                                              is None and drugs is None
 
         if complete_fields is False:
-            return False
+            return True
 
         else:
-            return True
+            return False
 
     def valid_pulmonary(pulmonary):
         cough = pulmonary['cough']
@@ -89,10 +91,10 @@ def store_patient(school_id, data):
 
         if complete_fields is False:
 
-            return False
+            return True
 
         else:
-            return True
+            return False
 
     def valid_gut(gut):
         frequency = gut['frequency']
@@ -102,15 +104,15 @@ def store_patient(school_id, data):
         nocturia = gut['nocturia']
         dec_urine_amount = gut['dec_urine_amount']
 
-        complete_fields = school_id is None and frequency is None and flank_plan is None and discharge is None\
-                       and dysuria is None and nocturia is None and dec_urine_amount is None
+        complete_fields = school_id is None and frequency is None and flank_plan is None and discharge is None \
+                          and dysuria is None and nocturia is None and dec_urine_amount is None
 
         if complete_fields is False:
 
-            return False
+            return True
 
         else:
-            return True
+            return False
 
     def valid_illness(illness):
 
@@ -123,16 +125,14 @@ def store_patient(school_id, data):
         typhoid_fever = illness['typhoid_fever']
 
         complete_fields = school_id is None and asthma is None and ptb is None and heart_problem is None and hepa_a_b is None and \
-                       chicken_pox is None and mumps is None and typhoid_fever is None
-
-        print "valid_illness complete_fields", complete_fields
+                          chicken_pox is None and mumps is None and typhoid_fever is None
 
         if complete_fields is False:
 
-            return False
+            return True
 
         else:
-            return True
+            return False
 
     def valid_cardiac(cardiac):
 
@@ -143,14 +143,14 @@ def store_patient(school_id, data):
         nocturnal_dyspnea = cardiac['nocturnal_dyspnea']
 
         complete_fields = school_id is None and chest_pain is None and palpitations is None and pedal_edema is None and \
-                       orthopnea is None and nocturnal_dyspnea is None
+                          orthopnea is None and nocturnal_dyspnea is None
 
         if complete_fields is False:
 
-            return False
+            return True
 
         else:
-            return True
+            return False
 
     def valid_neurologic(neurologic):
 
@@ -159,22 +159,23 @@ def store_patient(school_id, data):
         dizziness = neurologic['dizziness']
         loss_of_consciousness = neurologic['loss_of_consciousness']
 
-        complete_fields = school_id is None and headache is None and seizure is None and dizziness is None and loss_of_consciousness is None
+        complete_fields = school_id is None and headache is None and seizure is None and \
+                          dizziness is None and loss_of_consciousness is None
 
         if complete_fields is False:
 
-            return False
+            return True
 
         else:
-            return True
+            return False
 
     def store_patient_info():
 
         store_new_patient = spcalls.spcall('new_store_patient',
-                                            (school_id,data['fname'], data['mname'], data['lname'],
-                                             data['age'], data['sex'], data['department_id'], data['patient_type_id'],
-                                                data['height'], data['weight'], data['date_of_birth'],
-                                                data['civil_status'], data['name_of_guardian'], data['home_address']), True)
+                                           (school_id, data['fname'], data['mname'], data['lname'],
+                                            data['age'], data['sex'], data['department_id'], data['patient_type_id'],
+                                            data['height'], data['weight'], data['date_of_birth'],
+                                            data['civil_status'], data['name_of_guardian'], data['home_address']), True)
 
         return store_new_patient[0][0]
 
@@ -198,7 +199,7 @@ def store_patient(school_id, data):
     def store_gut():
 
         store_new_gut = spcalls.spcall('new_gut',
-                                      (school_id, data['frequency'], data['flank_plan'], data['discharge'],
+                                       (school_id, data['frequency'], data['flank_plan'], data['discharge'],
                                         data['dysuria'], data['nocturia'], data['dec_urine_amount']), True)
 
         return store_new_gut[0][0]
@@ -228,7 +229,8 @@ def store_patient(school_id, data):
 
         return store_new_neurologic[0][0]
 
-    valid_data = valid_patient_info(data) and valid_patient_history(data) and valid_pulmonary(data) and valid_gut(data) and \
+    valid_data = valid_patient_info(data) and valid_patient_history(data) and valid_pulmonary(data) and valid_gut(
+        data) and \
                  valid_illness(data) and valid_cardiac(data) and valid_neurologic(data)
 
     print "valid_patient_info", valid_patient_info(data)
@@ -238,14 +240,13 @@ def store_patient(school_id, data):
     print "valid_illness", valid_illness(data)
     print "valid_cardiac", valid_cardiac(data)
     print "valid_neurologic", valid_neurologic(data)
-
-    print "\n\n"
+    print "field is none", data['age'] is None
 
     print "valid_data", valid_data
 
-    print "not school_id", not school_id
+    print "school_id_exists", school_id_exists[0][0]
 
-    if school_id_exists is 'false' and valid_data is True:
+    if school_id_exists[0][0] == 'false' and valid_data is True:
 
         try:
 

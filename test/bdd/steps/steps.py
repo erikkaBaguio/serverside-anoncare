@@ -30,7 +30,6 @@ def and_school_id_group1_exists(step, school_id):
 
 
 """ Feature : Assessment """
-
 """ Scenario: Create assessment successfully """
 
 
@@ -46,7 +45,6 @@ def when_the_nurse_clicks_the_send_button(step):
 
 
 """ Feature : View Assessment """
-
 """ Scenario: View all assessment of a patient """
 
 
@@ -75,7 +73,6 @@ def and_school_id_group1_does_not_exists(step, school_id):
 
 
 """ Feature : Patient Files """
-
 """ Scenario: Create patient successfully """
 
 
@@ -88,3 +85,24 @@ def given_the_following_details_of_patient(step):
 def when_i_click_the_add_button(step):
     world.browser = TestApp(app)
     world.patient_response = world.app.post('/api/anoncare/patient', data=json.dumps(world.patient))
+
+
+""" Feature : Search User """
+""" Scenario: Search user successfully  """
+
+
+@step(u'Given the entered keyword')
+def given_the_entered_keyword(step):
+    world.user_keyword = step.hashes[0]
+
+
+@step(u'When  the admin click search button')
+def when_the_admin_click_search_button(step):
+    world.browser = TestApp(app)
+    world.response = world.app.post('/api/anoncare/user/search', data=json.dumps(world.user_keyword))
+
+
+@step(u'And   the following details will be returned')
+def and_the_following_details_will_be_returned(step):
+    response_json = json.loads(world.response.data)
+    assert_equals(world.response_json['data'], response_json['data'])

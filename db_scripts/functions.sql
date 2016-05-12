@@ -67,6 +67,19 @@ create or replace function check_username_password(in par_username text, in par_
   language 'plpgsql';
 
 --------------------------------------------------------------- USER -----------------------------------------------------------
+-- this will return set of users that match or slightly match your searc
+--source: http://www.tutorialspoint.com/postgresql/postgresql_like_clause.htm
+--source on concationation in postgres: http://www.postgresql.org/docs/9.1/static/functions-string.html
+create or replace function search_user(in par_search text, out text, out text, out text, out text, out text, out int) returns setof record as
+  $$
+      select fname, mname, lname, email, username, role_id from Userinfo where fname like '%'|| par_search || '%'
+        or mname like '%'|| par_search || '%'
+        or lname like '%'|| par_search || '%'
+        or email like '%'|| par_search || '%';
+  $$
+  language 'sql';
+
+
 -- Check if user exists via username
 -- return 'OK' if user does not exist
 -- Otherwise, 'EXISTED'.

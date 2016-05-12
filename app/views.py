@@ -10,6 +10,7 @@ from flask.ext.httpauth import HTTPBasicAuth
 from user_accounts import *
 from patient_files import *
 from assessments import *
+from send_mail import *
 from spcalls import SPcalls
 from datetime import timedelta
 from itsdangerous import URLSafeTimedSerializer
@@ -33,11 +34,11 @@ def get_auth_token(username, password):
 def load_token(token):
     """
 
-    The Token was encrypted using itsdangerous.URLSafeTimedSerializer which 
+    The Token was encrypted using itsdangerous.URLSafeTimedSerializer which
     allows us to have a max_age on the token itself.  When the cookie is stored
     on the users computer it also has a exipry date, but could be changed by
     the user, so this feature allows us to enforce the exipry date of the token
-    server side and not rely on the users cookie to exipre. 
+    server side and not rely on the users cookie to exipre.
 
     source: http://thecircuitnerd.com/flask-login-tokens/
     """
@@ -71,6 +72,7 @@ def authentication():
     credentials = json.loads(request.data)
     username = credentials['username']
     password = credentials['password']
+
     spcall = SPcalls()
 
     get_user = spcall.spcall('check_username_password', (username, password))
@@ -122,11 +124,14 @@ def check_username(username):
 
 
 @app.route('/api/anoncare/user', methods=['POST'])
+@auth.login_required
 def store_new_user():
     data = json.loads(request.data)
     print 'data is', data
 
     add_user = store_user(data)
+
+    send_mail(data['username'], data['email'], data['password'])
 
     return add_user
 
@@ -161,6 +166,12 @@ def show_users():
     users = show_all_users()
 
     return users
+
+
+@app.route('/api/anoncare/user/search', methods=['POST'])
+# @auth.login_required
+def search_users():
+    return search_user(json.loads(request.data))
 
 
 @app.route('/api/anoncare/assessment/<int:school_id>/<int:assessment_id>/', methods=['GET'])
