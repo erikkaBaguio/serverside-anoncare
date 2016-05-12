@@ -199,11 +199,11 @@ def store_patient(school_id, data):
 
         except ValueError:
 
-            return jsonify({'status': 'OK', 'message': 'Please type correct inputs'})
+            return jsonify({'status': 'ERROR', 'message': 'Please type correct inputs'})
 
     else:
 
-        return jsonify({'status': 'OK', 'message': 'Please type correct inputs'})
+        return jsonify({'status': 'ERROR', 'message': 'Please type correct inputs'})
 
 
 def show_patient(school_id):
