@@ -35,7 +35,6 @@ app.config.update(DEBUG=True,
 
 mail = Mail(app)
 
-
 def get_auth_token(username, password):
     """
     Encode a secure token for cookie
@@ -146,6 +145,17 @@ def store_new_user():
     add_user = store_user(data)
 
     return add_user
+
+
+@app.route('/api/anoncare/forgot_password', methods=['PUT'])
+def forgot_password():
+
+    data = json.loads(request.data)
+    email = data['email']
+
+    retrieve_password = login_forgot_password(email)
+
+    return retrieve_password
 
 
 @app.route('/api/anoncare/user/<int:id>/', methods=['GET'])

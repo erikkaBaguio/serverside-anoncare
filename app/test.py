@@ -1,8 +1,10 @@
-a = ''
-b = ''
+import random
+import string
 
+characters = string.letters + string.digits + string.punctuation
+pwd_size = 20
 
-print a is '' and b is ''
+new_password = ''.join((random.choice(characters)) for x in range(pwd_size))
 
-if a is '' and b is '':
-    print "This"
+print "characters", characters
+print "new_password", new_password
