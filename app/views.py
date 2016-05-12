@@ -144,6 +144,7 @@ def show_userId(id):
 
 
 @app.route('/api/anoncare/patient', methods=['POST'])
+@auth.login_required
 def store_new_patient():
     data = json.loads(request.data)
     print "data is", data
@@ -162,10 +163,33 @@ def get_patient_file(school_id):
 
 
 @app.route('/api/anoncare/user', methods=['GET'])
+@auth.login_required
 def show_users():
     users = show_all_users()
 
     return users
+
+
+@app.route('/api/anoncare/password_reset/<string:token>', methods=['POST'])
+def password_reset(token):
+    data = json.loads(request.data)
+
+    days = timedelta(days=14)
+    max_age = days.total_seconds()
+
+    print "token", token
+
+    token = login_serializer.loads(token, max_age=max_age)
+
+    username = token[0]
+
+    print "username", username
+
+    new_password = data['password']
+
+    reset = reset_password(username, new_password)
+
+    return reset
 
 
 @app.route('/api/anoncare/user/search', methods=['POST'])

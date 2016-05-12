@@ -177,6 +177,21 @@ $$
   from Userinfo
 $$
   language 'sql';
+
+create or replace function updatepassword(in par_username text, in par_new_password text) returns text as
+  $$
+    declare
+      response text;
+
+    begin
+      update Userinfo set password = par_new_password where username = par_username;
+      response := 'OK';
+
+      return response;
+    end;
+  $$
+  language 'plpgsql';
+
 ------------------------------------------------------------- END USER -------------------------------------------------------------
 
 
