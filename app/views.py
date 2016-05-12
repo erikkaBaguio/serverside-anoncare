@@ -120,14 +120,11 @@ def index(token):
 @app.route('/api/anoncare/user', methods=['POST'])
 @auth.login_required
 def store_new_user():
-    data = json.loads(request.data)
-    print 'data is', data
-
-    add_user = store_user(data)
-
     #send_mail(data['username'], data['email'], data['password'])
 
-    return add_user
+    print json.loads(request.data)
+
+    return store_user( json.loads(request.data) )
 
 
 @app.route('/api/anoncare/user/<int:id>/', methods=['GET'])
