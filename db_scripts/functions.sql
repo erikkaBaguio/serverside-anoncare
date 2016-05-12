@@ -50,10 +50,17 @@ create or replace function show_user_username(in par_username text, out text, ou
   language 'sql';
 
 
+create or replace function show_user_email(in par_email text, out text, out text, out text, out text, out text, out int) returns setof record as
+  $$
+    select fname, mname, lname, email, username, role_id from Userinfo where email = par_email;
+  $$
+  language 'sql';
+
+
 create or replace function check_username_password(in par_username text, in par_password text) returns text as
   $$  declare local_response text;
     begin
-      select into local_response username from Userinfo where username = par_seizurername and password = par_password;
+      select into local_response username from Userinfo where username = par_username and password = par_password;
 
       if local_response isnull then
         local_response = 'FAILED';
@@ -178,7 +185,7 @@ $$
 $$
   language 'sql';
 
-  create or replace function updatepassword(in par_username text, in par_new_password text) returns text as
+create or replace function updatepassword(in par_username text, in par_new_password text) returns text as
   $$
     declare
       response text;
@@ -341,6 +348,8 @@ $$
 language 'plpgsql';
 
 
+--Check if school id exists or not
+--select school_id_exists(20130000);
 create or replace function school_id_exists(in par_school_id int) returns text as
 
 $$
@@ -572,6 +581,7 @@ create or replace function show_patient_info(in par_school_id int,
   $$
     language 'sql';
 
+<<<<<<< HEAD
 -----------------------------------------------------END OF PATIENT FILE --------------------------------------------------
 -- [GET] Retrieve all assessment of a specific patient
 --select show_assessment(20130000);
@@ -610,9 +620,42 @@ $$
   AND Vital_signs.id = Assessment.vital_signsID
   AND Userinfo.id = Assessment.attendingphysician
   ORDER BY id DESC;
+=======
 
+--[GET] Retrieve specific patient history
+--select show_patient_history(20130000);
+create or replace function show_patient_history(in par_school_id int,
+                                                out int,
+                                                out text,
+                                                out text,
+                                                out text,
+                                                out text,
+                                                out text)
+    returns setof record as
 $$
-  LANGUAGE 'sql';
+  select *
+  from Patient_history
+  where school_id = par_school_id;
+$$
+    language 'sql';
+>>>>>>> bd715a85246d8283acd71862792a391f4e2238cf
+
+
+--[GET] Retrieve pulmonary data of a patient
+--select show_pulmonary(20130000);
+create or replace function show_pulmonary(in par_school_id int,
+                                          out int,
+                                          out text,
+                                          out text,
+                                          out text,
+                                          out text)
+    returns setof record as
+$$
+  select *
+  from Pulmonary
+  where school_id = par_school_id;
+$$
+    language 'sql';
 
 -- --[PUT] Update assessment of patient
 -- --select update_assessment(1,20130000, 'medication1f', 'diagnosis11f','recommendation11', 1);
@@ -645,40 +688,91 @@ $$
 
 
 
+--[GET] Retrieve gut data of a patient
+--select show_gut(20130000);
+create or replace function show_gut(in par_school_id int,
+                                          out int,
+                                          out text,
+                                          out text,
+                                          out text,
+                                          out text,
+                                          out text,
+                                          out text)
+    returns setof record as
+$$
+  select *
+  from Gut
+  where school_id = par_school_id;
+$$
+    language 'sql';
+
+
+--[GET] Retrieve illness data of a patient
+--select show_illness(20130000);
+create or replace function show_illness(in par_school_id int,
+                                          out int,
+                                          out text,
+                                          out text,
+                                          out text,
+                                          out text,
+                                          out text,
+                                          out text,
+                                          out text)
+    returns setof record as
+$$
+  select *
+  from Illness
+  where school_id = par_school_id;
+$$
+    language 'sql';
+
+
+--[GET] Retrieve cardiac data of a patient
+--select show_cardiac(20130000);
+create or replace function show_cardiac(in par_school_id int,
+                                          out int,
+                                          out text,
+                                          out text,
+                                          out text,
+                                          out text,
+                                          out text)
+    returns setof record as
+$$
+  select *
+  from Cardiac
+  where school_id = par_school_id;
+$$
+    language 'sql';
+
+
+--[GET] Retrieve neurologic data of a patient
+--select show_neurologic(20130000);
+create or replace function show_neurologic(in par_school_id int,
+                                          out int,
+                                          out text,
+                                          out text,
+                                          out text,
+                                          out text)
+    returns setof record as
+$$
+  select *
+  from Neurologic
+  where school_id = par_school_id;
+$$
+    language 'sql';
+
+
+
+
+-----------------------------------------------------END OF PATIENT FILE --------------------------------------------------
+
+
 ------------------------------------------------------------ ASSESSMENTS -----------------------------------------------------------
--- Check if school_id exists
--- return 'OK' if user does not exist
--- Otherwise, 'EXISTED'.
---select check_schoolID(20130000);
-create or replace function check_schoolID(in par_schoolID int) returns text as
-  $$
-  declare
-    local_response text;
-    local_id int;
-  begin
-
-      select into local_id school_id
-      from Patient_info
-      where school_id = par_schoolID;
-
-      if local_id isnull then
-        local_response := 'OK';
-      else
-        local_response := 'EXISTED';
-
-      end if;
-
-      return local_response;
-
-    end;
-  $$
-  language 'plpgsql';
-
 -- [POST] Insert vital signs data of a patient
 -- select update_vitalSigns(3,37.1, 80, 19, '90/70', 48)
 create or replace function update_vitalSigns(in par_id int,
                                              in par_temperature float,
-                                             in par_pulse_rate float,
+                                             in par_pulse_rate int,
                                              in par_respiration_rate int,
                                              in par_blood_pressure text,
                                              in par_weight float)
@@ -706,6 +800,7 @@ $$
 $$
   language 'plpgsql';
 
+
 -- [POST] Insert assessment of patient
 --select store_assessment(20130000,19,'cp','hpi','mt','d','r',1);
 create or replace function store_assessment(in par_schoolID                 INT,
@@ -732,6 +827,68 @@ create or replace function store_assessment(in par_schoolID                 INT,
     end;
   $$
     language 'plpgsql';
+
+
+--[GET] Retrieve all assessments of a specific patient
+--select show_assessment(20130000);
+create or replace function show_assessment(IN par_schoolID INT,
+                                           OUT BIGINT,
+                                           OUT TIMESTAMP,
+                                           OUT INT,
+                                           OUT INT,
+                                           OUT INT,
+                                           OUT TEXT,
+                                           OUT TEXT,
+                                           OUT TEXT,
+                                           OUT TEXT,
+                                           OUT TEXT,
+                                           OUT INT,
+                                           OUT BOOLEAN,
+                                           OUT FLOAT,
+                                           OUT INT,
+                                           OUT INT,
+                                           OUT TEXT,
+                                           OUT FLOAT,
+                                           OUT TEXT,
+                                           OUT TEXT)
+  RETURNS SETOF RECORD AS
+$$
+
+  select Assessment.*,
+         Vital_signs.temperature,
+         Vital_signs.pulse_rate,
+         Vital_signs.respiration_rate,
+         Vital_signs.blood_pressure,
+         Vital_signs.weight,
+         Userinfo.fname,
+         Userinfo.lname
+  FROM Assessment
+  INNER JOIN Vital_signs ON (
+    Assessment.vital_signsID = Vital_signs.id
+    )
+  INNER JOIN Userinfo ON (
+    Assessment.attendingphysician = Userinfo.id
+    )
+  WHERE Assessment.school_id = par_schoolID
+  ORDER BY id DESC;
+
+$$
+  LANGUAGE 'sql';
+
+
+--[GET] Retrieve all doctors in userinfo table
+--select show_all_doctors();
+create or replace function show_all_doctors(out bigint,
+                                            out text,
+                                            out text,
+                                            out text)
+  returns setof record as
+$$
+  select id, fname, mname, lname
+  from Userinfo
+  where role_id = 2;
+$$
+  language 'sql';
 ------------------------------------------------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------- QUERIES --------------------------------------------------------------

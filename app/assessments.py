@@ -10,21 +10,22 @@ from spcalls import SPcalls
 
 spcalls = SPcalls()
 
+
 def check_schoolID(school_id):
-    """Returns OK response if school id does not exist"""
-    schoolID_response = spcalls.spcall('check_schoolID', (school_id,))
+    """Returns t response if school id exists, otherwise f"""
+    schoolID_response = spcalls.spcall('school_id_exists', (school_id,))
 
     return schoolID_response[0][0]
 
 
-def jsonify_check_schoolID(school_id):
+def school_id_checker(school_id):
     response = check_schoolID(school_id)
 
-    if response == 'OK' :
-        return jsonify({"status":"OK", "message":"Does not exists"})
+    if response == 'f':
+        return jsonify({"status": "FAILED", "message": "School ID does not exists"})
 
     else:
-        return jsonify({"status":"OK", "message":"Exists"})
+        return jsonify({"status": "OK", "message": "School ID exists"})
 
 
 def store_assessment(data):
@@ -42,12 +43,14 @@ def store_assessment(data):
     recommendation = data['recommendation']
     attending_physician = data['attending_physician']
 
-    check_schoolID_exists = check_schoolID(school_id)
+    #school_id must be cast to integer.
+    print school_id
+    check_schoolID_exists = check_schoolID( int(school_id))
 
     if not school_id:
         return jsonify({"status": "FAILED", "message": "Please input school ID."})
 
-    elif check_schoolID_exists == 'OK':
+    elif check_schoolID_exists == 'f':
         return jsonify({"status": "FAILED", "message": "School ID does not exist."})
 
     # elif type(school_id) != int:
@@ -60,25 +63,25 @@ def store_assessment(data):
     #       type(weight) != float or
     #       type(attending_physician) != int
     #       ):
-
-    #     return jsonify({"status": "FAILED", "message": "Invalid input."})
+    #
+     return jsonify({"status": "FAILED", "message": "Invalid input."})
 
         """
             Checks if json data is null
         """
     elif (not age or
-          not attending_physician or
-          not temperature or
-          not respiration_rate or
-          not pulse_rate or
-          not weight or
-          blood_pressure == '' or
-          attending_physician is None or
-          chief_complaint == '' or
-          history_of_present_illness == '' or
-          medications_taken == '' or
-          diagnosis == '' or
-          recommendation == ''):
+              not attending_physician or
+              not temperature or
+              not respiration_rate or
+              not pulse_rate or
+              not weight or
+                  blood_pressure == '' or
+                  attending_physician is None or
+                  chief_complaint == '' or
+                  history_of_present_illness == '' or
+                  medications_taken == '' or
+                  diagnosis == '' or
+                  recommendation == ''):
 
         return jsonify({"status": "FAILED", "message": "Please fill the required fields"})
 
@@ -94,8 +97,10 @@ def store_assessment(data):
 
         vital_signs_id = int(assessment[0][0])
 
+        print 'vsId', vital_signs_id
+
         if 'Error' in str(assessment[0][0]):
-            return jsonify({"status": "FAILED"})
+            return jsonify({"status": "FAILED", "message":assessment[0][0]})
 
         else:
 
@@ -109,25 +114,24 @@ def store_assessment(data):
                 return jsonify({"status": "FAILED", "message": vital_signs[0][0]})
 
             else:
-                return jsonify({"status": "OK", "message":vital_signs[0][0]})
-
+                return jsonify({"status": "OK", "message": vital_signs[0][0]})
 
 
 def show_assessment_id(school_id, assessment_id):
-    spcalls = SPcalls()
-    print "spcall", spcalls
-    #when you have only one parameter you need to user "," comma.
-    #example: spcals('show_user_id', (id,) )
-    assess = spcalls.spcall('show_assessment_id', (school_id,assessment_id, ))
-    data = [] 
 
-    if len(assess) == 0: 
+    assess = spcalls.spcall('show_assessment_id', (school_id, assessment_id,))
+    data = []
+
+    if len(assess) == 0:
         return jsonify({"status": "FAILED", "message": "No User Found", "entries": []})
+
+    elif 'Error' in str(assess[0][0]):
+        return jsonify({"status": "FAILED", "message": assess[0][0]})
 
     else:
         r = assess[0]
         data.append({"assessment_id": r[0],
-                     "assessment_date":r[1],
+                     "assessment_date": r[1],
                      "school_id": r[2],
                      "age":r[3],
                      "vital_signid":r[4],
@@ -147,18 +151,24 @@ def show_assessment_id(school_id, assessment_id):
 
 
 def show_assessment(school_id):
-    spcalls = SPcalls()
-    print "spcall", spcalls
     
-    assess = spcalls.spcall('show_assessment', (school_id,))
-    data = []
- 
-    if len(assess) == 0:
-        return jsonify({"status": "FAILED", "message": "No entries found", "entries": []})
+    assessments = spcalls.spcall('show_assessment', (school_id,))
+    entries = []
 
-    else:
-        r = assess[0]
-        data.append({"assessment_id": r[0],
+    check_schoolID_exists = check_schoolID(school_id)
+
+    if not school_id:
+        return jsonify({"status": "FAILED", "message": "Please input school ID."})
+
+    elif check_schoolID_exists == 'f':
+        return jsonify({"status": "FAILED", "message": "School ID does not exist."})
+
+    elif 'Error' in str(assessments[0][0]):
+        return jsonify({"status": "FAILED", "message": assessments[0][0]})
+
+    elif len(assessments) != 0:
+        for r in assessments:
+            entries.append({"assessment_id": r[0],
                      "assessment_date":r[1],
                      "school_id": r[2],
                      "age":r[3],
@@ -174,13 +184,29 @@ def show_assessment(school_id):
                      "diagnosis": r[8],
                      "recommendation": r[9],
                      "attending_physician": r[17] + ' ' + r[18]})
-        
-        return jsonify({"status": "OK", "message": "OK", "entries": data})
- 
+
+        return jsonify({"status": "OK", "message": "OK", "entries": entries, "count":len(entries)})
+
+    else:
+        return jsonify({"status": "FAILED", "message": "No Assessment Found", "entries": []})
 
 
+def show_all_doctors():
+    doctors = spcalls.spcall('show_all_doctors',())
+    entries = []
 
+    if 'Error' in str(doctors[0][0]):
+        return jsonify({"status": "FAILED", "message": doctors[0][0]})
 
+    elif len(doctors) != 0:
+        for doctor in doctors:
+            entries.append({ "id" : doctor[0],
+                             "fname": doctor[1],
+                             "mname": doctor[2],
+                             "lname": doctor[3],
+            })
 
+        return jsonify({"status":"OK", "message":"OK", "entries":entries, "count":len(entries)})
 
-
+    else:
+        return jsonify({"status": "FAILED", "message": "No Doctor Found", "entries": []})

@@ -6,7 +6,12 @@ Feature: Assessment
   Scenario: Create assessment successfully.
       Given the nurse have the following assessment details:
                 |school_id |age |temperature |pulse_rate |respiration_rate |blood_pressure |weight |chief_complaint    |history_of_present_illness |medications_taken |diagnosis      |recommendation      |attending_physician |
+<<<<<<< HEAD
                 |20130000  |19  |37.9        |80         |19               |90/70          |48.5   |testchiefcomplaint |test history               |test medication   |test diagnosis |test recommendation |1                  |
+=======
+                |20000000  |19  |37.9        |80         |19               |90/70          |48.5   |testchiefcomplaint |test history               |test medication   |test diagnosis |test recommendation |3                   |
+
+>>>>>>> bd715a85246d8283acd71862792a391f4e2238cf
       And   school id '20130000' exists
       When  the nurse clicks the send button
       Then  it should have a '200' response
@@ -18,7 +23,7 @@ Feature: Assessment
   Scenario: Create assessment - school id does not exists
       Given the nurse have the following assessment details:
                 |school_id |age |temperature |pulse_rate |respiration_rate |blood_pressure |weight |chief_complaint    |history_of_present_illness |medications_taken |diagnosis      |recommendation      |attending_physician |
-                |00000000  |19  |37.9        |80         |19               |90/70          |48.5   |testchiefcomplaint |test history               |test medication   |test diagnosis |test recommendation |1                  |
+                |00000000  |19  |37.9        |80         |19               |90/70          |48.5   |testchiefcomplaint |test history               |test medication   |test diagnosis |test recommendation |3                  |
 
       And   school id '00000000' does not exists
       When  the nurse clicks the send button
