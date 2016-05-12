@@ -23,6 +23,25 @@ def and_it_should_get_a_field_group1_containing_group2(step, field, expected_val
 
 """ Feature: User Accounts """
 
+"""Scenario: Add a new user to the system - all requirements put"""
+
+
+@step(u'Given the following details of a user:')
+def given_the_following_details_of_a_user(step):
+    world.new_user = step.hashes[0]
+
+
+@step(u'And   the username \'([^\']*)\' does not yet exist')
+def and_the_username_group1_does_not_yet_exist(step, id):
+    world.check_username = world.app.get('/api/anoncare/userexists/{}'.format(id))
+
+
+@step(u'When  admin clicks the register button')
+def when_admin_clicks_the_register_button(step):
+    world.browser = TestApp(app)
+    world.new_user_response = world.app.post('/api/anoncare/user', data=json.dumps(world.new_user))
+
+
 """ Scenario: Retrieve a user's details """
 
 @step(u'Given user with id \'([^\']*)\'')

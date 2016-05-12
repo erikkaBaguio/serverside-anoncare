@@ -14,6 +14,7 @@ import string
 
 spcalls = SPcalls()
 
+
 def check_username(username):
     check_response = spcalls.spcall('check_username', (username,))
 

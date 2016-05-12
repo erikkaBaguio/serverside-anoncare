@@ -138,7 +138,7 @@ def check_username(username):
 
 
 @app.route('/api/anoncare/user', methods=['POST'])
-@auth.login_required
+# @auth.login_required
 def store_new_user():
 
     data = json.loads(request.data)
@@ -218,6 +218,14 @@ def password_reset(token):
 # @auth.login_required
 def search_users():
     return search_user(json.loads(request.data))
+
+
+@app.route('/api/anoncare/userexists/<string:username>/', methods=['GET'])
+def user_exists(username):
+
+    response = username_checker(username)
+
+    return response
 
 
 @app.route('/api/anoncare/assessment/<int:school_id>/<int:assessment_id>/', methods=['GET'])

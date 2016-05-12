@@ -5,6 +5,18 @@ Feature: User Accounts
 ########
 # SUNNY CASES
 ########
+  Scenario: Add a new user to the system - all requirements put
+    Given the following details of a user:
+        | fname     | mname    | lname     | email                   | username           | password               | role_id|
+        | Josiah    | Timonera | Regencia  | jetregencia@gmail.com   | josiah.regencia    | josiaheleazarregencia  | 3      |
+
+
+    And   the username 'josiah.regencia' does not yet exist
+    When  admin clicks the register button
+    Then it should have a '200' response
+    And it should have a field 'status' containing 'OK'
+    And it should have a field 'message' containing 'Successfully add fname'
+
   Scenario: Retrieve a user's details
     Given user with id '2'
     When the admin enter with an id '2'
