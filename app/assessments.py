@@ -150,12 +150,7 @@ def show_assessment_id(school_id, assessment_id):
 
 
 def show_assessment(school_id):
-<<<<<<< HEAD
 
-    assessments = spcalls.spcall('show_assessment', (school_id,) )
-
-    return jsonify({'status':'test'})
-=======
     assessments = spcalls.spcall('show_assessment', (school_id,))
     entries = []
 
@@ -214,4 +209,3 @@ def show_all_doctors():
 
     else:
         return jsonify({"status": "FAILED", "message": "No Doctor Found", "entries": []})
->>>>>>> 5c2ffde0ab22dd0fa0409f8fbfa75b5ff311c179
