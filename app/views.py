@@ -73,9 +73,11 @@ def authentication():
     username = credentials['username']
     password = credentials['password']
 
+    pw_hash = hashlib.md5(password.encode())
+
     spcall = SPcalls()
 
-    get_user = spcall.spcall('check_username_password', (username, password))
+    get_user = spcall.spcall('check_username_password', (username,  pw_hash.hexdigest() ))
 
     if( get_user[0][0] == 'FAILED' ):
         return jsonify({'status':'FAILED', 'message':'Invalid username or password'})
@@ -88,7 +90,7 @@ def authentication():
         for u in user:
             data.append({'fname':u[0], 'mname':u[1], 'lname':u[2], 'email':u[3], 'role':u[5]})
 
-        token = get_auth_token(username, password)
+        token = get_auth_token(username, pw_hash.hexdigest() )
 
         return jsonify({'status':'OK', 'message':'Successfully logged in','token':token, 'data':data})
 
@@ -123,7 +125,7 @@ def store_new_user():
 
     add_user = store_user(data)
 
-    send_mail(data['username'], data['email'], data['password'])
+    #send_mail(data['username'], data['email'], data['password'])
 
     return add_user
 

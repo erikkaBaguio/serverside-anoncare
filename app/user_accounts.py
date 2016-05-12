@@ -71,7 +71,7 @@ def store_user(data):
         return jsonify({'status ': 'FAILED', 'message': 'email already exist'})
 
     else:
-        return jsonify({'failed': 'FAILED'})
+        return jsonify({'status': 'FAILED'})
 
 
 def show_user_id(id):
