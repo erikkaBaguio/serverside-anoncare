@@ -10,7 +10,19 @@ from spcalls import SPcalls
 
 spcalls = SPcalls()
 
+def check_username(username):
+    check_response = spcalls.spcall('check_username', (username,))
 
+    return check_response
+
+def username_checker(username):
+    response = check_username(username)
+
+    if response == 'f':
+        return jsonify({"status": "FAILED", "message": "Username does not exists"})
+
+    else:
+        return jsonify({"status": "OK", "message": "Username already exists"})
 
 def store_user(data):
 
@@ -121,8 +133,9 @@ def show_all_users():
         return jsonify({"status": 'OK', "message": "No Users Found"})
 
 
-def search_user(search):
-    users = spcalls.spcall('search_user', (search['search'],) )
+def search_user(data):
+    keyword = data['search']
+    users = spcalls.spcall('search_user', (keyword,) )
 
     data = []
 
@@ -134,3 +147,14 @@ def search_user(search):
         return jsonify({'status':'OK', 'message':'This are all the user(s) matched your search ', 'data':data})
 
     return jsonify({'status':'FAILED', 'message':'No data matched your search'})
+
+
+def reset_password(username, password):
+
+    username = ''
+
+    pw_hash = hashlib.md5(password.encode())
+
+    spcalls.spcall("updatepassword", (username, pw_hash.hexdigest(),), True)
+
+    return jsonify({"status": "Password Changed"})
