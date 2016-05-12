@@ -122,6 +122,9 @@ def show_assessment_id(school_id, assessment_id):
     if len(assess) == 0:
         return jsonify({"status": "FAILED", "message": "No User Found", "entries": []})
 
+    elif 'Error' in str(assess[0][0]):
+        return jsonify({"status": "FAILED", "message": assess[0][0]})
+
     else:
         r = assess[0]
         data.append({"assessment_id": r[0],
