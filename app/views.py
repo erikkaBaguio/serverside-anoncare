@@ -136,7 +136,7 @@ def check_username(username):
 
 
 @app.route('/api/anoncare/user', methods=['POST'])
-# @auth.login_required
+@auth.login_required
 def store_new_user():
 
     data = json.loads(request.data)
@@ -164,7 +164,7 @@ def show_userId(id):
 
 
 @app.route('/api/anoncare/patient', methods=['POST'])
-# @auth.login_required
+@auth.login_required
 def store_new_patient():
     data = json.loads(request.data)
     print "data is", data
@@ -219,14 +219,6 @@ def search_users():
     return search_user(json.loads(request.data))
 
 
-@app.route('/api/anoncare/userexists/<string:username>/', methods=['GET'])
-def user_exists(username):
-
-    response = username_checker(username)
-
-    return response
-
-
 @app.route('/api/anoncare/assessment/<int:school_id>/<int:assessment_id>/', methods=['GET'])
 @auth.login_required
 def show_assessmentId(school_id, assessment_id):
@@ -235,11 +227,12 @@ def show_assessmentId(school_id, assessment_id):
     return get_assessment_id
 
 
-@app.route('/api/anoncare/assessment/<int:school_id>/', methods = ['GET'])
-def get_assessment(school_id):
-    response = show_assessment(school_id)
+@app.route('/api/anoncare/assessment/<int:school_id>/', methods =['GET'])
+@auth.login_required
+def show_assessment_all(school_id):
+    get_assessment = show_assessment(school_id)
 
-    return response
+    return get_assessment
 
 
 @app.route('/api/anoncare/assessment', methods=['POST'])

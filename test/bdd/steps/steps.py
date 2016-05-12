@@ -21,45 +21,7 @@ def then_it_should_get_a_group1_response(step, expected_status_code):
 @step(u'And   it should have a field \'([^\']*)\' containing \'([^\']*)\'')
 def and_it_should_get_a_field_group1_containing_group2(step, field, expected_value):
     world.response_json = json.loads(world.response.data)
-    assert_equals(world.response_json[field], str(expected_value))
-
-
-""" Feature: User Accounts """
-
-"""Scenario: Add a new user to the system - all requirements put"""
-
-
-@step(u'Given the following details of a user:')
-def given_the_following_details_of_a_user(step):
-    world.new_user = step.hashes[0]
-
-
-@step(u'And   the username \'([^\']*)\' does not yet exist')
-def and_the_username_group1_does_not_yet_exist(step, id):
-    world.check_username = world.app.get('/api/anoncare/userexists/{}'.format(id))
-
-
-@step(u'When  admin clicks the register button')
-def when_admin_clicks_the_register_button(step):
-    world.browser = TestApp(app)
-    world.response = world.app.post('/api/anoncare/user', data=json.dumps(world.new_user))
-
-
-""" Scenario: Retrieve a user's details """
-
-@step(u'Given user with id \'([^\']*)\'')
-def given_user_with_id_group1(step, id):
-	world.user = world.app.get('/api/anoncare/user/{}/'.format(id))
-	world.response_json = json.loads(world.user.data)
-
-@step(u'When the admin enter with an id \'([^\']*)\'')
-def when_the_admin_enter_with_an_id_group1(step, id):
-    world.response = world.app.get('/api/anoncare/user/{}/'.format(id))
-
-@step(u'And the following details will be returned')
-def and_the_following_user_details_will_be_returned(step):
-	resp = json.loads(world.response.data)
-	assert_equals(world.response_json['entries'], resp['entries'])
+    assert_equals(str(world.response_json[field]), expected_value)
 
 
 @step(u'And   school id \'([^\']*)\' exists')
@@ -74,11 +36,6 @@ def and_school_id_group1_exists(step, school_id):
 @step(u'Given the nurse have the following assessment details:')
 def given_the_nurse_have_the_following_assessment_details(step):
     world.assessment = step.hashes[0]
-
-
-@step(u'And school id \'([^\']*)\' exists')
-def and_school_id_group1_exists(step, school_id):
-    world.check_schoolID  = world.app.get('/app/anoncare/school_id_exists/{}/'.format(school_id))
 
 
 @step(u'When  the nurse clicks the send button')
@@ -102,7 +59,7 @@ def given_the_assessment_of_patient_with_school_id_group1(step, school_id):
 @step(u'And   the patient assessment with an assessment id \'([^\']*)\'')
 def and_the_patient_assessment_with_an_assessment_id_group1(step, assessment_id):
     world.assessment_id = assessment_id
-    world.assessment = world.app.get('/api/anoncare/assessment/{}/{}/'.format(world.school_id, world.assessment_id))
+    world.assessment = world.app.get('/api/anoncare/assessment/{}/{}/'.format(world.school_id, assessment_id))
     world.response_json = json.loads(world.assessment.data)
     assert_equals(world.response_json['status'], 'OK')
 
