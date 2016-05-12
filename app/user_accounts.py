@@ -99,20 +99,26 @@ def show_user_id(id):
     #when you have only one parameter you need to user "," comma.
     #example: spcals('show_user_id', (id,) )
     user_id = spcalls.spcall('show_user_id', (id,))
-    data = []
+    entries = []
 
     if len(user_id) == 0:
         return jsonify({"status": "FAILED", "message": "No User Found", "entries": []})
 
-    else:
+    elif 'Error' in str(user_id[0][0]):
+        return jsonify({'status': 'error', 'message': user_id[0][0]})
+
+    elif len(user_id) != 0:
         r = user_id[0]
-        data.append({"fname": r[0],
+        entries.append({"fname":r[0],
                      "mname":r[1],
                      "lname":r[2],
                      "email":r[3],
                      "username":r[4],
                      "role_id":r[5]})
-        return jsonify({"status": "OK", "message": "OK", "entries": data})
+        return jsonify({"status": "OK", "message": "OK", "entries": entries})
+
+    else:
+        return jsonify({"status": "FAILED", "message": "No Users Found"})
 
 
 def show_all_users():
@@ -137,21 +143,21 @@ def show_all_users():
         return jsonify({"status": "OK", "message":"OK", "entries":entries, "count": len(entries)})
 
     else:
-        return jsonify({"status": 'OK', "message": "No Users Found"})
+        return jsonify({"status": 'FAILED', "message": "No Users Found"})
 
 
 def search_user(data):
     keyword = data['search']
     users = spcalls.spcall('search_user', (keyword,) )
 
-    data = []
+    entries = []
 
     if users:
 
         for u in users:
-            data.append({'fname':u[0], 'mname':u[1], 'lname':u[2], 'email':u[3], 'role':u[5]})
+            entries.append({'fname':u[0], 'mname':u[1], 'lname':u[2], 'email':u[3], 'role':u[5]})
 
-        return jsonify({'status':'OK', 'message':'This are all the user(s) matched your search ', 'data':data})
+        return jsonify({'status':'OK', 'message':'This are all the user(s) matched your search', 'entries':entries})
 
     return jsonify({'status':'FAILED', 'message':'No data matched your search'})
 

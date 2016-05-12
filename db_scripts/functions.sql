@@ -50,13 +50,6 @@ create or replace function show_user_username(in par_username text, out text, ou
   language 'sql';
 
 
-create or replace function show_user_email(in par_email text, out text, out text, out text, out text, out text, out int) returns setof record as
-  $$
-    select fname, mname, lname, email, username, role_id from Userinfo where email = par_email;
-  $$
-  language 'sql';
-
-
 create or replace function check_username_password(in par_username text, in par_password text) returns text as
   $$  declare local_response text;
     begin
@@ -74,7 +67,7 @@ create or replace function check_username_password(in par_username text, in par_
   language 'plpgsql';
 
 --------------------------------------------------------------- USER -----------------------------------------------------------
--- this will return set of users that match or slightly match your searc
+-- this will return set of users that match or slightly match your search
 --source: http://www.tutorialspoint.com/postgresql/postgresql_like_clause.htm
 --source on concationation in postgres: http://www.postgresql.org/docs/9.1/static/functions-string.html
 create or replace function search_user(in par_search text, out text, out text, out text, out text, out text, out int) returns setof record as
@@ -184,21 +177,6 @@ $$
   from Userinfo
 $$
   language 'sql';
-
-create or replace function updatepassword(in par_username text, in par_new_password text) returns text as
-  $$
-    declare
-      response text;
-
-    begin
-      update Userinfo set password = par_new_password where username = par_username;
-      response := 'OK';
-
-      return response;
-    end;
-  $$
-  language 'plpgsql';
-
 ------------------------------------------------------------- END USER -------------------------------------------------------------
 
 
@@ -556,6 +534,7 @@ select Assessment.*,
 $$
 LANGUAGE 'sql';
 
+
 --[GET] Retrieve specific patient info
 --select show_patient_info(20130000);
 create or replace function show_patient_info(in par_school_id int,
@@ -581,46 +560,6 @@ create or replace function show_patient_info(in par_school_id int,
   $$
     language 'sql';
 
-<<<<<<< HEAD
------------------------------------------------------END OF PATIENT FILE --------------------------------------------------
--- [GET] Retrieve all assessment of a specific patient
---select show_assessment(20130000);
-CREATE OR REPLACE FUNCTION show_assessment(IN par_schoolID INT,
-                                           OUT BIGINT,
-                                           OUT TIMESTAMP,
-                                           OUT INT,
-                                           OUT INT,
-                                           OUT INT,
-                                           OUT TEXT,
-                                           OUT TEXT,
-                                           OUT TEXT,
-                                           OUT TEXT,
-                                           OUT TEXT,
-                                           OUT INT,
-                                           OUT BOOLEAN,
-                                           OUT FLOAT,
-                                           OUT FLOAT,
-                                           OUT INT,
-                                           OUT TEXT,
-                                           OUT FLOAT,
-                                           OUT TEXT,
-                                           OUT TEXT)
-  RETURNS SETOF RECORD AS
-$$
-  SELECT Assessment.*,
-         Vital_signs.temperature,
-         Vital_signs.pulse_rate,
-         Vital_signs.respiration_rate,
-         Vital_signs.blood_pressure,
-         Vital_signs.weight,
-         Userinfo.fname,
-         Userinfo.lname
-  FROM Assessment, Vital_signs, Userinfo
-  WHERE Assessment.school_id = par_schoolID 
-  AND Vital_signs.id = Assessment.vital_signsID
-  AND Userinfo.id = Assessment.attendingphysician
-  ORDER BY id DESC;
-=======
 
 --[GET] Retrieve specific patient history
 --select show_patient_history(20130000);
@@ -638,7 +577,6 @@ $$
   where school_id = par_school_id;
 $$
     language 'sql';
->>>>>>> bd715a85246d8283acd71862792a391f4e2238cf
 
 
 --[GET] Retrieve pulmonary data of a patient
@@ -656,36 +594,6 @@ $$
   where school_id = par_school_id;
 $$
     language 'sql';
-
--- --[PUT] Update assessment of patient
--- --select update_assessment(1,20130000, 'medication1f', 'diagnosis11f','recommendation11', 1);
--- CREATE OR REPLACE FUNCTION update_assessment(IN par_id                 INT,
---                                              IN par_schoolID           TEXT,
---                                              IN par_medicationstaken   TEXT,
---                                              IN par_diagnosis          TEXT,
---                                              IN par_recommendation     TEXT,
---                                              IN par_attendingphysician INT)
---   RETURNS TEXT AS
--- $$
--- DECLARE
---   loc_res TEXT;
--- BEGIN
---
---   UPDATE Assessment
---   SET
---     diagnosis          = par_diagnosis,
---     recommendation     = par_recommendation,
---     attendingphysician = par_attendingphysician
---   WHERE id = par_id
---   AND school_id = par_schoolID;
---
---   loc_res = 'Updated';
---   RETURN loc_res;
---
--- END;
--- $$
---   LANGUAGE 'plpgsql';
-
 
 
 --[GET] Retrieve gut data of a patient
@@ -871,6 +779,53 @@ $$
     )
   WHERE Assessment.school_id = par_schoolID
   ORDER BY id DESC;
+
+$$
+  LANGUAGE 'sql';
+
+
+--[GET] Retrieve all assessments of a specific patient
+--select show_assessment(20130000,12);
+create or replace function show_assessment_id(IN par_schoolID INT,
+                                              IN par_assessment_id INT,
+                                              OUT BIGINT,
+                                              OUT TIMESTAMP,
+                                              OUT INT,
+                                              OUT INT,
+                                              OUT INT,
+                                              OUT TEXT,
+                                              OUT TEXT,
+                                              OUT TEXT,
+                                              OUT TEXT,
+                                              OUT TEXT,
+                                              OUT INT,
+                                              OUT BOOLEAN,
+                                              OUT FLOAT,
+                                              OUT INT,
+                                              OUT INT,
+                                              OUT TEXT,
+                                              OUT FLOAT,
+                                              OUT TEXT,
+                                              OUT TEXT)
+  RETURNS SETOF RECORD AS
+$$
+
+  select Assessment.*,
+         Vital_signs.temperature,
+         Vital_signs.pulse_rate,
+         Vital_signs.respiration_rate,
+         Vital_signs.blood_pressure,
+         Vital_signs.weight,
+         Userinfo.fname,
+         Userinfo.lname
+  FROM Assessment
+  INNER JOIN Vital_signs ON (
+    Assessment.vital_signsID = Vital_signs.id
+    )
+  INNER JOIN Userinfo ON (
+    Assessment.attendingphysician = Userinfo.id
+    )
+  WHERE Assessment.school_id = par_schoolID;
 
 $$
   LANGUAGE 'sql';
