@@ -11,7 +11,6 @@ from spcalls import SPcalls
 spcalls = SPcalls()
 
 
-
 def store_user(data):
 
     username = data['username']

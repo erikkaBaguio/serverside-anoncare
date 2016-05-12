@@ -14,6 +14,7 @@ from send_mail import *
 from spcalls import SPcalls
 from datetime import timedelta
 from itsdangerous import URLSafeTimedSerializer
+from flask_mail import Mail
 
 SECRET_KEY = "a_random_secret_key_$%#!@"
 auth = HTTPBasicAuth()
@@ -21,6 +22,34 @@ auth = HTTPBasicAuth()
 # Login_serializer used to encryt and decrypt the cookie token for the remember
 # me option of flask-login
 login_serializer = URLSafeTimedSerializer(SECRET_KEY)
+
+# mail = Mail(app)
+
+# app.config.update(
+#     MAIL_SERVER='smtp.gmail.com',
+#     MAIL_PORT=465,
+#     MAIL_USE_SSL=True,
+#     MAIL_USERNAME='anoncare.iit@gmail.com',
+#     MAIL_PASSWORD='anoncareiit',
+#
+#     )
+
+app.config.update(DEBUG=True,
+                  MAIL_SERVER='smtp.gmail.com',
+                  MAIL_PORT=587,
+                  MAIL_USE_SSL=False,
+                  MAIL_USE_TLS=True,
+                  MAIL_USERNAME='anoncare.iit@gmail.com',
+                  MAIL_PASSWORD='anoncareiit'
+                  )
+#
+# app.config['MAIL_SERVER'] = 'smtp.gmail.com',
+# app.config['MAIL_PORT'] = 465,
+# app.config['MAIL_USE_SSL'] = True,
+# app.config['MAIL_USERNAME'] = 'anoncare.iit@gmail.com',
+# app.config['MAIL_PASSWORD'] = 'anoncareiit',
+
+mail = Mail(app)
 
 
 def get_auth_token(username, password):
@@ -77,23 +106,23 @@ def authentication():
 
     get_user = spcall.spcall('check_username_password', (username, password))
 
-    if( get_user[0][0] == 'FAILED' ):
-        return jsonify({'status':'FAILED', 'message':'Invalid username or password'})
+    if (get_user[0][0] == 'FAILED'):
+        return jsonify({'status': 'FAILED', 'message': 'Invalid username or password'})
 
-    if( get_user[0][0] == 'OK' ):
+    if (get_user[0][0] == 'OK'):
 
         user = spcall.spcall('show_user_username', (username,))
         data = []
 
         for u in user:
-            data.append({'fname':u[0], 'mname':u[1], 'lname':u[2], 'email':u[3], 'role':u[5]})
+            data.append({'fname': u[0], 'mname': u[1], 'lname': u[2], 'email': u[3], 'role': u[5]})
 
         token = get_auth_token(username, password)
 
-        return jsonify({'status':'OK', 'message':'Successfully logged in','token':token, 'data':data})
+        return jsonify({'status': 'OK', 'message': 'Successfully logged in', 'token': token, 'data': data})
 
     else:
-        return jsonify({'status':'ERROR', 'message':'404'})
+        return jsonify({'status': 'ERROR', 'message': '404'})
 
 
 @app.route('/api/anoncare/home/<string:token>', methods=['GET'])
@@ -109,10 +138,24 @@ def index(token):
     data = []
 
     for u in user:
-        data.append({'fname':u[0], 'mname':u[1], 'lname':u[2], 'email':u[3], 'role':u[5]})
+        data.append({'fname': u[0], 'mname': u[1], 'lname': u[2], 'email': u[3], 'role': u[5]})
 
     print data[0]
-    return jsonify({'status':'OK', 'message':'Welcome user', 'data':data})
+    return jsonify({'status': 'OK', 'message': 'Welcome user', 'data': data})
+
+
+def send_email(username, email, password):
+    msg = Message(
+        'AnonCare Registration',
+        sender='anoncare.iit@gmail.com',
+        recipients=[email]
+    )
+
+    msg.body = "Username is: " + username + "\n" \
+                + "Password is: " + password
+    mail.send(msg)
+
+    return "Sent"
 
 
 @app.route('/api/anoncare/user', methods=['POST'])
@@ -123,7 +166,8 @@ def store_new_user():
 
     add_user = store_user(data)
 
-    send_mail(data['username'], data['email'], data['password'])
+    sent = send_mail(data['username'], data['email'], data['password'])
+    print "sent", sent
 
     return add_user
 
@@ -180,7 +224,7 @@ def password_reset(token):
 @app.route('/api/anoncare/user/search', methods=['POST'])
 @auth.login_required
 def search_users():
-    return search_user(json.loads(request.data) )
+    return search_user(json.loads(request.data))
 
 
 @app.route('/api/anoncare/assessment/<int:school_id>/<int:assessment_id>/', methods=['GET'])
@@ -192,13 +236,11 @@ def show_assessmentId(school_id, assessment_id):
 
 @app.route('/api/anoncare/assessment/<int:school_id>')
 def show_assessment(school_id):
-
     return show_assessment(school_id)
 
 
-@app.route('/api/anoncare/assessment', methods = ['POST'])
+@app.route('/api/anoncare/assessment', methods=['POST'])
 def add_assessments():
-
     data = json.loads(request.data)
 
     assessment = store_assessment(data)
