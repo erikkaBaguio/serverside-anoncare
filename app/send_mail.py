@@ -14,14 +14,27 @@ MAIL_PASSWORD = 'anoncareiit'
 mail = Mail(app)
 
 
-def send_mail(username, email, password):
+def send_email(username, email, password):
     msg = Message(
-        'Hello',
-        sender=MAIL_USERNAME,
-        recipients=['jawshaeleazar@gmail.com'])
+        'AnonCare Registration',
+        sender='anoncare.iit@gmail.com',
+        recipients=[email]
+    )
 
-    msg.body = 'Hello, World'
-
+    msg.body = "Username is: " + username + "\n" + "Password is: " + password
     mail.send(msg)
 
-    return 'sent'
+    return "Sent"
+
+
+def forgot_pass_send_email(email, password):
+    msg = Message(
+        'AnonCare Registration',
+        sender='anoncare.iit@gmail.com',
+        recipients=[email]
+    )
+
+    msg.body = "New Password is: " + password
+    mail.send(msg)
+
+    return "Sent"

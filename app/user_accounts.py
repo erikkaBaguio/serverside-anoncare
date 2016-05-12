@@ -6,11 +6,24 @@ from flask import request
 import re
 import hashlib
 from flask import jsonify
+from send_mail import *
 from spcalls import SPcalls
 
 spcalls = SPcalls()
 
+def check_username(username):
+    check_response = spcalls.spcall('check_username', (username,))
 
+    return check_response
+
+def username_checker(username):
+    response = check_username(username)
+
+    if response == 'f':
+        return jsonify({"status": "FAILED", "message": "Username does not exists"})
+
+    else:
+        return jsonify({"status": "OK", "message": "Username already exists"})
 
 def store_user(data):
 
@@ -34,7 +47,7 @@ def store_user(data):
             password = data['password']
             role_id = data['role_id']
 
-            if fname is not '' and mname is not '' and lname is not '' and username is not '' and password is not '' and role_id is not None:
+            if fname != '' and mname != '' and lname != '' and username != '' and password != '' and role_id is not None:
                 """
                 PASSWORD HASHING
                 source: https://pythonprogramming.net/password-hashing-flask-tutorial/
@@ -50,6 +63,8 @@ def store_user(data):
                 store_user = spcalls.spcall('store_user', (fname, mname, lname, username, pw_hash.hexdigest(), email, role_id), True)
 
                 if store_user[0][0] == 'OK':
+                    sent = send_email(data['username'], data['email'], data['password'])
+
                     return jsonify({'status': 'OK', 'message': 'Successfully add ' + str(fname)})
 
                 elif store_user[0][0] == 'Error':
@@ -65,13 +80,13 @@ def store_user(data):
             return jsonify({'status': 'FAILED', 'message': 'Invalid email input!'})
 
     elif check_username_exist[0][0] == 'EXISTED':
-        return jsonify({'status ': 'FAILED', 'message': 'username already exist'})
+        return jsonify({'status': 'FAILED', 'message': 'username already exist'})
 
     elif check_email_exist[0][0] == 'EXISTED':
-        return jsonify({'status ': 'FAILED', 'message': 'email already exist'})
+        return jsonify({'status': 'FAILED', 'message': 'email already exist'})
 
     else:
-        return jsonify({'failed': 'FAILED'})
+        return jsonify({'status': 'FAILED'})
 
 
 def show_user_id(id):
@@ -121,8 +136,9 @@ def show_all_users():
         return jsonify({"status": 'OK', "message": "No Users Found"})
 
 
-def search_user(search):
-    users = spcalls.spcall('search_user', (search['search'],) )
+def search_user(data):
+    keyword = data['search']
+    users = spcalls.spcall('search_user', (keyword,) )
 
     data = []
 
@@ -134,3 +150,17 @@ def search_user(search):
         return jsonify({'status':'OK', 'message':'This are all the user(s) matched your search ', 'data':data})
 
     return jsonify({'status':'FAILED', 'message':'No data matched your search'})
+
+
+def change_password(username, password):
+
+    pw_hash = hashlib.md5(password.encode())
+
+    spcalls.spcall("updatepassword", (username, pw_hash.hexdigest(),), True)
+
+    return jsonify({"status": "Password Changed"})
+
+
+def get_username(email):
+
+    data = spcalls.spcall("")
