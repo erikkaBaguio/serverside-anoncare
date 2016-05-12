@@ -4,10 +4,11 @@ Feature: View Assessment
 
   Scenario: View All Assessment of A Patient
       Given the assessment of patient with school id '20130000'
-      When  the doctor click search with school id '20130000'
+      And   school id '20130000' exists
+      When  the doctor click search button
       Then  it should have a '200' response
       And   it should have a field 'status' containing 'OK'
-      And   it should have a field 'messsage' containing 'OK'
+      And   it should have a field 'message' containing 'OK'
       And   it should have a field 'count' containing '2'
       And   the following details will be returned
             |assessment_id |assessment_date       |school_id |age |temperature |pulse_rate |respiration_rate |blood_pressure |weight |chief_complaint     |history_of_present_illness  |medications_taken  |diagnosis       |recommendation       |attending_physician |
