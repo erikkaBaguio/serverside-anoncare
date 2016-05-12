@@ -87,7 +87,7 @@ def show_user_id(id):
 
     else:
         r = user_id[0]
-        data.append({"fname": r[0],
+        data.append({"fname":r[0],
                      "mname":r[1],
                      "lname":r[2],
                      "email":r[3],

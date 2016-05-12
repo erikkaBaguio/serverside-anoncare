@@ -61,7 +61,7 @@ def when_the_nurse_clicks_the_send_button(step):
     world.response = world.app.post('/api/anoncare/assessment', data=json.dumps(world.assessment))
 
 
-<<<<<<< HEAD
+
 """ Feature : View Assessment """
 """ Scenario : View Assessment of a Patient """
 
@@ -77,22 +77,20 @@ def and_the_patient_assessment_with_an_assessment_id_group1(step, assessment_id)
     world.response_json = json.loads(world.assessment.data)
     assert_equals(world.response_json['status'], 'OK')
 
-@step(u'When the doctor click view assessment with an id \'([^\']*)\'')
-def when_the_doctor_click_view_assessment_with_an_id_group1(step, school_id):
-    world.response = world.app.get('/api/anoncare/assessment/{}/'.format(school_id))
+# @step(u'When the doctor click view assessment with an id \'([^\']*)\'')
+# def when_the_doctor_click_view_assessment_with_an_id_group1(step, school_id):
+#     world.response = world.app.get('/api/anoncare/assessment/{}/'.format(school_id))
 
-# # @step(u'And the following details will be returned')
-# # def and_the_following_details_will_be_returned(step):
-# #     resp= json.loads(world.assessment.data)
-# #     assert_equals(world.resp['entries'], resp['entries'])
-
-
+# # # @step(u'And the following details will be returned')
+# # # def and_the_following_details_will_be_returned(step):
+# # #     resp= json.loads(world.assessment.data)
+# # #     assert_equals(world.resp['entries'], resp['entries'])
 
 
-=======
-@step(u'And   school id \'([^\']*)\' does not exists')
-def and_school_id_group1_does_not_exists(step, school_id):
-    world.check_schoolID = world.app.get('/app/anoncare/school_id_exists/{}/'.format(school_id))
+
+# @step(u'And   school id \'([^\']*)\' does not exists')
+# def and_school_id_group1_does_not_exists(step, school_id):
+#     world.check_schoolID = world.app.get('/app/anoncare/school_id_exists/{}/'.format(school_id))
 
 
 """ Feature : Patient Files """
@@ -109,4 +107,3 @@ def given_the_following_details_of_patient(step):
 def when_i_click_the_add_button(step):
     world.browser = TestApp(app)
     world.patient_response = world.app.post('/api/anoncare/patient', data=json.dumps(world.patient))
->>>>>>> 7c2874a2b56c02c705bae6d407f20ac0e354baf4

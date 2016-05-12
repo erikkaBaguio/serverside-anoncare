@@ -142,6 +142,7 @@ def show_assessment_id(school_id, assessment_id):
                      "diagnosis": r[8],
                      "recommendation": r[9],
                      "attending_physician": r[17] + ' ' + r[18]})
+
         return jsonify({"status": "OK", "message": "OK", "entries": data})
 
 
@@ -149,14 +150,14 @@ def show_assessment(school_id):
     spcalls = SPcalls()
     print "spcall", spcalls
     
-    assessments = spcalls.spcall('show_assessment', (school_id,) )
+    assess = spcalls.spcall('show_assessment', (school_id,))
     data = []
  
-    if len(assessments) == 0:
+    if len(assess) == 0:
         return jsonify({"status": "FAILED", "message": "No entries found", "entries": []})
 
     else:
-        r = assessments[0]
+        r = assess[0]
         data.append({"assessment_id": r[0],
                      "assessment_date":r[1],
                      "school_id": r[2],

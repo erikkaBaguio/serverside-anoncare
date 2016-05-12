@@ -580,14 +580,10 @@ $$
          Vital_signs.weight,
          Userinfo.fname,
          Userinfo.lname
-  FROM Assessment
-  INNER JOIN Vital_signs ON (
-    Assessment.vital_signsID = Vital_signs.id
-    )
-  INNER JOIN Userinfo ON (
-    Assessment.attendingphysician = Userinfo.id
-    )
-   WHERE Assessment.school_id = par_schoolID
+  FROM Assessment, Vital_signs, Userinfo
+  WHERE Assessment.school_id = par_schoolID 
+  AND Vital_signs.id = Assessment.vital_signsID
+  AND Userinfo.id = Assessment.attendingphysician
   ORDER BY id DESC;
 
 $$
