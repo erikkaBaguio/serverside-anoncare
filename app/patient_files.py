@@ -7,6 +7,7 @@ import re
 import hashlib
 from flask import jsonify
 from spcalls import SPcalls
+from assessments import *
 
 spcalls = SPcalls()
 
@@ -265,3 +266,124 @@ def store_patient(school_id, data):
     else:
 
         return jsonify({'status': 'OK', 'message': 'Please type correct inputs'})
+
+
+def show_patient(school_id):
+    patient_info = spcalls.spcall('show_patient_info',(school_id, ))
+    patient_history = spcalls.spcall('show_patient_history',(school_id, ))
+    pulmonary = spcalls.spcall('show_pulmonary',(school_id, ))
+    gut = spcalls.spcall('show_gut',(school_id, ))
+    illness = spcalls.spcall('show_illness',(school_id, ))
+    cardiac = spcalls.spcall('show_cardiac',(school_id, ))
+    neurologic = spcalls.spcall('show_neurologic',(school_id, ))
+
+    entries = []
+
+    check_schoolID_exists = check_schoolID(school_id)
+
+    if not school_id:
+        return jsonify({"status": "FAILED", "message": "Please input school ID."})
+
+    elif check_schoolID_exists == 'f':
+        return jsonify({"status": "FAILED", "message": "School ID does not exist."})
+
+    elif 'Error' in str(patient_info[0][0]):
+        return jsonify({"status": "FAILED", "message": patient_info[0][0]})
+
+    elif 'Error' in str(patient_history[0][0]):
+        return jsonify({"status": "FAILED", "message": patient_history[0][0]})
+
+    elif 'Error' in str(pulmonary[0][0]):
+        return jsonify({"status": "FAILED", "message": pulmonary[0][0]})
+
+    elif 'Error' in str(gut[0][0]):
+        return jsonify({"status": "FAILED", "message": gut[0][0]})
+
+    elif 'Error' in str(illness[0][0]):
+        return jsonify({"status": "FAILED", "message": illness[0][0]})
+
+    elif 'Error' in str(cardiac[0][0]):
+        return jsonify({"status": "FAILED", "message": cardiac[0][0]})
+
+    elif 'Error' in str(neurologic[0][0]):
+        return jsonify({"status": "FAILED", "message": neurologic[0][0]})
+
+    elif len(patient_info) != 0 or len(patient_history) != 0:
+        for r in patient_info:
+            entries.append({
+                "school_id" : r[0],
+                "fname": r[1],
+                "mname": r[2],
+                "lname": r[3],
+                "age": r[4],
+                "sex": r[5],
+                "dept_id": r[6],
+                "ptnt_id": r[7],
+                "height": r[8],
+                "weight": r[9],
+                "date_of_birth": r[10],
+                "civil_status": r[11],
+                "guardian": r[12],
+                "home_addr": r[13],
+            })
+
+        for r in patient_history:
+            entries.append({
+                "smoking": r[1],
+                "allergies": r[2],
+                "alcohol": r[3],
+                "medications_taken": r[4],
+                "drugs": r[5]
+            })
+
+        for r in pulmonary:
+            entries.append({
+                "cough": r[1],
+                "dyspnea": r[2],
+                "hemoptysis": r[3],
+                "tb_exposure": r[4],
+            })
+
+        for r in gut:
+            entries.append({
+                "frequency": r[1],
+                "flank_plan": r[2],
+                "discharge": r[3],
+                "dysuria": r[4],
+                "nocturia": r[5],
+                "dec_urine_amount": r[6]
+            })
+
+        for r in illness:
+            entries.append({
+                "asthma": r[1],
+                "ptb": r[2],
+                "heart_problem": r[3],
+                "hepa_a_b": r[4],
+                "chicken_pox": r[5],
+                "mumps": r[6],
+                "typhoid_fever": r[7]
+            })
+
+        for r in cardiac:
+            entries.append({
+                "chest_pain": r[1],
+                "palpitations": r[2],
+                "pedal_edema": r[3],
+                "orthopnea": r[4],
+                "nocturnal_dyspnea": r[5]
+            })
+
+        for r in neurologic:
+            entries.append({
+                "headache": r[1],
+                "seizure": r[2],
+                "dizziness": r[3],
+                "loss_of_consciousness": r[4]
+            })
+
+        return jsonify({"status": "OK", "message": "OK", "entries": entries})
+
+    else:
+        return jsonify({"status": "FAILED", "message": "No Patient File Found", "entries": []})
+

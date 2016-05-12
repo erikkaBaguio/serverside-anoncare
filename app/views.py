@@ -141,6 +141,13 @@ def store_new_patient():
     return new_patient
 
 
+@app.route('/api/anoncare/patient/<int:school_id>/', methods=['GET'])
+def get_patient_file(school_id):
+    response = show_patient(school_id)
+
+    return response
+
+
 @app.route('/api/anoncare/user', methods=['GET'])
 def show_users():
     users = show_all_users()
