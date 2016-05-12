@@ -138,25 +138,37 @@ def store_patient(school_id, data):
     def store_illness():
 
         store_new_illness = spcalls.spcall('new_illness',
-                                           (school_id, data['asthma'], data['ptb'], data['heart_problem'],
-                                            data['hepatitis_a_b'], data['chicken_pox'],
-                                            data['mumps'], data['typhoid_fever']), True)
+                                           (school_id,
+                                            data['asthma'],
+                                            data['ptb'],
+                                            data['heart_problem'],
+                                            data['hepatitis_a_b'],
+                                            data['chicken_pox'],
+                                            data['mumps'],
+                                            data['typhoid_fever']), True)
 
         return store_new_illness[0][0]
 
     def store_cardiac():
 
         store_new_cardiac = spcalls.spcall('new_cardiac',
-                                           (school_id, data['chest_pain'], data['palpitations'], data['pedal_edema'],
-                                            data['orthopnea'], data['nocturnal_dyspnea']), True)
+                                           (school_id,
+                                            data['chest_pain'],
+                                            data['palpitations'],
+                                            data['pedal_edema'],
+                                            data['orthopnea'],
+                                            data['nocturnal_dyspnea']), True)
 
         return store_new_cardiac[0][0]
 
     def store_neurologic():
 
         store_new_neurologic = spcalls.spcall('new_neurologic',
-                                              (school_id, data['headache'], data['seizure'],
-                                               data['dizziness'], data['loss_of_consciousness']), True)
+                                              (school_id,
+                                               data['headache'],
+                                               data['seizure'],
+                                               data['dizziness'],
+                                               data['loss_of_consciousness']), True)
 
         return store_new_neurologic[0][0]
 
