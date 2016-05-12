@@ -419,6 +419,26 @@ $$
     language 'sql';
 
 
+--[GET] Retrieve illness data of a patient
+--select show_illness(20130000);
+create or replace function show_illness(in par_school_id int,
+                                          out int,
+                                          out text,
+                                          out text,
+                                          out text,
+                                          out text,
+                                          out text,
+                                          out text,
+                                          out text)
+    returns setof record as
+$$
+  select *
+  from Illness
+  where school_id = par_school_id;
+$$
+    language 'sql';
+
+
 
 -----------------------------------------------------END OF PATIENT FILE --------------------------------------------------
 
