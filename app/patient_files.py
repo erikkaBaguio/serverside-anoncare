@@ -15,7 +15,7 @@ def store_patient(school_id, data):
     school_id_exists = spcalls.spcall('school_id_exists', (school_id,), True)
 
     def names_empty(fname, mname, lname):
-        if school_id is None and fname is None and mname and None and lname and None:
+        if school_id is None and fname is '' and mname is '' and lname is '':
             return True
         else:
             return False
@@ -27,7 +27,8 @@ def store_patient(school_id, data):
             return False
 
     def extra_info_empty(dept_id, ptnt_id, civil_status, name_of_guardian, home_addr):
-        if dept_id is None and ptnt_id is None and civil_status is None and name_of_guardian is None and home_addr is None:
+        if dept_id is None and ptnt_id is None and civil_status is None and name_of_guardian is None \
+                and home_addr is None:
             return True
         else:
             return False
@@ -51,17 +52,17 @@ def store_patient(school_id, data):
         empty_bio = bio_empty(age, sex, height, weight, date_of_birth)
         empty_extra_info = extra_info_empty(dept_id, ptnt_id, civil_status, guardian, home_addr)
 
-        # print "empty_names", empty_names
-        # print "empty_bio", empty_bio
-        # print "empty_extra_info", empty_extra_info
+        print "empty_names", empty_names
+        print "empty_bio", empty_bio
+        print "empty_extra_info", empty_extra_info
 
-        complete_fields = empty_names and empty_bio and empty_extra_info
+        empty_fields = empty_names and empty_bio and empty_extra_info
 
-        if complete_fields is False:
-            return True
+        if empty_fields is True:
+            return False
 
         else:
-            return False
+            return True
 
     def valid_patient_history(history):
 
@@ -71,14 +72,14 @@ def store_patient(school_id, data):
         medications_taken = history['medications_taken']
         drugs = history['drugs']
 
-        complete_fields = school_id is None and smoking is None and allergies is None and alcohol is None and medications_taken \
+        empty_fields = school_id is None and smoking is None and allergies is None and alcohol is None and medications_taken \
                                                                                                               is None and drugs is None
 
-        if complete_fields is False:
-            return True
+        if empty_fields is True:
+            return False
 
         else:
-            return False
+            return True
 
     def valid_pulmonary(pulmonary):
         cough = pulmonary['cough']
@@ -86,14 +87,13 @@ def store_patient(school_id, data):
         hemoptysis = pulmonary['hemoptysis']
         tb_exposure = pulmonary['tb_exposure']
 
-        complete_fields = school_id is None and cough is None and dyspnea is None and hemoptysis is None and tb_exposure is None
+        empty_fields = school_id is None and cough is None and dyspnea is None and hemoptysis is None and tb_exposure is None
 
-        if complete_fields is False:
-
-            return True
+        if empty_fields is True:
+            return False
 
         else:
-            return False
+            return True
 
     def valid_gut(gut):
         frequency = gut['frequency']
@@ -103,11 +103,12 @@ def store_patient(school_id, data):
         nocturia = gut['nocturia']
         dec_urine_amount = gut['dec_urine_amount']
 
-        complete_fields = school_id is None and frequency is None and flank_plan is None and discharge is None \
+        print "field is None", school_id is None
+
+        complete = school_id is None and frequency is None and flank_plan is None and discharge is None \
                           and dysuria is None and nocturia is None and dec_urine_amount is None
 
-        if complete_fields is False:
-
+        if complete is True:
             return True
 
         else:
@@ -123,11 +124,11 @@ def store_patient(school_id, data):
         mumps = illness['mumps']
         typhoid_fever = illness['typhoid_fever']
 
-        complete_fields = school_id is None and asthma is None and ptb is None and heart_problem is None and hepa_a_b is None and \
+        complete_fields = school_id is None and asthma is None and ptb is None and heart_problem is None\
+                          and hepa_a_b is None and \
                           chicken_pox is None and mumps is None and typhoid_fever is None
 
-        if complete_fields is False:
-
+        if complete_fields is True:
             return True
 
         else:
@@ -144,8 +145,7 @@ def store_patient(school_id, data):
         complete_fields = school_id is None and chest_pain is None and palpitations is None and pedal_edema is None and \
                           orthopnea is None and nocturnal_dyspnea is None
 
-        if complete_fields is False:
-
+        if complete_fields is True:
             return True
 
         else:
@@ -161,8 +161,7 @@ def store_patient(school_id, data):
         complete_fields = school_id is None and headache is None and seizure is None and \
                           dizziness is None and loss_of_consciousness is None
 
-        if complete_fields is False:
-
+        if complete_fields is True:
             return True
 
         else:
