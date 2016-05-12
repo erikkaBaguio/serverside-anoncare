@@ -366,7 +366,7 @@ create or replace function show_patient_info(in par_school_id int,
 
 
 --[GET] Retrieve specific patient history
---select show_patient_info(20130000);
+--select show_patient_history(20130000);
 create or replace function show_patient_history(in par_school_id int,
                                                 out int,
                                                 out text,
@@ -437,6 +437,25 @@ $$
   where school_id = par_school_id;
 $$
     language 'sql';
+
+
+--[GET] Retrieve cardiac data of a patient
+--select show_cardiac(20130000);
+create or replace function show_cardiac(in par_school_id int,
+                                          out int,
+                                          out text,
+                                          out text,
+                                          out text,
+                                          out text,
+                                          out text)
+    returns setof record as
+$$
+  select *
+  from Cardiac
+  where school_id = par_school_id;
+$$
+    language 'sql';
+
 
 
 
