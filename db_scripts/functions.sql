@@ -53,7 +53,7 @@ create or replace function show_user_username(in par_username text, out text, ou
 create or replace function check_username_password(in par_username text, in par_password text) returns text as
   $$  declare local_response text;
     begin
-      select into local_response username from Userinfo where username = par_seizurername and password = par_password;
+      select into local_response username from Userinfo where username = par_username and password = par_password;
 
       if local_response isnull then
         local_response = 'FAILED';

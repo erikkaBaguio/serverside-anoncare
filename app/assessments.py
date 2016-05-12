@@ -50,18 +50,18 @@ def store_assessment(data):
     elif check_schoolID_exists == 'OK':
         return jsonify({"status": "FAILED", "message": "School ID does not exist."})
 
-    elif type(school_id) != int:
-        return jsonify({"status": "FAILED", "message": "Invalid school ID."})
-
-    elif (type(age) != int or
-          type(temperature) != float or
-          type(pulse_rate) != int or
-          type(respiration_rate) != int or
-          type(weight) != float or
-          type(attending_physician) != int
-          ):
-
-        return jsonify({"status": "FAILED", "message": "Invalid input."})
+    # elif type(school_id) != int:
+    #     return jsonify({"status": "FAILED", "message": "Invalid school ID."})
+    #
+    # elif (type(age) != int or
+    #       type(temperature) != float or
+    #       type(pulse_rate) != int or
+    #       type(respiration_rate) != int or
+    #       type(weight) != float or
+    #       type(attending_physician) != int
+    #       ):
+    #
+    #     return jsonify({"status": "FAILED", "message": "Invalid input."})
 
         """
             Checks if json data is null
