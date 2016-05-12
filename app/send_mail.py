@@ -29,7 +29,7 @@ def send_email(username, email, password):
 
 def forgot_pass_send_email(email, password):
     msg = Message(
-        'AnonCare Registration',
+        'AnonCare Password Reset',
         sender='anoncare.iit@gmail.com',
         recipients=[email]
     )
