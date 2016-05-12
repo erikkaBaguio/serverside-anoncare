@@ -144,8 +144,7 @@ def store_new_user():
 
     add_user = store_user(data)
 
-    sent = send_email(data['username'], data['email'], data['password'])
-    print "sent", sent
+    print "add_user", add_user
 
     return add_user
 
@@ -201,7 +200,7 @@ def password_reset(token):
 
     new_password = data['password']
 
-    reset = reset_password(username, new_password)
+    reset = change_password(username, new_password)
 
     return reset
 

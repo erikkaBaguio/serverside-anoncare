@@ -6,6 +6,7 @@ from flask import request
 import re
 import hashlib
 from flask import jsonify
+from send_mail import *
 from spcalls import SPcalls
 
 spcalls = SPcalls()
@@ -62,6 +63,8 @@ def store_user(data):
                 store_user = spcalls.spcall('store_user', (fname, mname, lname, username, pw_hash.hexdigest(), email, role_id), True)
 
                 if store_user[0][0] == 'OK':
+                    sent = send_email(data['username'], data['email'], data['password'])
+
                     return jsonify({'status': 'OK', 'message': 'Successfully add ' + str(fname)})
 
                 elif store_user[0][0] == 'Error':
@@ -149,12 +152,15 @@ def search_user(data):
     return jsonify({'status':'FAILED', 'message':'No data matched your search'})
 
 
-def reset_password(username, password):
-
-    username = ''
+def change_password(username, password):
 
     pw_hash = hashlib.md5(password.encode())
 
     spcalls.spcall("updatepassword", (username, pw_hash.hexdigest(),), True)
 
     return jsonify({"status": "Password Changed"})
+
+
+def get_username(email):
+
+    data = spcalls.spcall("")
