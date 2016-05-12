@@ -158,6 +158,14 @@ def send_email(username, email, password):
     return "Sent"
 
 
+@app.route('/api/anoncare/username/<username>/', methods=['GET'])
+def check_username(username):
+
+    response = username_checker(username)
+
+    return response
+
+
 @app.route('/api/anoncare/user', methods=['POST'])
 @auth.login_required
 def store_new_user():
@@ -191,6 +199,13 @@ def store_new_patient():
     return new_patient
 
 
+@app.route('/api/anoncare/patient/<int:school_id>/', methods=['GET'])
+def get_patient_file(school_id):
+    response = show_patient(school_id)
+
+    return response
+
+
 @app.route('/api/anoncare/user', methods=['GET'])
 @auth.login_required
 def show_users():
@@ -222,7 +237,7 @@ def password_reset(token):
 
 
 @app.route('/api/anoncare/user/search', methods=['POST'])
-@auth.login_required
+# @auth.login_required
 def search_users():
     return search_user(json.loads(request.data))
 
@@ -234,9 +249,11 @@ def show_assessmentId(school_id, assessment_id):
     return get_assessment_id
 
 
-@app.route('/api/anoncare/assessment/<int:school_id>')
-def show_assessment(school_id):
-    return show_assessment(school_id)
+@app.route('/api/anoncare/assessment/<int:school_id>/', methods = ['GET'])
+def get_assessment(school_id):
+    response = show_assessment(school_id)
+
+    return response
 
 
 @app.route('/api/anoncare/assessment', methods=['POST'])
@@ -249,10 +266,18 @@ def add_assessments():
 
 
 @app.route('/api/anoncare/school_id_exists/<int:school_id>/', methods=['GET'])
-def check_schoolID_exists(school_id):
-    school_id_exists = jsonify_check_schoolID(school_id)
+def check_school_id(school_id):
 
-    return school_id_exists
+    response = school_id_checker(school_id)
+
+    return response
+
+
+@app.route('/api/anoncare/doctors/', methods=['GET'])
+def get_all_doctors():
+    response = show_all_doctors()
+
+    return response
 
 
 @app.after_request
