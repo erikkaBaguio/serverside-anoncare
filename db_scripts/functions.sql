@@ -50,6 +50,13 @@ create or replace function show_user_username(in par_username text, out text, ou
   language 'sql';
 
 
+create or replace function show_user_email(in par_email text, out text, out text, out text, out text, out text, out int) returns setof record as
+  $$
+    select fname, mname, lname, email, username, role_id from Userinfo where email = par_email;
+  $$
+  language 'sql';
+
+
 create or replace function check_username_password(in par_username text, in par_password text) returns text as
   $$  declare local_response text;
     begin
@@ -177,6 +184,21 @@ $$
   from Userinfo
 $$
   language 'sql';
+
+create or replace function updatepassword(in par_username text, in par_new_password text) returns text as
+  $$
+    declare
+      response text;
+
+    begin
+      update Userinfo set password = par_new_password where username = par_username;
+      response := 'OK';
+
+      return response;
+    end;
+  $$
+  language 'plpgsql';
+
 ------------------------------------------------------------- END USER -------------------------------------------------------------
 
 
