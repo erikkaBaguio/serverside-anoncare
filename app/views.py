@@ -141,13 +141,10 @@ def check_username(username):
 @app.route('/api/anoncare/user', methods=['POST'])
 @auth.login_required
 def store_new_user():
-    #send_mail(data['username'], data['email'], data['password'])
 
     data = json.loads(request.data)
-    print 'data is', data
     add_user = store_user(data)
-    sent = send_email(data['username'], data['email'], data['password'])
-    print "sent", sent
+
     return add_user
 
 
@@ -202,7 +199,7 @@ def password_reset(token):
 
     new_password = data['password']
 
-    reset = reset_password(username, new_password)
+    reset = change_password(username, new_password)
 
     return reset
 

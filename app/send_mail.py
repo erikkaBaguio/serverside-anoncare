@@ -25,3 +25,16 @@ def send_email(username, email, password):
     mail.send(msg)
 
     return "Sent"
+
+
+def forgot_pass_send_email(email, password):
+    msg = Message(
+        'AnonCare Registration',
+        sender='anoncare.iit@gmail.com',
+        recipients=[email]
+    )
+
+    msg.body = "New Password is: " + password
+    mail.send(msg)
+
+    return "Sent"
