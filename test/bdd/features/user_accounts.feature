@@ -2,7 +2,6 @@ Feature: User Accounts
   Add, Update, Get User, Get All Users
 
 
-<<<<<<< HEAD
 ########
 # SUNNY CASES
 ########
