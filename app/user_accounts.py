@@ -136,7 +136,6 @@ def search_user(search):
     return jsonify({'status':'FAILED', 'message':'No data matched your search'})
 
 
-# @app.route('/anoncare.api/password_reset/', methods=['PUT'])
 def reset_password(password):
 
     username = ''

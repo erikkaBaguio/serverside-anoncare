@@ -155,6 +155,7 @@ def show_users():
     return users
 
 
+@app.route('/api/anoncare/password_reset/', methods=['PUT'])
 def password_reset():
     data = json.loads(request.data)
 
