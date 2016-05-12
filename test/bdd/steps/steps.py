@@ -39,7 +39,7 @@ def and_the_username_group1_does_not_yet_exist(step, id):
 @step(u'When  admin clicks the register button')
 def when_admin_clicks_the_register_button(step):
     world.browser = TestApp(app)
-    world.new_user_response = world.app.post('/api/anoncare/user', data=json.dumps(world.new_user))
+    world.response = world.app.post('/api/anoncare/user', data=json.dumps(world.new_user))
 
 
 """ Scenario: Retrieve a user's details """
@@ -151,7 +151,7 @@ def given_the_following_details_of_patient(step):
 @step(u'When I click the add button')
 def when_i_click_the_add_button(step):
     world.browser = TestApp(app)
-    world.patient_response = world.app.post('/api/anoncare/patient', data=json.dumps(world.patient))
+    world.response = world.app.post('/api/anoncare/patient', data=json.dumps(world.patient))
 
 
 """ Feature : Search User """

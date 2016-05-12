@@ -8,7 +8,7 @@ Feature: User Accounts
   Scenario: Add a new user to the system - all requirements put
     Given the following details of a user:
         | fname     | mname    | lname     | email                   | username           | password               | role_id|
-        | Josiah    | Timonera | Regencia  | jetregencia@gmail.com   | josiah.regencia    | josiaheleazarregencia  | 3      |
+        | Josiaha   | Timonera | Regencia  | jawshaeleazar@gmail.com | josiaha.regencia   | josiaheleazarregencia  | 3      |
 
 
     And   the username 'josiah.regencia' does not yet exist

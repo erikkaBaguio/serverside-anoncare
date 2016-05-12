@@ -60,10 +60,10 @@ def store_patient(school_id, data):
         empty_fields = empty_names and empty_bio and empty_extra_info
 
         if empty_fields is True:
-            return True
+            return False
 
         else:
-            return False
+            return True
 
     def valid_patient_history(history):
 
@@ -77,10 +77,10 @@ def store_patient(school_id, data):
                         and alcohol is None and medications_taken is None and drugs is None
 
         if empty_fields is True:
-            return True
+            return False
 
         else:
-            return False
+            return True
 
 
     def store_patient_info():
