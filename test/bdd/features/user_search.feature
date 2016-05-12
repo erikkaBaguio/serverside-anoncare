@@ -10,6 +10,6 @@ Feature: Search user
       Then  it should have a '200' response
       And   it should have a field 'status' containing 'OK'
       And   it should have a field 'message' containing 'This are all the user(s) matched your search'
-      And   the following details will be returned
+      And   the following user details will be returned
             |fname    |mname |lname  |email         |role |
             |Muhammad |M     |Puting |mmp@gmail.com |2    |

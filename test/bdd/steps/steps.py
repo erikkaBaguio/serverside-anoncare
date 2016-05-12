@@ -61,8 +61,8 @@ def when_the_doctor_click_search_button(step):
     world.response = world.app.get('/api/anoncare/assessment/20130000/')
 
 
-@step(u'And   the following details will be returned')
-def and_the_following_details_will_be_returned(step):
+@step(u'And   the following assessment details will be returned')
+def and_the_following_assessment_details_will_be_returned(step):
     response_json = json.loads(world.assessment.data)
     assert_equals(world.response_json['entries'], response_json['entries'])
 
@@ -102,7 +102,7 @@ def when_the_admin_click_search_button(step):
     world.response = world.app.post('/api/anoncare/user/search', data=json.dumps(world.user_keyword))
 
 
-@step(u'And   the following details will be returned')
-def and_the_following_details_will_be_returned(step):
+@step(u'And   the following user details will be returned')
+def and_the_following_user_details_will_be_returned(step):
     response_json = json.loads(world.response.data)
     assert_equals(world.response_json['data'], response_json['data'])
