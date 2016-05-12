@@ -136,10 +136,12 @@ def search_user(search):
     return jsonify({'status':'FAILED', 'message':'No data matched your search'})
 
 
-def reset_password(password):
+def reset_password(username, password):
 
     username = ''
 
-    spcalls.spcall("updatepassword", (username, password,), True)
+    pw_hash = hashlib.md5(password.encode())
+
+    spcalls.spcall("updatepassword", (username, pw_hash.hexdigest(),), True)
 
     return jsonify({"status": "Password Changed"})

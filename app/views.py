@@ -155,13 +155,20 @@ def show_users():
     return users
 
 
-@app.route('/api/anoncare/password_reset/', methods=['PUT'])
-def password_reset():
+@app.route('/api/anoncare/password_reset/<string:token>', methods=['PUT'])
+def password_reset(token):
     data = json.loads(request.data)
+
+    days = timedelta(days=14)
+    max_age = days.total_seconds()
+
+    token = login_serializer.loads(token, max_age=max_age)
+
+    username = token[0]
 
     new_password = data['password']
 
-    reset = reset_password(new_password)
+    reset = reset_password(username, new_password)
 
     return reset
 
