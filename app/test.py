@@ -1,7 +1,8 @@
-a = 'World'
-b = 'Hello'
+a = ''
+b = ''
 
-c = a + "." + b
-c = c.lower()
 
-print "c", c
+print a is '' and b is ''
+
+if a is '' and b is '':
+    print "This"
