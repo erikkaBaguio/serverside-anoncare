@@ -43,7 +43,9 @@ def store_assessment(data):
     recommendation = data['recommendation']
     attending_physician = data['attending_physician']
 
-    check_schoolID_exists = check_schoolID(school_id)
+    #school_id must be cast to integer.
+    print school_id
+    check_schoolID_exists = check_schoolID( int(school_id))
 
     if not school_id:
         return jsonify({"status": "FAILED", "message": "Please input school ID."})
@@ -98,7 +100,7 @@ def store_assessment(data):
         print 'vsId', vital_signs_id
 
         if 'Error' in str(assessment[0][0]):
-            return jsonify({"status": "FAILED"})
+            return jsonify({"status": "FAILED", "message":assessment[0][0]})
 
         else:
 
@@ -116,6 +118,7 @@ def store_assessment(data):
 
 
 def show_assessment_id(school_id, assessment_id):
+
     assess = spcalls.spcall('show_assessment_id', (school_id, assessment_id,))
     data = []
 
@@ -147,6 +150,7 @@ def show_assessment_id(school_id, assessment_id):
 
 
 def show_assessment(school_id):
+
     assessments = spcalls.spcall('show_assessment', (school_id,))
     entries = []
 
