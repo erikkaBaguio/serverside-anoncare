@@ -113,6 +113,14 @@ def index(token):
     return jsonify({'status':'OK', 'message':'Welcome user', 'data':data})
 
 
+@app.route('/api/anoncare/username/<username>/', methods=['GET'])
+def check_username(username):
+
+    response = username_checker(username)
+
+    return response
+
+
 @app.route('/api/anoncare/user', methods=['POST'])
 def store_new_user():
     data = json.loads(request.data)

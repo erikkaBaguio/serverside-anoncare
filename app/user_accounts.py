@@ -10,6 +10,19 @@ from spcalls import SPcalls
 
 spcalls = SPcalls()
 
+def check_username(username):
+    check_response = spcalls.spcall('check_username', (username,))
+
+    return check_response
+
+def username_checker(username):
+    response = check_username(username)
+
+    if response == 'f':
+        return jsonify({"status": "FAILED", "message": "Username does not exists"})
+
+    else:
+        return jsonify({"status": "OK", "message": "Username already exists"})
 
 
 def store_user(data):

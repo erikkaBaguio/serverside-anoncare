@@ -56,6 +56,7 @@ def given_the_assessment_of_patient_with_school_id_group1(step, school_id):
     world.response_json = json.loads(world.assessment.data)
     assert_equals(world.response_json['status'], 'OK')
 
+
 @step(u'When  the doctor click search button')
 def when_the_doctor_click_search_button(step):
     world.browser = TestApp(app)

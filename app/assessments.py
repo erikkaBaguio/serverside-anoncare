@@ -12,14 +12,13 @@ spcalls = SPcalls()
 
 
 def check_schoolID(school_id):
-    """Returns OK response if school id does not exist"""
+    """Returns t response if school id exists, otherwise f"""
     schoolID_response = spcalls.spcall('school_id_exists', (school_id,))
 
     return schoolID_response[0][0]
 
 
 def school_id_checker(school_id):
-    print 'ID > ', school_id
     response = check_schoolID(school_id)
 
     if response == 'f':
