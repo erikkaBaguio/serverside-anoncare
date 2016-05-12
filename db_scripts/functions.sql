@@ -509,7 +509,7 @@ LANGUAGE 'sql';
 --   LANGUAGE 'plpgsql';
 
 
-[GET] Retrieve assessment of a specific patient
+-- [GET] Retrieve assessment of a specific patient
 select show_assessment_id(20130000,1);
 CREATE OR REPLACE FUNCTION show_assessment_id(IN par_schoolID INT,
                                            IN par_id INT,
