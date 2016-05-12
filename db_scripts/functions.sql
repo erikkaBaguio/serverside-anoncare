@@ -67,7 +67,7 @@ create or replace function check_username_password(in par_username text, in par_
   language 'plpgsql';
 
 --------------------------------------------------------------- USER -----------------------------------------------------------
--- this will return set of users that match or slightly match your searc
+-- this will return set of users that match or slightly match your search
 --source: http://www.tutorialspoint.com/postgresql/postgresql_like_clause.htm
 --source on concationation in postgres: http://www.postgresql.org/docs/9.1/static/functions-string.html
 create or replace function search_user(in par_search text, out text, out text, out text, out text, out text, out int) returns setof record as

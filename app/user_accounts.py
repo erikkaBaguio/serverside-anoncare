@@ -100,7 +100,10 @@ def show_user_id(id):
     user_id = spcalls.spcall('show_user_id', (id,))
     entries = []
 
-    if 'Error' in str(user_id[0][0]):
+    if len(user_id) == 0:
+        return jsonify({"status": "FAILED", "message": "No User Found", "entries": []})
+
+    elif 'Error' in str(user_id[0][0]):
         return jsonify({'status': 'error', 'message': user_id[0][0]})
 
     elif len(user_id) != 0:
@@ -114,7 +117,7 @@ def show_user_id(id):
         return jsonify({"status": "OK", "message": "OK", "entries": entries})
 
     else:
-        return jsonify({"status": 'FAILED', "message": "No Users Found"})
+        return jsonify({"status": "FAILED", "message": "No Users Found"})
 
 
 def show_all_users():

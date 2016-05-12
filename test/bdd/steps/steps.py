@@ -132,7 +132,6 @@ def given_user_with_id_group1(step, user_id):
     world.user_id = user_id
     world.user = world.app.get('/api/anoncare/user/{}/'.format(user_id))
     world.response_json = json.loads(world.user.data)
-    assert_equals(world.response_json['status'], 'OK')
 
 
 @step(u'When  the admin click view user')
