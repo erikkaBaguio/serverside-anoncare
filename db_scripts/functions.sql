@@ -30,12 +30,12 @@ LANGUAGE 'plpgsql';
 Create or replace function show_user_id(in par_id int, out text, out text, out text, out text, out text, out int) RETURNS SETOF RECORD AS
 $$
 SELECT
-  fname, 
+  fname,
   mname,
   lname,
   email,
-  username, 
-  role_id 
+  username,
+  role_id
 FROM Userinfo
 WHERE par_id = id;
 $$
@@ -365,7 +365,7 @@ create or replace function show_patient_info(in par_school_id int,
                                              out int,
                                              out text,
                                              out float,
-                                             out text,
+                                             out date,
                                              out text,
                                              out text,
                                              out text)

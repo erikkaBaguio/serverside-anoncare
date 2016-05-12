@@ -44,8 +44,8 @@ CREATE TABLE Patient_info (
   patient_type_id  INT REFERENCES Patient_type (school_id),
   height           TEXT,
   weight           FLOAT,
-  date_of_birth    TEXT,
---   date_of_birth    DATE,
+  -- date_of_birth    TEXT,
+  date_of_birth    DATE,
   civil_status     TEXT,
   name_of_guardian TEXT,
   home_address     TEXT
