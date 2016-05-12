@@ -21,7 +21,6 @@ def then_it_should_get_a_group1_response(step, expected_status_code):
 @step(u'And   it should have a field \'([^\']*)\' containing \'([^\']*)\'')
 def and_it_should_get_a_field_group1_containing_group2(step, field, expected_value):
     world.response_json = json.loads(world.response.data)
-<<<<<<< HEAD
     assert_equals(world.response_json[field], str(expected_value))
 
 """ Feature: User Accounts """
@@ -60,9 +59,7 @@ def when_the_admin_enter_with_an_id_group1(step, id):
 def and_the_following_user_details_will_be_returned(step):
 	resp = json.loads(world.response.data)
 	assert_equals(world.response_json['entries'], resp['entries'])
-=======
     assert_equals(str(world.response_json[field]), expected_value)
->>>>>>> erikka
 
 
 @step(u'And   school id \'([^\']*)\' exists')
