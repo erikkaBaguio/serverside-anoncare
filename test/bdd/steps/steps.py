@@ -97,10 +97,10 @@ def given_the_following_details_of_patient(step):
     world.patient = step.hashes[0]
 
 
-@step(u'When I click the add button')
+@step(u'When  I click the add button')
 def when_i_click_the_add_button(step):
     world.browser = TestApp(app)
-    world.patient_response = world.app.post('/api/anoncare/patient', data=json.dumps(world.patient))
+    world.response = world.app.post('/api/anoncare/patient', data=json.dumps(world.patient))
 
 
 @step(u'Given the patient file with school id \'([^\']*)\'')
@@ -154,7 +154,6 @@ def and_the_username_group1_exists(step, group1):
 @step(u'And   the username \'([^\']*)\' does not yet exist')
 def and_the_username_group1_does_not_yet_exist(step, username):
     world.check_username = world.app.get('/api/anoncare/username/{}'.format(username))
-
 
 
 @step(u'When  admin clicks the register button')

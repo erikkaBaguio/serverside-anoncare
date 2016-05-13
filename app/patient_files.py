@@ -22,14 +22,14 @@ def store_patient(school_id, data):
             return False
 
     def bio_empty(age, sex, height, weight, date_of_birth):
-        if age is None and sex is None and height is None and weight is None and date_of_birth is None:
+        if age is None and sex is '' and height is '' and weight is None and date_of_birth is None:
             return True
         else:
             return False
 
     def extra_info_empty(dept_id, ptnt_id, civil_status, name_of_guardian, home_addr):
-        if dept_id is None and ptnt_id is None and civil_status is None and name_of_guardian is None \
-                and home_addr is None:
+        if dept_id is None and ptnt_id is None and civil_status is '' and name_of_guardian is '' \
+                and home_addr is '':
             return True
         else:
             return False
@@ -52,10 +52,10 @@ def store_patient(school_id, data):
         empty_names = names_empty(fname, mname, lname)
         empty_bio = bio_empty(age, sex, height, weight, date_of_birth)
         empty_extra_info = extra_info_empty(dept_id, ptnt_id, civil_status, guardian, home_addr)
-        #
-        # print "empty_names", empty_names
-        # print "empty_bio", empty_bio
-        # print "empty_extra_info", empty_extra_info
+
+        print "empty_names", empty_names
+        print "empty_bio", empty_bio
+        print "empty_extra_info", empty_extra_info
 
         empty_fields = empty_names and empty_bio and empty_extra_info
 
@@ -81,7 +81,6 @@ def store_patient(school_id, data):
 
         else:
             return True
-
 
     def store_patient_info():
 
@@ -179,27 +178,27 @@ def store_patient(school_id, data):
     print "valid_patient_history", valid_patient_history(data)
     print "field is none", data['age'] is None
 
-    print "valid_data", valid_data
-
     print "school_id_exists", school_id_exists[0][0]
 
-    if school_id_exists[0][0] == 'f' and valid_data is True:
+    print "valid_data", valid_data
 
-        try:
+    if school_id_exists[0][0] == 'false' and valid_data is True:
 
-            store_patient_info()
-            store_patient_history()
-            store_pulmonary()
-            store_gut()
-            store_illness()
-            store_cardiac()
-            store_neurologic()
+        # try:
 
-            return jsonify({'status': 'OK', 'message': 'Successfully added new patient'})
+        store_patient_info()
+        store_patient_history()
+        store_pulmonary()
+        store_gut()
+        store_illness()
+        store_cardiac()
+        store_neurologic()
 
-        except ValueError:
+        return jsonify({'status': 'OK', 'message': 'Successfully added new patient'})
 
-            return jsonify({'status': 'FAILED', 'message': 'Please type correct inputs'})
+        # except ValueError:
+
+            # return jsonify({'status': 'FAILED', 'message': 'Please type correct inputs'})
 
     else:
 

@@ -67,7 +67,12 @@ def store_user(data):
             password = data['password']
             role_id = data['role_id']
 
-            if fname is not None and mname is not None and lname is not None and username is not None and password is not None and role_id is not None:
+            complete_fields = fname is not '' and mname is not '' and lname is not '' and username is not ''\
+                              and email is not '' and password is not '' and role_id is not None
+
+            print "user_accounts empty_fields", complete_fields
+
+            if complete_fields is True:
                 """
                 PASSWORD HASHING
                 source: https://pythonprogramming.net/password-hashing-flask-tutorial/
@@ -92,10 +97,10 @@ def store_user(data):
                     return jsonify({'status': 'FAILED', 'message': 'failed to add new user'})
 
                 else:
-                    return jsonify({'status': '404'})
+                    return jsonify({'status': 'FAILED'})
 
-            else:
-                return jsonify({'status': 'FAILED', 'message': 'Please input required fields!'})
+            elif complete_fields is False:
+                return jsonify({"status": 'FAILED', 'message': 'Please input required fields!'})
 
         else:
             return jsonify({'status': 'FAILED', 'message': 'Invalid email input!'})
