@@ -270,6 +270,23 @@ def get_all_doctors():
     return response
 
 
+@app.route('/api/anoncare/notifications/<string:token>', methods=['GET'])
+def get_all_unread_notification(token):
+    days = timedelta(days=14)
+    max_age = days.total_seconds()
+    # Decrypt the Security Token, data = [username, hashpass]
+    username = login_serializer.loads(token, max_age=max_age)
+    spcall = SPcalls()
+
+    user = spcall.spcall('show_user_username', (username[0],))
+    data = []
+
+    for u in user:
+        notifications = show_all_unread_notification(u[3])
+
+    return notifications
+
+
 @app.after_request
 def add_cors(resp):
     resp.headers['Access-Control-Allow-Origin'] = flask.request.headers.get('Origin', '*')

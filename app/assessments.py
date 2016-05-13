@@ -29,6 +29,8 @@ def school_id_checker(school_id):
 
 
 def store_assessment(data):
+
+    print data
     school_id = data['school_id']
     age = data['age']
     temperature = data['temperature']

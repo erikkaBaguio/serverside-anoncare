@@ -66,6 +66,12 @@ create or replace function check_username_password(in par_username text, in par_
   $$
   language 'plpgsql';
 
+create or replace function show_all_unread_notification(in par_email text, out bigint, out int, out int, out boolean, out text) returns setof record as
+$$
+    select * from Notification where is_read = FALSE and email=par_email;
+$$
+language 'sql';
+
 --------------------------------------------------------------- USER -----------------------------------------------------------
 -- this will return set of users that match or slightly match your search
 --source: http://www.tutorialspoint.com/postgresql/postgresql_like_clause.htm

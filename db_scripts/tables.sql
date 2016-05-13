@@ -143,3 +143,10 @@ CREATE TABLE Assessment ( --Ikai
   attendingphysician      INT REFERENCES Userinfo (id),
   is_read                 BOOLEAN  DEFAULT FALSE
 );
+
+create table Notification(
+  id serial8 primary key,
+  assessment_id int references Assessment(id),
+  doctor_id int references Userinfo(id),
+  is_read boolean default FALSE
+);
