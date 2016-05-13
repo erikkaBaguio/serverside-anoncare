@@ -365,7 +365,7 @@ create or replace function show_patient_info(in par_school_id int,
                                              out int,
                                              out text,
                                              out float,
-                                             out date,
+                                             out text,
                                              out text,
                                              out text,
                                              out text)

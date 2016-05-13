@@ -40,8 +40,8 @@ def store_patient(school_id, data):
         lname = patient['lname']
         age = patient['age']
         sex = patient['sex']
-        dept_id = patient['department_id']
-        ptnt_id = patient['patient_type_id']
+        dept_id = int(patient['department_id'])
+        ptnt_id = int(patient['patient_type_id'])
         height = patient['height']
         weight = patient['weight']
         date_of_birth = patient['date_of_birth']
@@ -92,8 +92,8 @@ def store_patient(school_id, data):
                                             data['lname'],
                                             data['age'],
                                             data['sex'],
-                                            data['department_id'],
-                                            data['patient_type_id'],
+                                            int(data['department_id']),
+                                            int(data['patient_type_id']),
                                             data['height'],
                                             data['weight'],
                                             data['date_of_birth'],
@@ -183,7 +183,7 @@ def store_patient(school_id, data):
 
     print "school_id_exists", school_id_exists[0][0]
 
-    if school_id_exists[0][0] == 'false' and valid_data is True:
+    if school_id_exists[0][0] == 'f' and valid_data is True:
 
         try:
 
@@ -199,11 +199,11 @@ def store_patient(school_id, data):
 
         except ValueError:
 
-            return jsonify({'status': 'ERROR', 'message': 'Please type correct inputs'})
+            return jsonify({'status': 'FAILED', 'message': 'Please type correct inputs'})
 
     else:
 
-        return jsonify({'status': 'ERROR', 'message': 'Please type correct inputs'})
+        return jsonify({'status': 'FAILED', 'message': 'Please type correct inputs'})
 
 
 def show_patient(school_id):
@@ -324,4 +324,3 @@ def show_patient(school_id):
 
     else:
         return jsonify({"status": "FAILED", "message": "No Patient File Found", "entries": []})
-
