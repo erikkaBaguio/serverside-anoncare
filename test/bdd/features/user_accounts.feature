@@ -5,7 +5,7 @@ Feature: User Accounts
   Scenario: Add a new user to the system - all requirements put
       Given the following details of a user:
             | fname     | mname    | lname     | email                  | username           | password               | role_id|
-            | Eleazaaa  | Timonera | Regencia  | joregecia@gmail.com   | eleazaaa.regencia  | josiaheleazarregencia  | 3      |
+            | Eleazaaa  | Timonera | Regencia  | joregecia@gmail.com    | eleazaaa.regencia  | josiaheleazarregencia  | 3      |
 
 
       And   the username 'josiah.regencia' does not yet exist
@@ -35,7 +35,7 @@ Feature: User Accounts
     Scenario: Add a new user to the system - email already exists
       Given the following details of a user:
             | fname     | mname    | lname     | email                  | username           | password               | role_id|
-            | Eleazaaa  | Timonera | Regencia  | jawshaeleazar@gmail.com| eleazaaa.regencia  | josiaheleazarregencia  | 3      |
+            | Eleazaaa  | Timonera | Regencia  | jawshaeleazar@gmail.com| eleaa.regencia     | josiaheleazarregencia  | 3      |
 
 
       And   the email 'jawshaeleazar@gmail.com' exists
@@ -43,6 +43,19 @@ Feature: User Accounts
       Then  it should have a '200' response
       And   it should have a field 'status' containing 'FAILED'
       And   it should have a field 'message' containing 'Email already exists'
+
+
+  Scenario: Add a new user to the system - username already exists
+      Given the following details of a user:
+            | fname     | mname    | lname     | email                  | username           | password               | role_id|
+            | Eleazaaa  | Timonera | Regencia  | jetregencia@gmail.com  | eleazaaa.regencia  | josiaheleazarregencia  | 3      |
+
+
+      And   the username 'eleazaaa.regencia' exists
+      When  admin clicks the register button
+      Then  it should have a '200' response
+      And   it should have a field 'status' containing 'FAILED'
+      And   it should have a field 'message' containing 'Username already exists'
 
 
   Scenario: Retrieve a user's details
