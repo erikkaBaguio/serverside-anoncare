@@ -15,4 +15,4 @@ Feature: Create final diagnosis
       When  the doctor clicks the update button
       Then  it should have a '200' response
       And   it should have a field 'status' containing 'OK'
-      And   it should have a field 'message' containing 'Updated'
+      And   it should have a field 'message' containing 'OK'
