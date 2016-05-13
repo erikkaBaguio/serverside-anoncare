@@ -84,7 +84,10 @@ create or replace function search_user(in par_search text, out text, out text, o
 -- return 'OK' if user does not exist
 -- Otherwise, 'EXISTED'.
 create or replace function check_username(in par_username text) returns text as
-  $$ declare local_response text; local_id bigint;
+  $$
+    declare
+      local_response text;
+      local_id bigint;
     begin
 
       select into local_id id from Userinfo where username = par_username;
@@ -556,26 +559,26 @@ create or replace function store_assessment(in par_schoolID                 INT,
 
 --[GET] Retrieve all assessments of a specific patient
 --select show_assessment(20130000);
-create or replace function show_assessment(IN par_schoolID INT,
-                                           OUT BIGINT,
-                                           OUT TIMESTAMP,
-                                           OUT INT,
-                                           OUT INT,
-                                           OUT INT,
-                                           OUT TEXT,
-                                           OUT TEXT,
-                                           OUT TEXT,
-                                           OUT TEXT,
-                                           OUT TEXT,
-                                           OUT INT,
-                                           OUT BOOLEAN,
-                                           OUT FLOAT,
-                                           OUT INT,
-                                           OUT INT,
-                                           OUT TEXT,
-                                           OUT FLOAT,
-                                           OUT TEXT,
-                                           OUT TEXT)
+create or replace function show_assessment(in par_schoolID int,
+                                           out bigint,
+											                     out timestamp,
+											                     out int,
+											                     out int,
+											                     out int,
+											                     out text,
+											                     out text,
+											                     out text,
+											                     out text,
+											                     out text,
+											                     out int,
+											                     out boolean,
+											                     out float,
+											                     out int,
+											                     out int,
+											                     out text,
+											                     out float,
+											                     out text,
+											                     out text)
   RETURNS SETOF RECORD AS
 $$
 
