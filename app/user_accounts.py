@@ -224,8 +224,6 @@ def login_forgot_password(email):
         username = get_username(email)
         new_password = generate_password()
 
-        print "username", username
-
         password_change = change_password(username, new_password)
 
         send_mail = forgot_pass_send_email(email, new_password)
@@ -234,3 +232,16 @@ def login_forgot_password(email):
 
     else:
         return jsonify({"status": "ERROR", "message": "No Email Exists"})
+
+
+def show_all_unread_notification(email):
+    unread_notifications = spcalls.spcall('show_all_unread_notification',(email,))
+    entries = []
+
+    if unread_notifications == None:
+        return jsonify({'status':'OK', 'message':'No new notifications'})
+
+    for u in unread_notifications:
+        entries.append({'id':u[0], 'assessment_id':u[1], 'doctor_id':u[2], 'is_read':u[3]})
+
+    return jsonify({'status':'OK', 'message':'You have new notifications', 'entries':entries})
