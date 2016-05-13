@@ -142,7 +142,6 @@ def and_the_username_group1_does_not_yet_exist(step, username):
     world.check_username = world.app.get('/api/anoncare/username/{}'.format(username))
 
 
-
 @step(u'When  admin clicks the register button')
 def when_admin_clicks_the_register_button(step):
     world.browser = TestApp(app)

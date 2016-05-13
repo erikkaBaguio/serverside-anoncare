@@ -148,6 +148,7 @@ def check_email(email):
 def store_new_user():
 
     data = json.loads(request.data)
+    print "store_user data", data
     add_user = store_user(data)
 
     return add_user
