@@ -503,6 +503,26 @@ $$
 
 
 ------------------------------------------------------------ ASSESSMENTS -----------------------------------------------------------
+create or replace function show_assessment_by_id(in par_assessment_id bigint,
+                                                                 out bigint,
+											                     out timestamp,
+											                     out int,
+											                     out int,
+											                     out int,
+											                     out text,
+											                     out text,
+											                     out text,
+											                     out text,
+                                                                 out text,
+                                                                 out int,
+											                     out boolean) returns setof record as
+    $$
+        update assessment set is_read = TRUE;
+        select * from assessment where id = par_assessment_id;
+    $$
+    language 'sql';
+
+
 -- [POST] Insert vital signs data of a patient
 -- select update_vitalSigns(3,37.1, 80, 19, '90/70', 48)
 create or replace function update_vitalSigns(in par_id int,

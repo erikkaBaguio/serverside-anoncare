@@ -236,6 +236,13 @@ def show_assessmentId(school_id, assessment_id):
     return get_assessment_id
 
 
+@app.route('/api/anoncare/assessment/by/<int:id>', methods=['GET'])
+@auth.login_required
+def show_assessment_id(id):
+
+    return show_assessment_by_id(id)
+
+
 @app.route('/api/anoncare/assessment/<int:school_id>/', methods =['GET'])
 @auth.login_required
 def show_assessment_all(school_id):

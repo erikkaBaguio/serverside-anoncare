@@ -211,3 +211,17 @@ def update_assessment(data):
                                                     attending_physician,), True)
 
     return jsonify({'status': 'OK', 'message': response[0][0]})
+
+
+def show_assessment_by_id(id):
+    assessment = spcalls.spcall('show_assessment_by_id', (id,))
+
+    entries = []
+
+    for a in assessment:
+        entries.append({'id':a[0], 'date':a[1], 'school_id':a[2], 'age':a[3], 'vital_signs_id':a[4],
+                        'chief_complaint':a[5], 'history_of_present_illness':a[6], 'medications_taken':a[7],
+                        'diagnosis':a[8], 'recommendation':a[9], 'attending_physician':a[10], 'is_read':a[11]
+        })
+
+    return jsonify({'status':'OK', 'message':'Successfully read assessment', 'entries':entries})
