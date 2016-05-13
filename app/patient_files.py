@@ -17,22 +17,22 @@ def store_patient(school_id, data):
 
     def names_empty(fname, mname, lname):
         if school_id is None and fname is '' and mname is '' and lname is '':
-            return True
-        else:
             return False
+        else:
+            return True
 
     def bio_empty(age, sex, height, weight, date_of_birth):
         if age is None and sex is '' and height is '' and weight is None and date_of_birth is None:
-            return True
-        else:
             return False
+        else:
+            return True
 
     def extra_info_empty(dept_id, ptnt_id, civil_status, name_of_guardian, home_addr):
         if dept_id is None and ptnt_id is None and civil_status is '' and name_of_guardian is '' \
                 and home_addr is '':
-            return True
-        else:
             return False
+        else:
+            return True
 
     def valid_patient_info(patient):
         fname = patient['fname']
@@ -60,10 +60,10 @@ def store_patient(school_id, data):
         empty_fields = empty_names and empty_bio and empty_extra_info
 
         if empty_fields is True:
-            return False
+            return True
 
         else:
-            return True
+            return False
 
     def valid_patient_history(history):
 
@@ -73,8 +73,8 @@ def store_patient(school_id, data):
         medications_taken = history['medications_taken']
         drugs = history['drugs']
 
-        empty_fields = school_id is None and smoking is None and allergies is None\
-                        and alcohol is None and medications_taken is None and drugs is None
+        empty_fields = school_id is None and smoking is '' and allergies is ''\
+                        and alcohol is '' and medications_taken is '' and drugs is ''
 
         if empty_fields is True:
             return False
@@ -172,19 +172,21 @@ def store_patient(school_id, data):
 
         return store_new_neurologic[0][0]
 
-    valid_data = valid_patient_info(data) and valid_patient_history(data)
-
     print "valid_patient_info", valid_patient_info(data)
     print "valid_patient_history", valid_patient_history(data)
+
+    valid_data = valid_patient_info(data) and valid_patient_history(data)
+
     print "field is none", data['age'] is None
 
     print "school_id_exists", school_id_exists[0][0]
 
     print "valid_data", valid_data
 
-    if school_id_exists[0][0] == 'false' and valid_data is True:
+    validity = school_id_exists[0][0] == 'false' and valid_data is True
+    print "first_condition", validity
 
-        # try:
+    if school_id_exists[0][0] == 'false' and valid_data is True:
 
         store_patient_info()
         store_patient_history()
@@ -196,11 +198,16 @@ def store_patient(school_id, data):
 
         return jsonify({'status': 'OK', 'message': 'Successfully added new patient'})
 
-        # except ValueError:
+    elif school_id_exists[0][0] == 'true' and valid_data is True:
+    # elif school_id_exists[0][0] == 'true':
 
-            # return jsonify({'status': 'FAILED', 'message': 'Please type correct inputs'})
+        return jsonify({'status': 'FAILED', 'message': 'School ID already exists'})
 
-    else:
+    elif school_id_exists[0][0] == 'true' and valid_data is False:
+
+        return jsonify({'status': 'FAILED', 'message': 'School ID already exists'})
+
+    elif school_id_exists[0][0] == 'false' and valid_data is False:
 
         return jsonify({'status': 'FAILED', 'message': 'Please type correct inputs'})
 
