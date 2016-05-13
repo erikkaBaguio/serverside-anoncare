@@ -664,6 +664,36 @@ $$
   where role_id = 2;
 $$
   language 'sql';
+
+
+--[PUT] Update assessment of patient
+--select update_assessment(1,20130000, 'medication1f', 'diagnosis11f','recommendation11', 1);
+create or replace function update_assessment(in par_id                 bigint,
+                                             in par_schoolid           int,
+                                             in par_diagnosis          text,
+                                             in par_recommendation     text,
+                                             in par_attendingphysician int)
+  returns text as
+$$
+declare
+  loc_res text;
+begin
+
+  update Assessment
+  set
+    diagnosis          = par_diagnosis,
+    recommendation     = par_recommendation,
+    attendingphysician = par_attendingphysician
+  where id = par_id
+  and school_id = par_schoolid;
+
+  loc_res = 'OK';
+  return loc_res;
+
+end;
+$$
+  language 'plpgsql';
+
 ------------------------------------------------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------- QUERIES --------------------------------------------------------------

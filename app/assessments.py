@@ -195,3 +195,19 @@ def show_all_doctors():
 
     else:
         return jsonify({"status": "FAILED", "message": "No Doctor Found", "entries": []})
+
+
+def update_assessment(data):
+    id = data.get('id', '')
+    school_id = data.get('school_id', '')
+    diagnosis = data.get('diagnosis', '')
+    recommendation = data.get('reccomendation', '')
+    attending_physician = data.get('attending_physician', '')
+
+    response = spcalls.spcall('update_assessment', (id,
+                                                    school_id,
+                                                    diagnosis,
+                                                    recommendation,
+                                                    attending_physician,), True)
+
+    return jsonify({'status': 'OK', 'message': response[0][0]})

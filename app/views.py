@@ -271,6 +271,16 @@ def get_all_doctors():
     return response
 
 
+@app.route('/api/anoncare/assessment', methods=['PUT'])
+# @auth.login_required
+def update_assessments():
+    data = json.loads(request.data)
+
+    assessment = update_assessment(data)
+
+    return assessment
+
+
 @app.after_request
 def add_cors(resp):
     resp.headers['Access-Control-Allow-Origin'] = flask.request.headers.get('Origin', '*')
