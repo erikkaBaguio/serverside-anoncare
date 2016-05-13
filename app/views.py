@@ -136,7 +136,7 @@ def check_username(username):
 
 
 @app.route('/api/anoncare/user', methods=['POST'])
-# @auth.login_required
+@auth.login_required
 def store_new_user():
 
     data = json.loads(request.data)
@@ -164,7 +164,7 @@ def show_userId(id):
 
 
 @app.route('/api/anoncare/patient', methods=['POST'])
-# @auth.login_required
+@auth.login_required
 def store_new_patient():
     data = json.loads(request.data)
     print "data is", data
@@ -183,7 +183,7 @@ def get_patient_file(school_id):
 
 
 @app.route('/api/anoncare/user', methods=['GET'])
-# @auth.login_required
+@auth.login_required
 def show_users():
     users = show_all_users()
 

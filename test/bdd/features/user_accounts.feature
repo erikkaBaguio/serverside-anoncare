@@ -2,13 +2,11 @@ Feature: User Accounts
   Add, Update, Get User, Get All Users
 
 
-########
 # SUNNY CASES
-########
   Scenario: Add a new user to the system - all requirements put
       Given the following details of a user:
             | fname     | mname    | lname     | email                  | username           | password               | role_id|
-            | Eleazaaa  | Timonera | Regencia  | joregecia@gmail.com   | eleazaaa.regencia  | josiaheleazarregencia  | 3      |
+            | Eleazaaa  | Timonera | Regencia  | joregecia@gmail.com    | eleazaaa.regencia  | josiaheleazarregencia  | 3      |
 
 
       And   the username 'josiah.regencia' does not yet exist
@@ -16,17 +14,6 @@ Feature: User Accounts
       Then  it should have a '200' response
       And   it should have a field 'status' containing 'OK'
       And   it should have a field 'message' containing 'Successfully add new user'
-
-  Scenario: Add a new user to the system - empty inputs
-      Given the following details of a user:
-            | fname     | mname    | lname     | email                   | username           | password               | role_id|
-            | Josiah    |          | Regencia  | jawshaeleazar@gmail.com |                    | josiaheleazarregencia  | 3      |
-
-
-      And   the username 'josiah.regencia' does not yet exist
-      When  admin clicks the register button
-      Then  it should have a '200' response
-      And   it should have a field 'status' containing 'FAILED'
 
 
   Scenario: Retrieve a user's details
@@ -38,6 +25,19 @@ Feature: User Accounts
       And   the following details will be returned
             |fname  |mname    |lname  |email				   |username      |role_id|
             |Remarc |Espinosa |Balisi |remarc.balisi@gmail.com |remarc.balisi |2      |
+
+
+# RAINY CASES
+  Scenario: Add a new user to the system - empty inputs
+      Given the following details of a user:
+            | fname     | mname    | lname     | email                   | username           | password               | role_id|
+            | Josiah    |          | Regencia  | jawshaeleazar@gmail.com |                    | josiaheleazarregencia  | 3      |
+
+
+      And   the username 'josiah.regencia' does not yet exist
+      When  admin clicks the register button
+      Then  it should have a '200' response
+      And   it should have a field 'status' containing 'FAILED'
 
 
   Scenario: Retrieve a user's details that does not exist
