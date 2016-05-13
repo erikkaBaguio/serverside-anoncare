@@ -23,7 +23,7 @@ Feature: User Accounts
   Scenario: Add a new user to the system - empty inputs
       Given the following details of a user:
             | fname     | mname    | lname     | email                   | username           | password               | role_id|
-            | Josiah    |          | Regencia  | jawshaeleazar@gmail.com |                    | josiaheleazarregencia  |        |
+            | Josiah    |    none  | Regencia  | jawshaeleazar@gmail.com |    none            | josiaheleazarregencia  |  none  |
 
 
       And   the username 'josiah.regencia' does not yet exist

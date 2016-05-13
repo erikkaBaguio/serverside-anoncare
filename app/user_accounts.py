@@ -89,7 +89,7 @@ def store_user(data):
                                             (fname, mname, lname, username, pw_hash.hexdigest(), email, role_id), True)
 
                 if store_user[0][0] == 'OK':
-                    # sent = send_email(data['username'], data['email'], data['password'])
+                    sent = send_email(data['username'], data['email'], data['password'])
 
                     return jsonify({"status": 'OK', 'message': 'Successfully add new user'})
 

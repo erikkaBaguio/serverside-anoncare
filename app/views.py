@@ -176,7 +176,7 @@ def show_userId(id):
 # @auth.login_required
 def store_new_patient():
     data = json.loads(request.data)
-    print "data is", data
+    print "store_patient data is", data
     school_id = data['school_id']
 
     new_patient = store_patient(school_id, data)

@@ -96,10 +96,10 @@ def given_the_following_details_of_patient(step):
     world.patient = step.hashes[0]
 
 
-@step(u'When I click the add button')
+@step(u'When  I click the add button')
 def when_i_click_the_add_button(step):
     world.browser = TestApp(app)
-    world.patient_response = world.app.post('/api/anoncare/patient', data=json.dumps(world.patient))
+    world.response = world.app.post('/api/anoncare/patient', data=json.dumps(world.patient))
 
 
 """ Feature : Search User """
