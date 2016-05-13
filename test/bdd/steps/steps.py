@@ -180,15 +180,28 @@ def when_the_admin_click_view_user(step):
     world.response = world.app.get('/api/anoncare/user/{}/'.format(world.user_id))
 
 
+@step(u'Given user with email:')
+def given_user_with_email(step):
+    world.new_password = step.hashes[0]
+
+
+@step(u'When  the user submits the form')
+def when_the_user_submits_the_form(step):
+    world.response = world.app.put('/api/anoncare/forgot_password', data=json.dumps(world.new_password))
+
+
 """ Scenario: Update assessment """
+
 
 @step(u'Given the details of the patient assessment with an id 3')
 def given_the_details_of_the_patient_assessment_with_an_id_3(step):
     world.assessment_oldInfo = step.hashes[0]
 
+
 @step(u'And   the new details for the patient assessment with an id 3')
 def and_the_new_details_for_the_patient_assessment_with_an_id_3(step):
     world.assessment_updatedInfo = step.hashes[0]
+
 
 @step(u'When  the doctor clicks the update button')
 def when_the_doctor_clicks_the_update_button(step):
