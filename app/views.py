@@ -127,10 +127,18 @@ def index(token):
     return jsonify({'status': 'OK', 'message': 'Welcome user', 'data': data})
 
 
-@app.route('/api/anoncare/username/<username>/', methods=['GET'])
+@app.route('/api/anoncare/username/<string:username>/', methods=['GET'])
 def check_username(username):
 
     response = username_checker(username)
+
+    return response
+
+
+@app.route('/api/anoncare/email/<string:email>/', methods=['GET'])
+def check_email(email):
+
+    response = email_checker(email)
 
     return response
 
