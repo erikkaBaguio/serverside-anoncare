@@ -29,6 +29,7 @@ def and_school_id_group1_exists(step, school_id):
     world.check_schoolID = world.app.get('/app/anoncare/school_id_exists/{}/'.format(school_id))
 
 
+
 """ Feature : Assessment """
 """ Scenario: Create assessment successfully """
 
@@ -107,7 +108,6 @@ def given_the_patient_file_with_school_id_group1(step, school_id):
     world.school_id = school_id
     world.patient_file = world.app.get('/api/anoncare/patient/{}/'.format(school_id))
     world.response_json = json.loads(world.patient_file.data)
-    assert_equals(world.response_json['status'], 'OK')
 
 
 @step(u'When  the doctor click view patient file')
