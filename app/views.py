@@ -127,7 +127,7 @@ def index(token):
     return jsonify({'status': 'OK', 'message': 'Welcome user', 'data': data})
 
 
-@app.route('/api/anoncare/username/<username>/', methods=['GET'])
+@app.route('/api/anoncare/username/<string:username>/', methods=['GET'])
 def check_username(username):
 
     response = username_checker(username)
@@ -135,8 +135,16 @@ def check_username(username):
     return response
 
 
+@app.route('/api/anoncare/email/<string:email>/', methods=['GET'])
+def check_email(email):
+
+    response = email_checker(email)
+
+    return response
+
+
 @app.route('/api/anoncare/user', methods=['POST'])
-@auth.login_required
+# @auth.login_required
 def store_new_user():
 
     data = json.loads(request.data)
@@ -164,7 +172,7 @@ def show_userId(id):
 
 
 @app.route('/api/anoncare/patient', methods=['POST'])
-@auth.login_required
+# @auth.login_required
 def store_new_patient():
     data = json.loads(request.data)
     print "data is", data
