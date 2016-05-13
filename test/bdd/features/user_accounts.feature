@@ -2,9 +2,6 @@ Feature: User Accounts
   Add, Update, Get User, Get All Users
 
 
-########
-# SUNNY CASES
-########
   Scenario: Add a new user to the system - all requirements put
       Given the following details of a user:
             | fname     | mname    | lname     | email                  | username           | password               | role_id|
@@ -17,16 +14,35 @@ Feature: User Accounts
       And   it should have a field 'status' containing 'OK'
       And   it should have a field 'message' containing 'Successfully add new user'
 
+
+########
+# SUNNY CASES
+########
+
+
   Scenario: Add a new user to the system - empty inputs
       Given the following details of a user:
             | fname     | mname    | lname     | email                   | username           | password               | role_id|
-            | Josiah    |          | Regencia  | jawshaeleazar@gmail.com |                    | josiaheleazarregencia  | 3      |
+            | Josiah    |    None  | Regencia  | jawshaeleazar@gmail.com |      Null          | josiaheleazarregencia  | 3      |
 
 
       And   the username 'josiah.regencia' does not yet exist
       When  admin clicks the register button
       Then  it should have a '200' response
       And   it should have a field 'status' containing 'FAILED'
+
+
+    Scenario: Add a new user to the system - email already exists
+      Given the following details of a user:
+            | fname     | mname    | lname     | email                  | username           | password               | role_id|
+            | Eleazaaa  | Timonera | Regencia  | jawshaeleazar@gmail.com| eleazaaa.regencia  | josiaheleazarregencia  | 3      |
+
+
+      And   the email 'jawshaeleazar@gmail.com' exists
+      When  admin clicks the register button
+      Then  it should have a '200' response
+      And   it should have a field 'status' containing 'FAILED'
+      And   it should have a field 'message' containing 'Email already exists'
 
 
   Scenario: Retrieve a user's details

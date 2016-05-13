@@ -11,7 +11,6 @@ from spcalls import SPcalls
 import random
 import string
 
-
 spcalls = SPcalls()
 
 
@@ -19,6 +18,13 @@ def check_username(username):
     check_response = spcalls.spcall('check_username', (username,))
 
     return check_response
+
+
+def check_email(email):
+    check_response = spcalls.spcall('check_email', (email,))
+
+    return check_response
+
 
 def username_checker(username):
     response = check_username(username)
@@ -29,8 +35,18 @@ def username_checker(username):
     else:
         return jsonify({"status": "OK", "message": "Username already exists"})
 
-def store_user(data):
 
+def email_checker(email):
+    response = check_email(email)
+
+    if response == 'f':
+        return jsonify({"status": "FAILED", "message": "Email does not exists"})
+
+    else:
+        return jsonify({"status": "OK", "message": "Email already exists"})
+
+
+def store_user(data):
     username = data['username']
     email = data['email']
 
@@ -51,7 +67,7 @@ def store_user(data):
             password = data['password']
             role_id = data['role_id']
 
-            if fname is not '' and mname is not '' and lname is not '' and username is not '' and password is not '' and role_id is not None:
+            if fname is not None and mname is not None and lname is not None and username is not None and password is not None and role_id is not None:
                 """
                 PASSWORD HASHING
                 source: https://pythonprogramming.net/password-hashing-flask-tutorial/
@@ -64,7 +80,8 @@ def store_user(data):
                 """
                 pw_hash = hashlib.md5(password.encode())
 
-                store_user = spcalls.spcall('store_user', (fname, mname, lname, username, pw_hash.hexdigest(), email, role_id), True)
+                store_user = spcalls.spcall('store_user',
+                                            (fname, mname, lname, username, pw_hash.hexdigest(), email, role_id), True)
 
                 if store_user[0][0] == 'OK':
                     sent = send_email(data['username'], data['email'], data['password'])
@@ -84,20 +101,24 @@ def store_user(data):
             return jsonify({'status': 'FAILED', 'message': 'Invalid email input!'})
 
     elif check_username_exist[0][0] == 'EXISTED':
-        return jsonify({'status': 'FAILED', 'message': 'username already exist'})
+        return jsonify({'status': 'FAILED', 'message': 'Username already exists'})
 
     elif check_email_exist[0][0] == 'EXISTED':
-        return jsonify({'status': 'FAILED', 'message': 'email already exist'})
+        return jsonify({'status': 'FAILED', 'message': 'Email already exists'})
 
     else:
         return jsonify({'status': 'FAILED'})
 
 
 def show_user_id(id):
+    """
+    when you have only one parameter you need to user "," comma.
+    example: spcals('show_user_id', (id,) )
+
+    """
     spcalls = SPcalls()
     print "spcall", spcalls
-    #when you have only one parameter you need to user "," comma.
-    #example: spcals('show_user_id', (id,) )
+
     user_id = spcalls.spcall('show_user_id', (id,))
     entries = []
 
@@ -109,12 +130,12 @@ def show_user_id(id):
 
     elif len(user_id) != 0:
         r = user_id[0]
-        entries.append({"fname":r[0],
-                     "mname":r[1],
-                     "lname":r[2],
-                     "email":r[3],
-                     "username":r[4],
-                     "role_id":r[5]})
+        entries.append({"fname": r[0],
+                        "mname": r[1],
+                        "lname": r[2],
+                        "email": r[3],
+                        "username": r[4],
+                        "role_id": r[5]})
         return jsonify({"status": "OK", "message": "OK", "entries": entries})
 
     else:
@@ -122,7 +143,7 @@ def show_user_id(id):
 
 
 def show_all_users():
-    records = spcalls.spcall('show_all_users',())
+    records = spcalls.spcall('show_all_users', ())
     print "records", records
     entries = []
 
@@ -140,7 +161,7 @@ def show_all_users():
                 "role_id": row[5]
             })
 
-        return jsonify({"status": "OK", "message":"OK", "entries":entries, "count": len(entries)})
+        return jsonify({"status": "OK", "message": "OK", "entries": entries, "count": len(entries)})
 
     else:
         return jsonify({"status": 'FAILED', "message": "No Users Found"})
@@ -148,22 +169,21 @@ def show_all_users():
 
 def search_user(data):
     keyword = data['search']
-    users = spcalls.spcall('search_user', (keyword,) )
+    users = spcalls.spcall('search_user', (keyword,))
 
     entries = []
 
     if users:
 
         for u in users:
-            entries.append({'fname':u[0], 'mname':u[1], 'lname':u[2], 'email':u[3], 'role':u[5]})
+            entries.append({'fname': u[0], 'mname': u[1], 'lname': u[2], 'email': u[3], 'role': u[5]})
 
-        return jsonify({'status':'OK', 'message':'This are all the user(s) matched your search', 'entries':entries})
+        return jsonify({'status': 'OK', 'message': 'This are all the user(s) matched your search', 'entries': entries})
 
-    return jsonify({'status':'FAILED', 'message':'No data matched your search'})
+    return jsonify({'status': 'FAILED', 'message': 'No data matched your search'})
 
 
 def change_password(username, password):
-
     pw_hash = hashlib.md5(password.encode())
 
     spcalls.spcall("updatepassword", (username, pw_hash.hexdigest(),), True)
@@ -172,7 +192,6 @@ def change_password(username, password):
 
 
 def get_username(email):
-
     data = spcalls.spcall("show_user_email", (email,))
 
     username = data[0][4]
