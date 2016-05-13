@@ -201,7 +201,7 @@ def update_assessment(data):
     id = data.get('id', '')
     school_id = data.get('school_id', '')
     diagnosis = data.get('diagnosis', '')
-    recommendation = data.get('reccomendation', '')
+    recommendation = data.get('recommendation', '')
     attending_physician = data.get('attending_physician', '')
 
     response = spcalls.spcall('update_assessment', (id,
