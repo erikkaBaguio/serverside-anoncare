@@ -224,6 +224,8 @@ def login_forgot_password(email):
         username = get_username(email)
         new_password = generate_password()
 
+        print "username", username
+
         password_change = change_password(username, new_password)
 
         send_mail = forgot_pass_send_email(email, new_password)

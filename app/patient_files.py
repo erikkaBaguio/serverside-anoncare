@@ -22,7 +22,7 @@ def store_patient(school_id, data):
             return True
 
     def bio_empty(age, sex, height, weight, date_of_birth):
-        if age is None and sex is '' and height is '' and weight is None and date_of_birth is None:
+        if age is None and sex is '' and height is '' and weight is None and date_of_birth is '':
             return False
         else:
             return True
