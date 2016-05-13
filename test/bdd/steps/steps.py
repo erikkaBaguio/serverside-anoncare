@@ -127,6 +127,22 @@ def and_the_following_details_will_be_returned(step):
 """ Scenario: Create patient successfully """
 
 
+@step(u'Given the following details of a user:')
+def given_the_following_details_of_a_user(step):
+    world.new_user = step.hashes[0]
+
+
+@step(u'And   the username \'([^\']*)\' does not yet exist')
+def and_the_username_group1_does_not_yet_exist(step, group1):
+    world.check_username = world.app.get('/api/anoncare/userexists/{}'.format(id))
+
+
+@step(u'When  admin clicks the register button')
+def when_admin_clicks_the_register_button(step):
+    world.browser = TestApp(app)
+    world.response = world.app.post('/api/anoncare/user', data=json.dumps(world.new_user))
+
+
 @step(u'Given user with id \'([^\']*)\'')
 def given_user_with_id_group1(step, user_id):
     world.user_id = user_id

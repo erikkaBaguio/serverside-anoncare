@@ -6,27 +6,27 @@ Feature: User Accounts
 # SUNNY CASES
 ########
   Scenario: Add a new user to the system - all requirements put
-    Given the following details of a user:
-        | fname     | mname    | lname     | email                   | username           | password               | role_id|
-        | Josiaha   | Timonera | Regencia  | jawshaeleazar@gmail.com | josiaha.regencia   | josiaheleazarregencia  | 3      |
+      Given the following details of a user:
+            | fname     | mname    | lname     | email                  | username           | password               | role_id|
+            | Eleazaaa  | Timonera | Regencia  | joregecia@gmail.com   | eleazaaa.regencia  | josiaheleazarregencia  | 3      |
 
 
-    And   the username 'josiah.regencia' does not yet exist
-    When  admin clicks the register button
-    Then it should have a '200' response
-    And it should have a field 'status' containing 'OK'
-    And it should have a field 'message' containing 'Successfully add fname'
+      And   the username 'josiah.regencia' does not yet exist
+      When  admin clicks the register button
+      Then  it should have a '200' response
+      And   it should have a field 'status' containing 'OK'
+      And   it should have a field 'message' containing 'Successfully add new user'
 
   Scenario: Add a new user to the system - empty inputs
-    Given the following details of a user:
-        | fname     | mname    | lname     | email                   | username           | password               | role_id|
-        | Josiaha   |          | Regencia  | jawshaeleazar@gmail.com |                    | josiaheleazarregencia  | 3      |
+      Given the following details of a user:
+            | fname     | mname    | lname     | email                   | username           | password               | role_id|
+            | Josiah    |          | Regencia  | jawshaeleazar@gmail.com |                    | josiaheleazarregencia  | 3      |
 
 
-    And   the username 'josiah.regencia' does not yet exist
-    When  admin clicks the register button
-    Then it should have a '200' response
-    And it should have a field 'status' containing 'FAILED'
+      And   the username 'josiah.regencia' does not yet exist
+      When  admin clicks the register button
+      Then  it should have a '200' response
+      And   it should have a field 'status' containing 'FAILED'
 
 
   Scenario: Retrieve a user's details

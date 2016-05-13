@@ -136,7 +136,7 @@ def check_username(username):
 
 
 @app.route('/api/anoncare/user', methods=['POST'])
-@auth.login_required
+# @auth.login_required
 def store_new_user():
 
     data = json.loads(request.data)
@@ -164,7 +164,7 @@ def show_userId(id):
 
 
 @app.route('/api/anoncare/patient', methods=['POST'])
-@auth.login_required
+# @auth.login_required
 def store_new_patient():
     data = json.loads(request.data)
     print "data is", data
