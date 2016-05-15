@@ -497,25 +497,35 @@ $$
     language 'sql';
 
 
-
+--[GET] Retrieve all colleges
+--select show_all_colleges();
+create or replace function show_all_colleges(out bigint,
+                                             out text)
+    returns setof record as
+$$
+    select id, college_name
+    from College;
+$$
+    language 'sql';
 
 -----------------------------------------------------END OF PATIENT FILE --------------------------------------------------
 
 
 ------------------------------------------------------------ ASSESSMENTS -----------------------------------------------------------
 create or replace function show_assessment_by_id(in par_assessment_id bigint,
-                                                                 out bigint,
-											                     out timestamp,
-											                     out int,
-											                     out int,
-											                     out int,
-											                     out text,
-											                     out text,
-											                     out text,
-											                     out text,
-                                                                 out text,
-                                                                 out int,
-											                     out boolean) returns setof record as
+                                                 out bigint,
+                                                 out timestamp,
+                                                 out int,
+                                                 out int,
+                                                 out int,
+                                                 out text,
+                                                 out text,
+                                                 out text,
+                                                 out text,
+                                                 out text,
+                                                 out int,
+                                                 out boolean)
+    returns setof record as
     $$
         update assessment set is_read = TRUE;
         select * from assessment where id = par_assessment_id;
