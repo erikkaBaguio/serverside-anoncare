@@ -330,3 +330,22 @@ def show_patient(school_id):
 
     else:
         return jsonify({"status": "FAILED", "message": "No Patient File Found", "entries": []})
+
+
+def show_all_colleges():
+    colleges = spcalls.spcall('show_all_colleges',())
+    entries = []
+
+    if 'Error' in str(colleges[0][0]):
+        return jsonify({"status": "FAILED", "message": colleges[0][0]})
+
+    elif len(colleges) != 0:
+        for college in colleges:
+            entries.append({"id": college[0],
+                            "college_name": college[1]
+                            })
+
+        return jsonify({"status": "OK", "message": "OK", "entries": entries, "count": len(entries)})
+
+    else:
+        return jsonify({"status": "FAILED", "message": "No College Found", "entries": []})

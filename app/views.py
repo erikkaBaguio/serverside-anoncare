@@ -271,9 +271,16 @@ def check_school_id(school_id):
 
 
 @app.route('/api/anoncare/doctors/', methods=['GET'])
-@auth.login_required
+# @auth.login_required
 def get_all_doctors():
     response = show_all_doctors()
+
+    return response
+
+
+@app.route('/api/anoncare/colleges/', methods=['GET'])
+def get_all_colleges():
+    response = show_all_colleges()
 
     return response
 
@@ -293,6 +300,9 @@ def get_all_unread_notification(token):
         notifications = show_all_unread_notification(u[3])
 
     return notifications
+
+
+
 
 
 @app.after_request
