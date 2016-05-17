@@ -223,10 +223,34 @@ def show_assessment_by_id(id):
 
     entries = []
 
-    for a in assessment:
-        entries.append({'id':a[0], 'date':a[1], 'school_id':a[2], 'age':a[3], 'vital_signs_id':a[4],
-                        'chief_complaint':a[5], 'history_of_present_illness':a[6], 'medications_taken':a[7],
-                        'diagnosis':a[8], 'recommendation':a[9], 'attending_physician':a[10], 'is_read':a[11]
-        })
+    # for a in assessment:
+    #     entries.append({'id':a[0], 'date':a[1], 'school_id':a[2], 'age':a[3], 'vital_signs_id':a[4],
+    #                     'chief_complaint':a[5], 'history_of_present_illness':a[6], 'medications_taken':a[7],
+    #                     'diagnosis':a[8], 'recommendation':a[9], 'attending_physician':a[10], 'is_read':a[11]
+    #     })
 
-    return jsonify({'status':'OK', 'message':'Successfully read assessment', 'entries':entries})
+    if len(assessment) != 0:
+        for r in assessment:
+            entries.append({"assessment_id": r[0],
+                            "assessment_date": r[1],
+                            "school_id": r[2],
+                            "age": r[3],
+                            "vital_signid": r[4],
+                            "temperature": r[12],
+                            "pulse_rate": r[13],
+                            "respiration_rate": r[14],
+                            "blood_pressure": r[15],
+                            "weight": r[16],
+                            "chief_complaint": r[5],
+                            "history_of_present_illness": r[6],
+                            "medications_taken": r[7],
+                            "diagnosis": r[8],
+                            "recommendation": r[9],
+                            "attending_physician": r[17] + ' ' + r[18],
+                            "patient_fname":r[19],
+                            "patient_mname":r[20],
+                            "patient_lname":r[21]})
+
+        return jsonify({'status':'OK', 'message':'Successfully read assessment', 'entries':entries})
+
+    return jsonify({'status':'FAILED', 'message':'No assessment available'})

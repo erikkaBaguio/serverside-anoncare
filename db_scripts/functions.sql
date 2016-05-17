@@ -509,8 +509,8 @@ $$
 
 
 ------------------------------------------------------------ ASSESSMENTS -----------------------------------------------------------
-create or replace function show_assessment_by_id(in par_assessment_id bigint,
-                                                                 out bigint,
+create or replace function show_assessment_by_id(in par_id int,
+                                           out bigint,
 											                     out timestamp,
 											                     out int,
 											                     out int,
@@ -519,14 +519,48 @@ create or replace function show_assessment_by_id(in par_assessment_id bigint,
 											                     out text,
 											                     out text,
 											                     out text,
-                                                                 out text,
-                                                                 out int,
-											                     out boolean) returns setof record as
-    $$
-        update assessment set is_read = TRUE;
-        select * from assessment where id = par_assessment_id;
-    $$
-    language 'sql';
+											                     out text,
+											                     out int,
+											                     out boolean,
+											                     out float,
+											                     out float,
+											                     out int,
+											                     out text,
+											                     out float,
+											                     out text,
+											                     out text,
+                                                             out text,
+                                                         out text,
+                                                     out text)
+  RETURNS SETOF RECORD AS
+$$
+
+  select Assessment.*,
+         Vital_signs.temperature,
+         Vital_signs.pulse_rate,
+         Vital_signs.respiration_rate,
+         Vital_signs.blood_pressure,
+         Vital_signs.weight,
+         Userinfo.fname,
+         Userinfo.lname,
+         Patient_info.fname,
+         Patient_info.mname,
+         Patient_info.lname
+  FROM Assessment
+  INNER JOIN Vital_signs ON (
+    Assessment.vital_signsID = Vital_signs.id
+    )
+  INNER JOIN Userinfo ON (
+    Assessment.attendingphysician = Userinfo.id
+    )
+  INNER JOIN Patient_info ON (
+    Assessment.school_id = Patient_info.school_id
+    )
+  WHERE Assessment.id = par_id
+  ORDER BY id DESC;
+
+$$
+  LANGUAGE 'sql';
 
 
 -- [POST] Insert vital signs data of a patient
