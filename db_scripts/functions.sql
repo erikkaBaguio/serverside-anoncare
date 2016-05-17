@@ -73,6 +73,12 @@ create or replace function check_username_password(in par_username text, in par_
   $$
   language 'plpgsql';
 
+create or replace function show_all_unread_notification(in par_email text, out bigint, out int, out int, out boolean, out text) returns setof record as
+$$
+    select * from Notification where is_read = FALSE and email=par_email;
+$$
+language 'sql';
+
 --------------------------------------------------------------- USER -----------------------------------------------------------
 -- this will return set of users that match or slightly match your search
 --source: http://www.tutorialspoint.com/postgresql/postgresql_like_clause.htm
@@ -512,25 +518,58 @@ $$
 
 
 ------------------------------------------------------------ ASSESSMENTS -----------------------------------------------------------
-create or replace function show_assessment_by_id(in par_assessment_id bigint,
-                                                 out bigint,
-                                                 out timestamp,
-                                                 out int,
-                                                 out int,
-                                                 out int,
-                                                 out text,
-                                                 out text,
-                                                 out text,
-                                                 out text,
-                                                 out text,
-                                                 out int,
-                                                 out boolean)
-    returns setof record as
-    $$
-        update assessment set is_read = TRUE;
-        select * from assessment where id = par_assessment_id;
-    $$
-    language 'sql';
+create or replace function show_assessment_by_id(in par_id int,
+                                           out bigint,
+											                     out timestamp,
+											                     out int,
+											                     out int,
+											                     out int,
+											                     out text,
+											                     out text,
+											                     out text,
+											                     out text,
+											                     out text,
+											                     out int,
+											                     out boolean,
+											                     out float,
+											                     out float,
+											                     out int,
+											                     out text,
+											                     out float,
+											                     out text,
+											                     out text,
+                                           out text,
+                                           out text,
+                                           out text)
+  RETURNS SETOF RECORD AS
+$$
+
+  select Assessment.*,
+         Vital_signs.temperature,
+         Vital_signs.pulse_rate,
+         Vital_signs.respiration_rate,
+         Vital_signs.blood_pressure,
+         Vital_signs.weight,
+         Userinfo.fname,
+         Userinfo.lname,
+         Patient_info.fname,
+         Patient_info.mname,
+         Patient_info.lname
+  FROM Assessment
+  INNER JOIN Vital_signs ON (
+    Assessment.vital_signsID = Vital_signs.id
+    )
+  INNER JOIN Userinfo ON (
+    Assessment.attendingphysician = Userinfo.id
+    )
+  INNER JOIN Patient_info ON (
+    Assessment.school_id = Patient_info.school_id
+    )
+  WHERE Assessment.id = par_id
+  ORDER BY id DESC;
+
+$$
+  LANGUAGE 'sql';
 
 
 -- [POST] Insert vital signs data of a patient
@@ -610,12 +649,15 @@ create or replace function show_assessment(in par_schoolID int,
 											                     out int,
 											                     out boolean,
 											                     out float,
-											                     out int,
+											                     out float,
 											                     out int,
 											                     out text,
 											                     out float,
 											                     out text,
-											                     out text)
+											                     out text,
+                                                             out text,
+                                                         out text,
+                                                     out text)
   RETURNS SETOF RECORD AS
 $$
 
@@ -626,13 +668,19 @@ $$
          Vital_signs.blood_pressure,
          Vital_signs.weight,
          Userinfo.fname,
-         Userinfo.lname
+         Userinfo.lname,
+         Patient_info.fname,
+         Patient_info.mname,
+         Patient_info.lname
   FROM Assessment
   INNER JOIN Vital_signs ON (
     Assessment.vital_signsID = Vital_signs.id
     )
   INNER JOIN Userinfo ON (
     Assessment.attendingphysician = Userinfo.id
+    )
+  INNER JOIN Patient_info ON (
+    Assessment.school_id = Patient_info.school_id
     )
   WHERE Assessment.school_id = par_schoolID
   ORDER BY id DESC;
@@ -658,7 +706,7 @@ create or replace function show_assessment_id(IN par_schoolID INT,
                                               OUT INT,
                                               OUT BOOLEAN,
                                               OUT FLOAT,
-                                              OUT INT,
+                                              OUT FLOAT,
                                               OUT INT,
                                               OUT TEXT,
                                               OUT FLOAT,

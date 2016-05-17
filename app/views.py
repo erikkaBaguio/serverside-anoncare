@@ -185,6 +185,7 @@ def store_new_patient():
 
 
 @app.route('/api/anoncare/patient/<int:school_id>/', methods=['GET'])
+@auth.login_required
 def get_patient_file(school_id):
     response = show_patient(school_id)
 
@@ -259,6 +260,15 @@ def add_assessments():
     assessment = store_assessment(data)
 
     return assessment
+
+
+@app.route('/api/anoncare/assessment', methods=['POST'])
+def update_assessment():
+    data = json.loads(request.data)
+
+    update = update_assessment(data)
+
+    return update
 
 
 @app.route('/api/anoncare/school_id_exists/<int:school_id>/', methods=['GET'])
