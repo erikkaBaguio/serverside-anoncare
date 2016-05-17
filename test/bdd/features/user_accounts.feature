@@ -8,10 +8,10 @@ Feature: User Accounts
   Scenario: Add a new user to the system - all requirements put
       Given the following details of a user:
             | fname     | mname    | lname     | email                  | username           | password               | role_id|
-            | Eleazaaa  | Timonera | Regencia  | jawshaeleazar@gmail.com| eleazaaa.regencia  | josiaheleazarregencia  | 3      |
+            | Eleazaaa  | Timonera | Regencia  | jetrega@gmail.com      | ele.regencia       | josiaheleazarregencia  | 3      |
 
 
-      And   the username 'josiah.regencia' does not yet exist
+      And   the username 'ele.regencia' does not yet exist
       When  admin clicks the register button
       Then  it should have a '200' response
       And   it should have a field 'status' containing 'OK'
@@ -75,3 +75,24 @@ Feature: User Accounts
       Then  it should have a '200' response
       And   it should have a field 'status' containing 'FAILED'
       And   it should have a field 'message' containing 'No User Found'
+
+  Scenario: User forgets password - email exists
+      Given user with email:
+            |email                  |
+            |jawshaeleazar@gmail.com|
+
+      When  the user submits the form
+      Then  it should have a '200' response
+      And   it should have a field 'status' containing 'OK'
+      And   it should have a field 'message' containing 'Password Changed!'
+
+
+  Scenario: User forgets password - no email exists
+      Given user with email:
+            |email                  |
+            |lalalalalala@gmail.com|
+
+      When  the user submits the form
+      Then  it should have a '200' response
+      And   it should have a field 'status' containing 'ERROR'
+      And   it should have a field 'message' containing 'No Email Exists'

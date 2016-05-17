@@ -50,6 +50,13 @@ create or replace function show_user_username(in par_username text, out text, ou
   language 'sql';
 
 
+create or replace function show_user_email(in par_email text, out text, out text, out text, out text, out text, out int) returns setof record as
+  $$
+    select fname, mname, lname, email, username, role_id from Userinfo where email = par_email;
+  $$
+  language 'sql';
+
+
 create or replace function check_username_password(in par_username text, in par_password text) returns text as
   $$  declare local_response text;
     begin
@@ -502,6 +509,26 @@ $$
 
 
 ------------------------------------------------------------ ASSESSMENTS -----------------------------------------------------------
+create or replace function show_assessment_by_id(in par_assessment_id bigint,
+                                                                 out bigint,
+											                     out timestamp,
+											                     out int,
+											                     out int,
+											                     out int,
+											                     out text,
+											                     out text,
+											                     out text,
+											                     out text,
+                                                                 out text,
+                                                                 out int,
+											                     out boolean) returns setof record as
+    $$
+        update assessment set is_read = TRUE;
+        select * from assessment where id = par_assessment_id;
+    $$
+    language 'sql';
+
+
 -- [POST] Insert vital signs data of a patient
 -- select update_vitalSigns(3,37.1, 80, 19, '90/70', 48)
 create or replace function update_vitalSigns(in par_id int,
@@ -670,6 +697,36 @@ $$
   where role_id = 2;
 $$
   language 'sql';
+
+
+--[PUT] Update assessment of patient
+--select update_assessment(1,20130000, 'medication1f', 'diagnosis11f','recommendation11', 1);
+create or replace function update_assessment(in par_id                 bigint,
+                                             in par_schoolid           int,
+                                             in par_diagnosis          text,
+                                             in par_recommendation     text,
+                                             in par_attendingphysician int)
+  returns text as
+$$
+declare
+  loc_res text;
+begin
+
+  update Assessment
+  set
+    diagnosis          = par_diagnosis,
+    recommendation     = par_recommendation,
+    attendingphysician = par_attendingphysician
+  where id = par_id
+  and school_id = par_schoolid;
+
+  loc_res = 'OK';
+  return loc_res;
+
+end;
+$$
+  language 'plpgsql';
+
 ------------------------------------------------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------- QUERIES --------------------------------------------------------------
