@@ -170,7 +170,10 @@ def show_assessment(school_id):
                             "medications_taken": r[7],
                             "diagnosis": r[8],
                             "recommendation": r[9],
-                            "attending_physician": r[17] + ' ' + r[18]})
+                            "attending_physician": r[17] + ' ' + r[18],
+                            "patient_fname":r[19],
+                            "patient_mname":r[20],
+                            "patient_lname":r[21]})
 
         return jsonify({"status": "OK", "message": "OK", "entries": entries, "count": len(entries)})
 

@@ -611,7 +611,10 @@ create or replace function show_assessment(in par_schoolID int,
 											                     out text,
 											                     out float,
 											                     out text,
-											                     out text)
+											                     out text,
+                                                             out text,
+                                                         out text,
+                                                     out text)
   RETURNS SETOF RECORD AS
 $$
 
@@ -622,13 +625,19 @@ $$
          Vital_signs.blood_pressure,
          Vital_signs.weight,
          Userinfo.fname,
-         Userinfo.lname
+         Userinfo.lname,
+         Patient_info.fname,
+         Patient_info.mname,
+         Patient_info.lname
   FROM Assessment
   INNER JOIN Vital_signs ON (
     Assessment.vital_signsID = Vital_signs.id
     )
   INNER JOIN Userinfo ON (
     Assessment.attendingphysician = Userinfo.id
+    )
+  INNER JOIN Patient_info ON (
+    Assessment.school_id = Patient_info.school_id
     )
   WHERE Assessment.school_id = par_schoolID
   ORDER BY id DESC;
