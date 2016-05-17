@@ -197,8 +197,6 @@ def show_all_doctors():
 
     else:
         return jsonify({"status": "FAILED", "message": "No Doctor Found", "entries": []})
-<<<<<<< HEAD
-=======
 
 
 def update_assessment(data):
@@ -229,4 +227,3 @@ def show_assessment_by_id(id):
         })
 
     return jsonify({'status':'OK', 'message':'Successfully read assessment', 'entries':entries})
->>>>>>> eed03513396c9bb43d45b448e5fac863fc7f04e0
