@@ -185,6 +185,7 @@ def store_new_patient():
 
 
 @app.route('/api/anoncare/patient/<int:school_id>/', methods=['GET'])
+@auth.login_required
 def get_patient_file(school_id):
     response = show_patient(school_id)
 
