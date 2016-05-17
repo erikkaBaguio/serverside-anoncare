@@ -144,10 +144,11 @@ def check_email(email):
 
 
 @app.route('/api/anoncare/user', methods=['POST'])
-# @auth.login_required
+@auth.login_required
 def store_new_user():
 
     data = json.loads(request.data)
+    print "store_user data", data
     add_user = store_user(data)
 
     return add_user
@@ -175,7 +176,7 @@ def show_userId(id):
 # @auth.login_required
 def store_new_patient():
     data = json.loads(request.data)
-    print "data is", data
+    print "store_patient data is", data
     school_id = data['school_id']
 
     new_patient = store_patient(school_id, data)
@@ -191,7 +192,7 @@ def get_patient_file(school_id):
 
 
 @app.route('/api/anoncare/user', methods=['GET'])
-# @auth.login_required
+@auth.login_required
 def show_users():
     users = show_all_users()
 
@@ -244,7 +245,7 @@ def show_assessment_all(school_id):
 
 
 @app.route('/api/anoncare/assessment', methods=['POST'])
-@auth.login_required
+# @auth.login_required
 def add_assessments():
     data = json.loads(request.data)
 
@@ -254,7 +255,7 @@ def add_assessments():
 
 
 @app.route('/api/anoncare/school_id_exists/<int:school_id>/', methods=['GET'])
-@auth.login_required
+# @auth.login_required
 def check_school_id(school_id):
 
     response = school_id_checker(school_id)
