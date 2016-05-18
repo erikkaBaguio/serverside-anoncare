@@ -649,15 +649,15 @@ create or replace function show_assessment(in par_schoolID int,
 											                     out int,
 											                     out boolean,
 											                     out float,
-											                     out float,
+											                     out int,
 											                     out int,
 											                     out text,
 											                     out float,
 											                     out text,
 											                     out text,
-                                                             out text,
-                                                         out text,
-                                                     out text)
+                                           out text,
+                                           out text,
+                                           out text)
   RETURNS SETOF RECORD AS
 $$
 
