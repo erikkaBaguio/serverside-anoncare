@@ -35,6 +35,7 @@ app.config.update(DEBUG=True,
 
 mail = Mail(app)
 
+
 def get_auth_token(username, password):
     """
     Encode a secure token for cookie
@@ -89,10 +90,10 @@ def authentication():
 
     get_user = spcall.spcall('check_username_password', (username,  pw_hash.hexdigest() ))
 
-    if (get_user[0][0] == 'FAILED'):
+    if get_user[0][0] == 'FAILED':
         return jsonify({'status': 'FAILED', 'message': 'Invalid username or password'})
 
-    if (get_user[0][0] == 'OK'):
+    if get_user[0][0] == 'OK':
 
         user = spcall.spcall('show_user_username', (username,))
         data = []
@@ -262,13 +263,13 @@ def add_assessments():
     return assessment
 
 
-@app.route('/api/anoncare/assessment', methods=['POST'])
-def update_assessment():
+@app.route('/api/anoncare/assessment', methods=['PUT'])
+def doctor_referral():
     data = json.loads(request.data)
 
-    update = update_assessment(data)
+    updated_assessment = update_assessment(data)
 
-    return update
+    return updated_assessment
 
 
 @app.route('/api/anoncare/school_id_exists/<int:school_id>/', methods=['GET'])
