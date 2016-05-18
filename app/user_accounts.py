@@ -238,7 +238,7 @@ def show_all_unread_notification(email):
     unread_notifications = spcalls.spcall('show_all_unread_notification',(email,))
     entries = []
 
-    if unread_notifications == None:
+    if len(unread_notifications) == 0:
         return jsonify({'status':'OK', 'message':'No new notifications'})
 
     for u in unread_notifications:

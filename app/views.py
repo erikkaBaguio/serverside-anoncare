@@ -296,6 +296,7 @@ def get_all_colleges():
 
 
 @app.route('/api/anoncare/notifications/<string:token>', methods=['GET'])
+@auth.login_required
 def get_all_unread_notification(token):
     days = timedelta(days=14)
     max_age = days.total_seconds()
