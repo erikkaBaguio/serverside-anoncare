@@ -306,6 +306,7 @@ def get_all_unread_notification(token):
     spcall = SPcalls()
 
     user = spcall.spcall('show_user_username', (username[0],))
+    print user[0]
     data = []
 
     for u in user:
@@ -314,7 +315,11 @@ def get_all_unread_notification(token):
     return notifications
 
 
+@app.route('/api/anoncare/read/notification/<int:id>', methods=['POST'])
+@auth.login_required
+def read_notification(id):
 
+    return readNotification(id)
 
 
 @app.after_request

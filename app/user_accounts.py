@@ -245,3 +245,12 @@ def show_all_unread_notification(email):
         entries.append({'id':u[0], 'assessment_id':u[1], 'doctor_id':u[2], 'is_read':u[3]})
 
     return jsonify({'status':'OK', 'message':'You have new notifications', 'entries':entries})
+
+def readNotification(id):
+
+    read = spcalls.spcall('read_notification',(id,), True)
+
+    if read[0][0] == 'Error':
+        return jsonify({'status':'FAILED', 'message':'Error reading notification'})
+
+    return jsonify({'status':'OK', 'message':'Success reading notification'})

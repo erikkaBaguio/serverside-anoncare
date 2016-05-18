@@ -79,6 +79,16 @@ $$
 $$
 language 'sql';
 
+create or replace function read_notification(in par_id bigint) returns text as
+    $$ declare local_response text;
+        begin
+            update notification set is_read=TRUE where id=par_id;
+            local_response = 'OK';
+            return local_response;
+        end;
+    $$
+    language 'plpgsql';
+
 --------------------------------------------------------------- USER -----------------------------------------------------------
 -- this will return set of users that match or slightly match your search
 --source: http://www.tutorialspoint.com/postgresql/postgresql_like_clause.htm
