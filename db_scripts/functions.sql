@@ -787,6 +787,16 @@ end;
 $$
   language 'plpgsql';
 
+create or replace function physician_refer(in par_attendingphysician int, in par_assessment_id bigint) returns text as
+    $$ declare local_response text;
+        begin
+            update Assessment set attendingphysician = par_attendingphysician where id=par_assessment_id;
+            local_response = 'OK';
+            return local_response;
+        end;
+    $$
+    language 'plpgsql';
+
 ------------------------------------------------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------- QUERIES --------------------------------------------------------------

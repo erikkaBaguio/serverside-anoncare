@@ -253,6 +253,13 @@ def show_assessment_all(school_id):
     return get_assessment
 
 
+@app.route('/api/anoncare/refer/<int:attending_physician>/<int:assessment_id>', methods=['POST'])
+@auth.login_required
+def physician_refer(attending_physician, assessment_id):
+
+    return referral(attending_physician, assessment_id)
+
+
 @app.route('/api/anoncare/assessment', methods=['POST'])
 @auth.login_required
 def add_assessments():

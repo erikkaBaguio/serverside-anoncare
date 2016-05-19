@@ -215,6 +215,14 @@ def update_assessment(data):
 
     return jsonify({'status': 'OK', 'message': response[0][0]})
 
+def referral(attending_physician, assessment_id):
+
+    refer = spcalls.spcall('physician_refer', (attending_physician, assessment_id), True)
+
+    if refer[0][0] == 'Error':
+        return jsonify({'status':'FAILED', 'message':'Failed to update notification'})
+
+    return jsonify({'status':'OK', 'message':'Successfully updated notification'})
 
 def show_assessment_by_id(id):
     assessment = spcalls.spcall('show_assessment_by_id', (id,))
