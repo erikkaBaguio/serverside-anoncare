@@ -764,10 +764,9 @@ $$
 --[PUT] Update assessment of patient
 --select update_assessment(1,20130000, 'medication1f', 'diagnosis11f','recommendation11', 1);
 create or replace function update_assessment(in par_id                 bigint,
-                                             in par_schoolid           int,
-                                             in par_diagnosis          text,
-                                             in par_recommendation     text,
-                                             in par_attendingphysician int)
+                                             in par_medicationstaken   text,
+                                             in par_diagnosis     text,
+                                             in par_recommendation text)
   returns text as
 $$
 declare
@@ -778,9 +777,8 @@ begin
   set
     diagnosis          = par_diagnosis,
     recommendation     = par_recommendation,
-    attendingphysician = par_attendingphysician
-  where id = par_id
-  and school_id = par_schoolid;
+    medicationstaken = par_medicationstaken
+  where id = par_id;
 
   loc_res = 'OK';
   return loc_res;

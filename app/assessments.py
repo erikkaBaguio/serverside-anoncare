@@ -203,17 +203,15 @@ def show_all_doctors():
 
 
 def update_assessment(data):
-    id = data.get('id', '')
-    school_id = data.get('school_id', '')
-    diagnosis = data.get('diagnosis', '')
-    recommendation = data.get('recommendation', '')
-    attending_physician = data.get('attending_physician', '')
+    medications_taken = data['medications_taken']
+    diagnosis = data['diagnosis']
+    recommendation = data['recommendation']
+    assessment_id = data['assessment_id']
 
-    response = spcalls.spcall('update_assessment', (id,
-                                                    school_id,
+    response = spcalls.spcall('update_assessment', (assessment_id,
+                                                    medications_taken,
                                                     diagnosis,
-                                                    recommendation,
-                                                    attending_physician,), True)
+                                                    recommendation), True)
 
     return jsonify({'status': 'OK', 'message': response[0][0]})
 

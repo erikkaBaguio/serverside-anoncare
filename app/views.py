@@ -254,7 +254,7 @@ def show_assessment_all(school_id):
 
 
 @app.route('/api/anoncare/assessment', methods=['POST'])
-# @auth.login_required
+@auth.login_required
 def add_assessments():
     data = json.loads(request.data)
 
