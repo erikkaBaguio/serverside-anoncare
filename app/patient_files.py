@@ -172,21 +172,12 @@ def store_patient(school_id, data):
 
         return store_new_neurologic[0][0]
 
-    print "valid_patient_info", valid_patient_info(data)
-    print "valid_patient_history", valid_patient_history(data)
 
     valid_data = valid_patient_info(data) and valid_patient_history(data)
 
-    print "field is none", data['age'] is None
+    validity = school_id_exists[0][0] == 'f' and valid_data is True
 
-    print "school_id_exists", school_id_exists[0][0]
-
-    print "valid_data", valid_data
-
-    validity = school_id_exists[0][0] == 'false' and valid_data is True
-    print "first_condition", validity
-
-    if school_id_exists[0][0] == 'false' and valid_data is True:
+    if school_id_exists[0][0] == 'f' and valid_data is True:
 
         store_patient_info()
         store_patient_history()
@@ -198,18 +189,19 @@ def store_patient(school_id, data):
 
         return jsonify({'status': 'OK', 'message': 'Successfully added new patient'})
 
-    elif school_id_exists[0][0] == 'true' and valid_data is True:
-    # elif school_id_exists[0][0] == 'true':
+    elif school_id_exists[0][0] == 't' and valid_data is True:
 
         return jsonify({'status': 'FAILED', 'message': 'School ID already exists'})
 
-    elif school_id_exists[0][0] == 'true' and valid_data is False:
+    elif school_id_exists[0][0] == 't' and valid_data is False:
 
         return jsonify({'status': 'FAILED', 'message': 'School ID already exists'})
 
-    elif school_id_exists[0][0] == 'false' and valid_data is False:
+    elif school_id_exists[0][0] == 'f' and valid_data is False:
 
         return jsonify({'status': 'FAILED', 'message': 'Please type correct inputs'})
+    else:
+        return jsonify({'status': 'FAILED', 'message': 'ERROR', 's': str(school_id_exists[0][0]), 'v':str(valid_data)})
 
 
 def show_patient(school_id):
