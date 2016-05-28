@@ -43,3 +43,10 @@ Feature: View Assessment
       And   it should have a field 'status' containing 'FAILED'
       And   it should have a field 'message' containing 'School ID does not exist.'
 
+
+  Scenario: View All Assessment of A Patient
+      Given the assessment of patient with school id '0'
+      When  the doctor click search button
+      Then  it should have a '200' response
+      And   it should have a field 'status' containing 'FAILED'
+      And   it should have a field 'message' containing 'Please input school ID.'
