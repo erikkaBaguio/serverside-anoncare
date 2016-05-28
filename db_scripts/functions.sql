@@ -73,11 +73,11 @@ create or replace function check_username_password(in par_username text, in par_
   $$
   language 'plpgsql';
 
-create or replace function show_all_unread_notification(in par_email text, out bigint, out int, out int, out boolean, out text) returns setof record as
-$$
-    select * from Notification where is_read = FALSE and email=par_email;
-$$
-language 'sql';
+-- create or replace function show_all_unread_notification(in par_email text, out bigint, out int, out int, out boolean, out text) returns setof record as
+-- $$
+--     select * from Notification where is_read = FALSE and email=par_email;
+-- $$
+-- language 'sql';
 
 create or replace function read_notification(in par_id bigint) returns text as
     $$ declare local_response text;
@@ -528,58 +528,59 @@ $$
 
 
 ------------------------------------------------------------ ASSESSMENTS -----------------------------------------------------------
-create or replace function show_assessment_by_id(in par_id int,
-                                           out bigint,
-											                     out timestamp,
-											                     out int,
-											                     out int,
-											                     out int,
-											                     out text,
-											                     out text,
-											                     out text,
-											                     out text,
-											                     out text,
-											                     out int,
-											                     out boolean,
-											                     out float,
-											                     out float,
-											                     out int,
-											                     out text,
-											                     out float,
-											                     out text,
-											                     out text,
-                                           out text,
-                                           out text,
-                                           out text)
-  RETURNS SETOF RECORD AS
-$$
-
-  select Assessment.*,
-         Vital_signs.temperature,
-         Vital_signs.pulse_rate,
-         Vital_signs.respiration_rate,
-         Vital_signs.blood_pressure,
-         Vital_signs.weight,
-         Userinfo.fname,
-         Userinfo.lname,
-         Patient_info.fname,
-         Patient_info.mname,
-         Patient_info.lname
-  FROM Assessment
-  INNER JOIN Vital_signs ON (
-    Assessment.vital_signsID = Vital_signs.id
-    )
-  INNER JOIN Userinfo ON (
-    Assessment.attendingphysician = Userinfo.id
-    )
-  INNER JOIN Patient_info ON (
-    Assessment.school_id = Patient_info.school_id
-    )
-  WHERE Assessment.id = par_id
-  ORDER BY id DESC;
-
-$$
-  LANGUAGE 'sql';
+-- create or replace function show_assessment_by_id(in par_id int,
+--                                            out bigint,
+-- 											                     out timestamp,
+-- 											                     out int,
+-- 											                     out int,
+-- 											                     out int,
+-- 											                     out text,
+-- 											                     out text,
+-- 											                     out text,
+-- 											                     out text,
+-- 											                     out text,
+-- 											                     out int,
+-- 											                     out boolean,
+-- 											                     out float,
+-- 											                     out float,
+-- 											                     out int,
+-- 											                     out text,
+-- 											                     out float,
+-- 											                     out text,
+-- 											                     out text,
+--                                            out text,
+--                                            out text,
+--                                            out text)
+--   RETURNS SETOF RECORD AS
+--   RETURNS SETOF RECORD AS
+-- $$
+--
+--   select Assessment.*,
+--          Vital_signs.temperature,
+--          Vital_signs.pulse_rate,
+--          Vital_signs.respiration_rate,
+--          Vital_signs.blood_pressure,
+--          Vital_signs.weight,
+--          Userinfo.fname,
+--          Userinfo.lname,
+--          Patient_info.fname,
+--          Patient_info.mname,
+--          Patient_info.lname
+--   FROM Assessment
+--   INNER JOIN Vital_signs ON (
+--     Assessment.vital_signsID = Vital_signs.id
+--     )
+--   INNER JOIN Userinfo ON (
+--     Assessment.attendingphysician = Userinfo.id
+--     )
+--   INNER JOIN Patient_info ON (
+--     Assessment.school_id = Patient_info.school_id
+--     )
+--   WHERE Assessment.id = par_id
+--   ORDER BY id DESC;
+--
+-- $$
+--   LANGUAGE 'sql';
 
 
 -- [POST] Insert vital signs data of a patient
@@ -701,49 +702,49 @@ $$
 
 --[GET] Retrieve all assessments of a specific patient
 --select show_assessment(20130000,12);
-create or replace function show_assessment_id(IN par_schoolID INT,
-                                              IN par_assessment_id INT,
-                                              OUT BIGINT,
-                                              OUT TIMESTAMP,
-                                              OUT INT,
-                                              OUT INT,
-                                              OUT INT,
-                                              OUT TEXT,
-                                              OUT TEXT,
-                                              OUT TEXT,
-                                              OUT TEXT,
-                                              OUT TEXT,
-                                              OUT INT,
-                                              OUT BOOLEAN,
-                                              OUT FLOAT,
-                                              OUT FLOAT,
-                                              OUT INT,
-                                              OUT TEXT,
-                                              OUT FLOAT,
-                                              OUT TEXT,
-                                              OUT TEXT)
-  RETURNS SETOF RECORD AS
-$$
-
-  select Assessment.*,
-         Vital_signs.temperature,
-         Vital_signs.pulse_rate,
-         Vital_signs.respiration_rate,
-         Vital_signs.blood_pressure,
-         Vital_signs.weight,
-         Userinfo.fname,
-         Userinfo.lname
-  FROM Assessment
-  INNER JOIN Vital_signs ON (
-    Assessment.vital_signsID = Vital_signs.id
-    )
-  INNER JOIN Userinfo ON (
-    Assessment.attendingphysician = Userinfo.id
-    )
-  WHERE Assessment.school_id = par_schoolID;
-
-$$
-  LANGUAGE 'sql';
+-- create or replace function show_assessment_id(IN par_schoolID INT,
+--                                               IN par_assessment_id INT,
+--                                               OUT BIGINT,
+--                                               OUT TIMESTAMP,
+--                                               OUT INT,
+--                                               OUT INT,
+--                                               OUT INT,
+--                                               OUT TEXT,
+--                                               OUT TEXT,
+--                                               OUT TEXT,
+--                                               OUT TEXT,
+--                                               OUT TEXT,
+--                                               OUT INT,
+--                                               OUT BOOLEAN,
+--                                               OUT FLOAT,
+--                                               OUT FLOAT,
+--                                               OUT INT,
+--                                               OUT TEXT,
+--                                               OUT FLOAT,
+--                                               OUT TEXT,
+--                                               OUT TEXT)
+--   RETURNS SETOF RECORD AS
+-- $$
+--
+--   select Assessment.*,
+--          Vital_signs.temperature,
+--          Vital_signs.pulse_rate,
+--          Vital_signs.respiration_rate,
+--          Vital_signs.blood_pressure,
+--          Vital_signs.weight,
+--          Userinfo.fname,
+--          Userinfo.lname
+--   FROM Assessment
+--   INNER JOIN Vital_signs ON (
+--     Assessment.vital_signsID = Vital_signs.id
+--     )
+--   INNER JOIN Userinfo ON (
+--     Assessment.attendingphysician = Userinfo.id
+--     )
+--   WHERE Assessment.school_id = par_schoolID;
+--
+-- $$
+--   LANGUAGE 'sql';
 
 
 --[GET] Retrieve all doctors in userinfo table

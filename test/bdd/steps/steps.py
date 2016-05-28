@@ -29,7 +29,6 @@ def and_school_id_group1_exists(step, school_id):
     world.check_schoolID = world.app.get('/app/anoncare/school_id_exists/{}/'.format(school_id))
 
 
-
 """ Feature : Assessment """
 """ Scenario: Create assessment successfully """
 

@@ -8,10 +8,10 @@ Feature: User Accounts
   Scenario: Add a new user to the system - all requirements put
       Given the following details of a user:
             | fname     | mname    | lname     | email                  | username           | password               | role_id|
-            | Eleazaaa  | Timonera | Regencia  | jetrega@gmail.com      | ele.regencia       | josiaheleazarregencia  | 3      |
+            | Eleazar   | Timonera | Regencia  | jetregencia@gmail.com  | eleazar.regencia   | josiaheleazarregencia  | 3      |
 
 
-      And   the username 'ele.regencia' does not yet exist
+      And   the username 'eleazar.regencia' does not yet exist
       When  admin clicks the register button
       Then  it should have a '200' response
       And   it should have a field 'status' containing 'OK'
@@ -26,7 +26,7 @@ Feature: User Accounts
       And   it should have a field 'message' containing 'OK'
       And   the following details will be returned
             |fname  |mname    |lname  |email				   |username      |role_id|
-            |Remarc |Espinosa |Balisi |remarc.balisi@gmail.com |remarc.balisi |2      |
+            |Remarc |Espinosa |Balisi |remarc.balisi@gmail.com |remarc.balisi | 3     |
 
 
 # RAINY CASES
@@ -46,7 +46,7 @@ Feature: User Accounts
   Scenario: Add a new user to the system - email already exists
       Given the following details of a user:
             | fname     | mname    | lname     | email                  | username           | password               | role_id|
-            | Eleazaaa  | Timonera | Regencia  | jawshaeleazar@gmail.com| eleaa.regencia     | josiaheleazarregencia  | 3      |
+            | Josh      | Timonera | Regencia  | jawshaeleazar@gmail.com| josh.regencia      | josiaheleazarregencia  | 3      |
 
 
       And   the email 'jawshaeleazar@gmail.com' exists
@@ -59,10 +59,10 @@ Feature: User Accounts
   Scenario: Add a new user to the system - username already exists
       Given the following details of a user:
             | fname     | mname    | lname     | email                  | username           | password               | role_id|
-            | Eleazaaa  | Timonera | Regencia  | jetregencia@gmail.com  | eleazaaa.regencia  | josiaheleazarregencia  | 3      |
+            | Josiah    | Timonera | Regencia  | jawshaeleazar@gmail.com| josiah.regencia    | josiaheleazarregencia  | 3      |
 
 
-      And   the username 'eleazaaa.regencia' exists
+      And   the username 'josiah.regencia' exists
       When  admin clicks the register button
       Then  it should have a '200' response
       And   it should have a field 'status' containing 'FAILED'
