@@ -70,12 +70,18 @@ def step_impl(step):
 
 
 """ Feature : View Assessment """
-""" Scenario: View a specific assessment of a patient """
+""" Scenario: View an assessment of a patient """
 
 
-@step(u'And   the patient assessment with an assessment id \'([^\']*)\'')
-def and_the_patient_assessment_with_an_assessment_id_group1(step, assessment_id):
+@step(u'Given the patient assessment with an assessment id \'([^\']*)\'')
+def given_the_patient_assessment_with_an_assessment_id_group1(step, assessment_id):
     world.assessment_id = assessment_id
-    world.assessment = world.app.get('/api/anoncare/assessment/20130000/{}/'.format(assessment_id))
+    world.assessment = world.app.get('/api/anoncare/assessment/by/{}'.format(assessment_id))
     world.response_json = json.loads(world.assessment.data)
     assert_equals(world.response_json['status'], 'OK')
+
+
+@step(u'When  the doctor click view button')
+def when_the_doctor_click_view_button(step):
+    world.browser = TestApp(app)
+    world.response = world.app.get('/api/anoncare/assessment/by/{}'.format(world.assessment_id))
