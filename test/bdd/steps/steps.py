@@ -27,7 +27,7 @@ def and_it_should_get_a_field_group1_containing_group2(step, field, expected_val
 @step(u'And   school id \'([^\']*)\' exists')
 def and_school_id_group1_exists(step, school_id):
     world.check_schoolID = world.app.get('/app/anoncare/school_id_exists/{}/'.format(school_id))
-    assert_equals(world.check_schoolID['status'], 'OK')
+    assert_equals(world.check_schoolID['status'], 'FAILED')
 
 
 """ Feature : Assessment """
@@ -53,8 +53,6 @@ def when_the_nurse_clicks_the_send_button(step):
 def given_the_assessment_of_patient_with_school_id_group1(step, school_id):
     world.school_id = school_id
     world.assessment = world.app.get('/api/anoncare/assessment/{}/'.format(school_id))
-    world.response_json = json.loads(world.assessment.data)
-    assert_equals(world.response_json['status'], 'OK')
 
 
 @step(u'When  the doctor click search button')
