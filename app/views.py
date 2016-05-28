@@ -110,7 +110,7 @@ def authentication():
 
 
 @app.route('/api/anoncare/home/<string:token>', methods=['GET'])
-@auth.login_required
+# @auth.login_required
 def index(token):
     days = timedelta(days=14)
     max_age = days.total_seconds()
@@ -129,7 +129,7 @@ def index(token):
 
 
 @app.route('/api/anoncare/username/<string:username>/', methods=['GET'])
-@auth.login_required
+# @auth.login_required
 def check_username(username):
 
     response = username_checker(username)
@@ -138,7 +138,7 @@ def check_username(username):
 
 
 @app.route('/api/anoncare/email/<string:email>/', methods=['GET'])
-@auth.login_required
+# @auth.login_required
 def check_email(email):
 
     response = email_checker(email)
@@ -147,7 +147,7 @@ def check_email(email):
 
 
 @app.route('/api/anoncare/user', methods=['POST'])
-@auth.login_required
+# @auth.login_required
 def store_new_user():
 
     data = json.loads(request.data)
@@ -158,7 +158,7 @@ def store_new_user():
 
 
 @app.route('/api/anoncare/forgot_password', methods=['PUT'])
-@auth.login_required
+# @auth.login_required
 def forgot_password():
 
     data = json.loads(request.data)
@@ -170,7 +170,7 @@ def forgot_password():
 
 
 @app.route('/api/anoncare/user/<int:id>/', methods=['GET'])
-@auth.login_required
+# @auth.login_required
 def show_userId(id):
     get_user = show_user_id(id)
 
@@ -178,7 +178,7 @@ def show_userId(id):
 
 
 @app.route('/api/anoncare/patient', methods=['POST'])
-@auth.login_required
+# @auth.login_required
 def store_new_patient():
     data = json.loads(request.data)
     print "store_patient data is", data
@@ -190,7 +190,7 @@ def store_new_patient():
 
 
 @app.route('/api/anoncare/patient/<int:school_id>/', methods=['GET'])
-@auth.login_required
+# @auth.login_required
 def get_patient_file(school_id):
     response = show_patient(school_id)
 
@@ -198,7 +198,7 @@ def get_patient_file(school_id):
 
 
 @app.route('/api/anoncare/user', methods=['GET'])
-@auth.login_required
+# @auth.login_required
 def show_users():
     users = show_all_users()
 
@@ -206,7 +206,7 @@ def show_users():
 
 
 @app.route('/api/anoncare/password_reset/<string:token>', methods=['POST'])
-@auth.login_required
+# @auth.login_required
 def password_reset(token):
     data = json.loads(request.data)
 
@@ -229,13 +229,13 @@ def password_reset(token):
 
 
 @app.route('/api/anoncare/user/search', methods=['POST'])
-@auth.login_required
+# @auth.login_required
 def search_users():
     return search_user(json.loads(request.data))
 
 
 @app.route('/api/anoncare/assessment/<int:school_id>/<int:assessment_id>/', methods=['GET'])
-@auth.login_required
+# @auth.login_required
 def show_assessmentId(school_id, assessment_id):
     get_assessment_id = show_assessment_id(school_id, assessment_id)
 
@@ -243,14 +243,14 @@ def show_assessmentId(school_id, assessment_id):
 
 
 @app.route('/api/anoncare/assessment/by/<int:id>', methods=['GET'])
-@auth.login_required
+# @auth.login_required
 def show_assessment_id(id):
 
     return show_assessment_by_id(id)
 
 
 @app.route('/api/anoncare/assessment/<int:school_id>/', methods =['GET'])
-@auth.login_required
+# @auth.login_required
 def show_assessment_all(school_id):
     get_assessment = show_assessment(school_id)
 
@@ -258,14 +258,14 @@ def show_assessment_all(school_id):
 
 
 @app.route('/api/anoncare/refer/<int:attending_physician>/<int:assessment_id>', methods=['POST'])
-@auth.login_required
+# @auth.login_required
 def physician_refer(attending_physician, assessment_id):
 
     return referral(attending_physician, assessment_id)
 
 
 @app.route('/api/anoncare/assessment', methods=['POST'])
-@auth.login_required
+# @auth.login_required
 def add_assessments():
     data = json.loads(request.data)
 
@@ -284,7 +284,7 @@ def doctor_referral():
 
 
 @app.route('/api/anoncare/school_id_exists/<int:school_id>/', methods=['GET'])
-@auth.login_required
+# @auth.login_required
 def check_school_id(school_id):
 
     response = school_id_checker(school_id)
@@ -293,7 +293,7 @@ def check_school_id(school_id):
 
 
 @app.route('/api/anoncare/doctors/', methods=['GET'])
-@auth.login_required
+# @auth.login_required
 def get_all_doctors():
     response = show_all_doctors()
 
@@ -308,7 +308,7 @@ def get_all_colleges():
 
 
 @app.route('/api/anoncare/notifications/<string:token>', methods=['GET'])
-@auth.login_required
+# @auth.login_required
 def get_all_unread_notification(token):
     days = timedelta(days=14)
     max_age = days.total_seconds()
@@ -327,7 +327,7 @@ def get_all_unread_notification(token):
 
 
 @app.route('/api/anoncare/read/notification/<int:id>', methods=['POST'])
-@auth.login_required
+# @auth.login_required
 def read_notification(id):
 
     return readNotification(id)
