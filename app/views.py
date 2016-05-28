@@ -129,6 +129,7 @@ def index(token):
 
 
 @app.route('/api/anoncare/username/<string:username>/', methods=['GET'])
+@auth.login_required
 def check_username(username):
 
     response = username_checker(username)
@@ -137,6 +138,7 @@ def check_username(username):
 
 
 @app.route('/api/anoncare/email/<string:email>/', methods=['GET'])
+@auth.login_required
 def check_email(email):
 
     response = email_checker(email)
@@ -145,7 +147,7 @@ def check_email(email):
 
 
 @app.route('/api/anoncare/user', methods=['POST'])
-# @auth.login_required
+@auth.login_required
 def store_new_user():
 
     data = json.loads(request.data)
@@ -156,6 +158,7 @@ def store_new_user():
 
 
 @app.route('/api/anoncare/forgot_password', methods=['PUT'])
+@auth.login_required
 def forgot_password():
 
     data = json.loads(request.data)
@@ -167,6 +170,7 @@ def forgot_password():
 
 
 @app.route('/api/anoncare/user/<int:id>/', methods=['GET'])
+@auth.login_required
 def show_userId(id):
     get_user = show_user_id(id)
 
@@ -194,7 +198,7 @@ def get_patient_file(school_id):
 
 
 @app.route('/api/anoncare/user', methods=['GET'])
-# @auth.login_required
+@auth.login_required
 def show_users():
     users = show_all_users()
 
@@ -202,7 +206,7 @@ def show_users():
 
 
 @app.route('/api/anoncare/password_reset/<string:token>', methods=['POST'])
-# @auth.login_required
+@auth.login_required
 def password_reset(token):
     data = json.loads(request.data)
 
@@ -225,7 +229,7 @@ def password_reset(token):
 
 
 @app.route('/api/anoncare/user/search', methods=['POST'])
-# @auth.login_required
+@auth.login_required
 def search_users():
     return search_user(json.loads(request.data))
 
