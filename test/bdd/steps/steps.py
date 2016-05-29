@@ -121,3 +121,56 @@ def when_the_admin_click_search_button(step):
 def and_the_following_details_will_be_returned(step):
     response_json = json.loads(world.response.data)
     assert_equals(world.response_json['entries'], response_json['entries'])
+
+
+""" Feature : User Accounts """
+""" Scenario: Create patient successfully """
+
+
+@step(u'Given the following details of a user:')
+def given_the_following_details_of_a_user(step):
+    world.new_user = step.hashes[0]
+
+
+@step(u'And   the username \'([^\']*)\' exists')
+def and_the_username_group1_exists(step, group1):
+    world.check_username = world.app.get('/api/anoncare/username/{}'.format(id))
+
+
+@step(u'And   the username \'([^\']*)\' does not yet exist')
+def and_the_username_group1_does_not_yet_exist(step, username):
+    world.check_username = world.app.get('/api/anoncare/username/{}'.format(username))
+
+
+@step(u'When  admin clicks the register button')
+def when_admin_clicks_the_register_button(step):
+    world.browser = TestApp(app)
+    world.response = world.app.post('/api/anoncare/user', data=json.dumps(world.new_user))
+
+
+@step(u'And   the email \'([^\']*)\' exists')
+def and_the_email_group1_exists(step, email):
+    world.check_email = world.app.get('/api/anoncare/email/{}'.format(email))
+
+
+@step(u'Given user with id \'([^\']*)\'')
+def given_user_with_id_group1(step, user_id):
+    world.user_id = user_id
+    world.user = world.app.get('/api/anoncare/user/{}/'.format(user_id))
+    world.response_json = json.loads(world.user.data)
+
+
+@step(u'When  the admin click view user')
+def when_the_admin_click_view_user(step):
+    world.browser = TestApp(app)
+    world.response = world.app.get('/api/anoncare/user/{}/'.format(world.user_id))
+
+
+@step(u'Given user with email:')
+def given_user_with_email(step):
+    world.new_password = step.hashes[0]
+
+
+@step(u'When  the user submits the form')
+def when_the_user_submits_the_form(step):
+    world.response = world.app.put('/api/anoncare/forgot_password', data=json.dumps(world.new_password))
