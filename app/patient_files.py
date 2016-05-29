@@ -28,7 +28,7 @@ def store_patient(school_id, data):
             return True
 
     def extra_info_empty(department_id, patient_id, civil_status, name_of_guardian, home_address):
-        if department_id == None or patient_id == None or civil_status == '' or name_of_guardian == '' \
+        if not department_id or not patient_id or civil_status == '' or name_of_guardian == '' \
                 or home_address == '':
             return False
         else:
@@ -40,8 +40,8 @@ def store_patient(school_id, data):
         lname = patient['lname']
         age = patient['age']
         sex = patient['sex']
-        department_id = int(patient['department_id'])
-        patient_id = int(patient['patient_type_id'])
+        department_id = patient['department_id']
+        patient_id = patient['patient_type_id']
         height = patient['height']
         weight = patient['weight']
         date_of_birth = patient['date_of_birth']
@@ -57,7 +57,7 @@ def store_patient(school_id, data):
         print "empty_bio", empty_bio
         print "empty_extra_info", empty_extra_info
 
-        empty_fields =  empty_names and bio_empty and extra_info_empty
+        empty_fields =  empty_names and empty_bio and extra_info_empty
 
         if empty_fields is True:
             return True
