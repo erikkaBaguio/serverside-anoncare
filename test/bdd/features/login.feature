@@ -52,3 +52,14 @@ Feature: Login
         Then  it should have a '200' response
         And   it should have a field 'status' containing 'FAILED'
         And   it should have a field 'message' containing 'Invalid username or password'
+
+
+    Scenario: Invalid password
+        Given the following credentials
+              |username       |password  |
+              |muhammad.puting|ambot     |
+
+        When  the login button is clicked
+        Then  it should have a '200' response
+        And   it should have a field 'status' containing 'FAILED'
+        And   it should have a field 'message' containing 'Invalid username or password'
