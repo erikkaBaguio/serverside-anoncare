@@ -22,14 +22,14 @@ def store_patient(school_id, data):
             return True
 
     def bio_empty(age, sex, height, weight, date_of_birth):
-        if age is None and sex is '' and height is '' and weight is None and date_of_birth is '':
+        if age == None or sex == '' or height == '' or weight == None or date_of_birth == '':
             return False
         else:
             return True
 
-    def extra_info_empty(dept_id, ptnt_id, civil_status, name_of_guardian, home_addr):
-        if dept_id is None and ptnt_id is None and civil_status is '' and name_of_guardian is '' \
-                and home_addr is '':
+    def extra_info_empty(department_id, patient_id, civil_status, name_of_guardian, home_address):
+        if department_id == None or patient_id == None or civil_status == '' or name_of_guardian == '' \
+                or home_address == '':
             return False
         else:
             return True
@@ -40,18 +40,18 @@ def store_patient(school_id, data):
         lname = patient['lname']
         age = patient['age']
         sex = patient['sex']
-        dept_id = int(patient['department_id'])
-        ptnt_id = int(patient['patient_type_id'])
+        department_id = int(patient['department_id'])
+        patient_id = int(patient['patient_type_id'])
         height = patient['height']
         weight = patient['weight']
         date_of_birth = patient['date_of_birth']
         civil_status = patient['civil_status']
-        guardian = patient['name_of_guardian']
-        home_addr = patient['home_address']
+        name_of_guardian = patient['name_of_guardian']
+        home_address = patient['home_address']
 
         empty_names = names_empty(fname, mname, lname)
         empty_bio = bio_empty(age, sex, height, weight, date_of_birth)
-        empty_extra_info = extra_info_empty(dept_id, ptnt_id, civil_status, guardian, home_addr)
+        empty_extra_info = extra_info_empty(department_id, patient_id, civil_status, name_of_guardian, home_address)
 
         print "empty_names", empty_names
         print "empty_bio", empty_bio
@@ -73,8 +73,8 @@ def store_patient(school_id, data):
         medications_taken = history['medications_taken']
         drugs = history['drugs']
 
-        empty_fields = school_id is None and smoking is '' and allergies is ''\
-                        and alcohol is '' and medications_taken is '' and drugs is ''
+        empty_fields = school_id == None or smoking == '' or allergies == ''\
+                       or alcohol == '' or medications_taken == '' or drugs == ''
 
         if empty_fields is True:
             return False
@@ -188,19 +188,15 @@ def store_patient(school_id, data):
         return jsonify({'status': 'OK', 'message': 'Successfully added new patient'})
     
     elif school_id_exists[0][0] == 'f' and valid_data is False:
-
         return jsonify({'status': 'FAILED', 'message': 'Please type correct inputs'})
 
     elif school_id_exists[0][0] == 't' and valid_data is True:
-
         return jsonify({'status': 'FAILED', 'message': 'School ID already exists'})
 
     elif school_id_exists[0][0] == 't' and valid_data is False:
-
         return jsonify({'status': 'FAILED', 'message': 'School ID already exists'})
 
     else:
-
         return jsonify({'status': 'FAILED', 'message': 'ERROR', 's': str(school_id_exists[0][0]), 'v':str(valid_data)})
 
 
