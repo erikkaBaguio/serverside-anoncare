@@ -16,7 +16,7 @@ def store_patient(school_id, data):
     school_id_exists = spcalls.spcall('school_id_exists', (school_id,), True)
 
     def names_empty(fname, mname, lname):
-        if school_id is None and fname is '' and mname is '' and lname is '':
+        if school_id == None or fname == '' or mname == '' or lname == '':
             return False
         else:
             return True
@@ -178,7 +178,6 @@ def store_patient(school_id, data):
     validity = school_id_exists[0][0] == 'f' and valid_data is True
 
     if school_id_exists[0][0] == 'f' and valid_data is True:
-
         store_patient_info()
         store_patient_history()
         store_pulmonary()
@@ -186,20 +185,13 @@ def store_patient(school_id, data):
         store_illness()
         store_cardiac()
         store_neurologic()
-
         return jsonify({'status': 'OK', 'message': 'Successfully added new patient'})
-
-    elif school_id_exists[0][0] == 't' and valid_data is True:
-
-        return jsonify({'status': 'FAILED', 'message': 'School ID already exists'})
-
-    elif school_id_exists[0][0] == 't' and valid_data is False:
-
-        return jsonify({'status': 'FAILED', 'message': 'School ID already exists'})
-
     elif school_id_exists[0][0] == 'f' and valid_data is False:
-
         return jsonify({'status': 'FAILED', 'message': 'Please type correct inputs'})
+    elif school_id_exists[0][0] == 't' and valid_data is True:
+        return jsonify({'status': 'FAILED', 'message': 'School ID already exists'})
+    elif school_id_exists[0][0] == 't' and valid_data is False:
+        return jsonify({'status': 'FAILED', 'message': 'School ID already exists'})
     else:
         return jsonify({'status': 'FAILED', 'message': 'ERROR', 's': str(school_id_exists[0][0]), 'v':str(valid_data)})
 
