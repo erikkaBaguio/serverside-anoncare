@@ -23,6 +23,24 @@ def and_it_should_get_a_field_group1_containing_group2(step, field, expected_val
     world.response_json = json.loads(world.response.data)
     assert_equals(str(world.response_json[field]), expected_value)
 
+""" Feature: User Accounts """
+
+""" Scenario: Retrieve a user's details """
+
+@step(u'Given user with id \'([^\']*)\'')
+def given_user_with_id_group1(step, id):
+    world.user = world.app.get('/api/anoncare/user/{}/'.format(id))
+    world.response_json = json.loads(world.user.data)
+
+@step(u'When the admin enter with an id \'([^\']*)\'')
+def when_the_admin_enter_with_an_id_group1(step, id):
+    world.response = world.app.get('/api/anoncare/user/{}/'.format(id))
+
+@step(u'And the following details will be returned')
+def and_the_following_user_details_will_be_returned(step):
+    resp = json.loads(world.response.data)
+    assert_equals(world.response_json['entries'], resp['entries'])
+
 
 @step(u'And   school id \'([^\']*)\' exists')
 def and_school_id_group1_exists(step, school_id):
@@ -38,11 +56,16 @@ def given_the_nurse_have_the_following_assessment_details(step):
     world.assessment = step.hashes[0]
 
 
+@step(u'And school id \'([^\']*)\' exists')
+def and_school_id_group1_exists(step, school_id):
+    world.check_schoolID  = world.app.get('/app/anoncare/school_id_exists/{}/'.format(school_id))
+
+
+
 @step(u'When  the nurse clicks the send button')
 def when_the_nurse_clicks_the_send_button(step):
     world.browser = TestApp(app)
     world.response = world.app.post('/api/anoncare/assessment', data=json.dumps(world.assessment))
-
 
 """ Feature : View Assessment """
 """ Scenario: View all assessment of a patient """
@@ -68,6 +91,11 @@ def and_the_patient_assessment_with_an_assessment_id_group1(step, assessment_id)
 def when_the_doctor_click_view_assessment(step):
     world.browser = TestApp(app)
     world.response = world.app.get('/api/anoncare/assessment/{}/{}/'.format(world.school_id, world.assessment_id))
+
+
+# @step(u'And   school id \'([^\']*)\' does not exists')
+# def and_school_id_group1_does_not_exists(step, school_id):
+#     world.check_schoolID = world.app.get('/app/anoncare/school_id_exists/{}/'.format(school_id))
 
 
 @step(u'When  the doctor click search button')
