@@ -174,3 +174,18 @@ def given_user_with_email(step):
 @step(u'When  the user submits the form')
 def when_the_user_submits_the_form(step):
     world.response = world.app.put('/api/anoncare/forgot_password', data=json.dumps(world.new_password))
+
+
+""" Feature : Login """
+""" Scenario: Logged in successfully """
+
+
+@step(u'Given the the following credentials')
+def given_the_the_following_credentials(step):
+    world.credentials = step.hashes[0]
+
+
+@step(u'When  the login button is clicked')
+def when_the_login_button_is_clicked(step):
+    world.browser = TestApp(app)
+    world.response = world.app.post('/auth', data=json.dumps(world.credentials))

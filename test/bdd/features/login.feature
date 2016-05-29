@@ -6,12 +6,12 @@ Feature: Login
   # Sunny Cases #
   ###############
 
-    Scenario: user successfully logged in
-        Given the login requirements
+    Scenario: Logged in successfully
+        Given the the following credentials
               |username       |password  |
               |muhammad.puting|admin     |
 
-        When  the clicks the login button
+        When  the login button is clicked
         Then  it should have a '200' response
         And   it should have a field 'status' containing 'OK'
         And   it should have a field 'message' containing 'Successfully logged in'
