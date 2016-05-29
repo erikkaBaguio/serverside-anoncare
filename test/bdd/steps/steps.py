@@ -180,8 +180,8 @@ def when_the_user_submits_the_form(step):
 """ Scenario: Logged in successfully """
 
 
-@step(u'Given the the following credentials')
-def given_the_the_following_credentials(step):
+@step(u'Given the following credentials')
+def given_the_following_credentials(step):
     world.credentials = step.hashes[0]
 
 

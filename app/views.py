@@ -90,6 +90,9 @@ def authentication():
 
     get_user = spcall.spcall('check_username_password', (username,  pw_hash.hexdigest() ))
 
+    if not username or not password :
+        return jsonify({'status': 'FAILED', 'message': 'Invalid username or password'})
+
     if get_user[0][0] == 'FAILED':
         return jsonify({'status': 'FAILED', 'message': 'Invalid username or password'})
 

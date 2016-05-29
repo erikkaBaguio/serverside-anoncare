@@ -3,11 +3,11 @@ Feature: Login
   As an admin/nurse/doctor, I want to login to the website so that I can access the system.
 
   ###############
-  # Sunny Cases #
+  # Sunny Case  #
   ###############
 
     Scenario: Logged in successfully
-        Given the the following credentials
+        Given the following credentials
               |username       |password  |
               |muhammad.puting|admin     |
 
@@ -15,3 +15,18 @@ Feature: Login
         Then  it should have a '200' response
         And   it should have a field 'status' containing 'OK'
         And   it should have a field 'message' containing 'Successfully logged in'
+
+
+  ###############
+  # Rainy Cases #
+  ###############
+
+    Scenario: Empty username field
+        Given the following credentials
+              |username       |password  |
+              |               |admin     |
+
+        When  the login button is clicked
+        Then  it should have a '200' response
+        And   it should have a field 'status' containing 'FAILED'
+        And   it should have a field 'message' containing 'Invalid username or password'
