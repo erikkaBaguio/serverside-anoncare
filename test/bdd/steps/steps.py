@@ -202,3 +202,31 @@ def given_user_with_email(step):
 @step(u'When  the user submits the form')
 def when_the_user_submits_the_form(step):
     world.response = world.app.put('/api/anoncare/forgot_password', data=json.dumps(world.new_password))
+
+
+""" Feature : Patient Files """
+""" Scenario: Create patient file successfully """
+@step(u'Given the following details of patient')
+def given_the_following_details_of_patient(step):
+    world.patient = step.hashes[0]
+
+
+@step(u'When  I click the add button')
+def when_i_click_the_add_button(step):
+    world.browser = TestApp(app)
+    world.response = world.app.post('/api/anoncare/patient', data=json.dumps(world.patient))
+
+
+@step(u'Given the patient file with school id \'([^\']*)\'')
+def given_the_patient_file_with_school_id_group1(step, school_id):
+    world.school_id = school_id
+    world.patient_file = world.app.get('/api/anoncare/patient/{}/'.format(school_id))
+    world.response_json = json.loads(world.patient_file.data)
+
+
+@step(u'When  the doctor click view patient file')
+def when_the_doctor_click_view_patient_file(step):
+    world.browser = TestApp(app)
+    world.response = world.app.get('/api/anoncare/patient/{}/'.format(world.school_id))
+
+
