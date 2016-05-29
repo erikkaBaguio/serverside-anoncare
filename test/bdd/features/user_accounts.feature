@@ -3,7 +3,9 @@ Feature: User Accounts
 
 
 
-# SUNNY CASES
+  ###############
+  # Sunny Cases #
+  ###############
 
   Scenario: Add a new user to the system - all requirements put
       Given the following details of a user:
@@ -29,7 +31,10 @@ Feature: User Accounts
             |Remarc |Espinosa |Balisi |remarc.balisi@gmail.com |remarc.balisi | 3     |
 
 
-# RAINY CASES
+  ###############
+  # Rainy Cases #
+  ###############
+
   Scenario: Add a new user to the system - empty inputs
       Given the following details of a user:
             | fname     | mname    | lname     | email                   | username           | password               | role_id|

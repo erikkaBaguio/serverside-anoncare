@@ -203,7 +203,6 @@ def given_user_with_email(step):
 def when_the_user_submits_the_form(step):
     world.response = world.app.put('/api/anoncare/forgot_password', data=json.dumps(world.new_password))
 
-
 """ Feature : Patient Files """
 """ Scenario: Create patient file successfully """
 @step(u'Given the following details of patient')
@@ -230,3 +229,16 @@ def when_the_doctor_click_view_patient_file(step):
     world.response = world.app.get('/api/anoncare/patient/{}/'.format(world.school_id))
 
 
+""" Feature : Login """
+""" Scenario: Logged in successfully """
+
+
+@step(u'Given the following credentials')
+def given_the_following_credentials(step):
+    world.credentials = step.hashes[0]
+
+
+@step(u'When  the login button is clicked')
+def when_the_login_button_is_clicked(step):
+    world.browser = TestApp(app)
+    world.response = world.app.post('/auth', data=json.dumps(world.credentials))
