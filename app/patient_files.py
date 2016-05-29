@@ -16,13 +16,13 @@ def store_patient(school_id, data):
     school_id_exists = spcalls.spcall('school_id_exists', (school_id,), True)
 
     def names_empty(fname, mname, lname):
-        if school_id == None or fname == '' or mname == '' or lname == '':
+        if not school_id or not fname  or not mname or not lname :
             return False
         else:
             return True
 
     def bio_empty(age, sex, height, weight, date_of_birth):
-        if not age  or sex == '' or height == '' or not weight or date_of_birth == '':
+        if not age or not sex or not height or not weight or not date_of_birth:
             return False
         else:
             return True
@@ -57,7 +57,7 @@ def store_patient(school_id, data):
         print "empty_bio", empty_bio
         print "empty_extra_info", empty_extra_info
 
-        empty_fields =  empty_names and empty_bio and extra_info_empty
+        empty_fields =  empty_names and empty_bio and empty_extra_info
 
         if empty_fields is True:
             return True
@@ -72,8 +72,7 @@ def store_patient(school_id, data):
         medications_taken = history['medications_taken']
         drugs = history['drugs']
 
-        empty_fields = school_id == None or smoking == '' or allergies == ''\
-                       or alcohol == '' or medications_taken == '' or drugs == ''
+        empty_fields = not school_id or not smoking or not allergies or not alcohol or not medications_taken or not drugs
 
         if empty_fields is True:
             return False
