@@ -100,3 +100,24 @@ def and_the_new_details_for_the_patient_assessment(step):
 def when_the_doctor_clicks_the_update_button(step):
     world.browser = TestApp(app)
     world.response = world.app.put('/api/anoncare/assessment', data=json.dumps(world.assessment_updatedInfo))
+
+
+""" Feature : Search User """
+""" Scenario: Search user successfully  """
+
+
+@step(u'Given the entered keyword')
+def given_the_entered_keyword(step):
+    world.user_keyword = step.hashes[0]
+
+
+@step(u'When  the admin click search button')
+def when_the_admin_click_search_button(step):
+    world.browser = TestApp(app)
+    world.response = world.app.post('/api/anoncare/user/search', data=json.dumps(world.user_keyword))
+
+
+@step(u'And   the following details will be returned')
+def and_the_following_details_will_be_returned(step):
+    response_json = json.loads(world.response.data)
+    assert_equals(world.response_json['entries'], response_json['entries'])
