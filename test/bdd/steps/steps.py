@@ -83,3 +83,20 @@ def given_the_patient_assessment_with_an_assessment_id_group1(step, assessment_i
 def when_the_doctor_click_view_button(step):
     world.browser = TestApp(app)
     world.response = world.app.get('/api/anoncare/assessment/by/{}'.format(world.assessment_id))
+
+
+""" Scenario: Update assessment """
+@step(u'Given the details of the patient assessment')
+def given_the_details_of_the_patient_assessment(step):
+    world.assessment_oldInfo = step.hashes[0]
+
+
+@step(u'And   the new details for the patient assessment')
+def and_the_new_details_for_the_patient_assessment(step):
+    world.assessment_updatedInfo = step.hashes[0]
+
+
+@step(u'When  the doctor clicks the update button')
+def when_the_doctor_clicks_the_update_button(step):
+    world.browser = TestApp(app)
+    world.response = world.app.put('/api/anoncare/assessment', data=json.dumps(world.assessment_updatedInfo))
