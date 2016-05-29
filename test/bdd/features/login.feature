@@ -21,10 +21,21 @@ Feature: Login
   # Rainy Cases #
   ###############
 
-    Scenario: Empty username field
+    Scenario: Empty password field
         Given the following credentials
               |username       |password  |
-              |               |admin     |
+              |muhammad.puting|          |
+
+        When  the login button is clicked
+        Then  it should have a '200' response
+        And   it should have a field 'status' containing 'FAILED'
+        And   it should have a field 'message' containing 'Invalid username or password'
+
+
+    Scenario: Empty password field
+        Given the following credentials
+              |username       |password  |
+              |               |     |
 
         When  the login button is clicked
         Then  it should have a '200' response
