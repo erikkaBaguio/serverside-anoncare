@@ -22,7 +22,7 @@ def store_patient(school_id, data):
             return True
 
     def bio_empty(age, sex, height, weight, date_of_birth):
-        if age == None or sex == '' or height == '' or weight == None or date_of_birth == '':
+        if not age  or sex == '' or height == '' or not weight or date_of_birth == '':
             return False
         else:
             return True
@@ -57,13 +57,12 @@ def store_patient(school_id, data):
         print "empty_bio", empty_bio
         print "empty_extra_info", empty_extra_info
 
-        empty_fields = empty_names and empty_bio and empty_extra_info
+        empty_fields =  empty_names and bio_empty and extra_info_empty
 
         if empty_fields is True:
             return True
-
         else:
-            return False
+            return False    
 
     def valid_patient_history(history):
 
