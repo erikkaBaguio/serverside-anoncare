@@ -36,7 +36,6 @@ Feature: User Accounts
             | Josiah    |    none  | Regencia  | jawshaeleazar@gmail.com |    none            | josiaheleazarregencia  |  none  |
 
 
-
       And   the username 'josiah.regencia' does not yet exist
       When  admin clicks the register button
       Then  it should have a '200' response

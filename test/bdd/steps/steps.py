@@ -45,6 +45,7 @@ def and_the_following_user_details_will_be_returned(step):
 @step(u'And   school id \'([^\']*)\' exists')
 def and_school_id_group1_exists(step, school_id):
     world.check_schoolID = world.app.get('/app/anoncare/school_id_exists/{}/'.format(school_id))
+    assert_equals(world.check_schoolID['status'], 'FAILED')
 
 
 """ Feature : Assessment """
@@ -75,22 +76,6 @@ def when_the_nurse_clicks_the_send_button(step):
 def given_the_assessment_of_patient_with_school_id_group1(step, school_id):
     world.school_id = school_id
     world.assessment = world.app.get('/api/anoncare/assessment/{}/'.format(school_id))
-    world.response_json = json.loads(world.assessment.data)
-    assert_equals(world.response_json['status'], 'OK')
-
-
-@step(u'And   the patient assessment with an assessment id \'([^\']*)\'')
-def and_the_patient_assessment_with_an_assessment_id_group1(step, assessment_id):
-    world.assessment_id = assessment_id
-    world.assessment = world.app.get('/api/anoncare/assessment/{}/{}/'.format(world.school_id, assessment_id))
-    world.response_json = json.loads(world.assessment.data)
-    assert_equals(world.response_json['status'], 'OK')
-
-
-@step(u'When  the doctor click view assessment')
-def when_the_doctor_click_view_assessment(step):
-    world.browser = TestApp(app)
-    world.response = world.app.get('/api/anoncare/assessment/{}/{}/'.format(world.school_id, world.assessment_id))
 
 
 # @step(u'And   school id \'([^\']*)\' does not exists')
@@ -110,37 +95,39 @@ def step_impl(step):
     assert_equals(world.response_json['entries'], response_json['entries'])
 
 
-@step(u'And   school id \'([^\']*)\' does not exists')
-def and_school_id_group1_does_not_exists(step, school_id):
-    world.check_schoolID = world.app.get('/app/anoncare/school_id_exists/{}/'.format(school_id))
+""" Feature : View Assessment """
+""" Scenario: View an assessment of a patient """
 
 
-""" Feature : Patient Files """
-""" Scenario: Create patient successfully """
+@step(u'Given the patient assessment with an assessment id \'([^\']*)\'')
+def given_the_patient_assessment_with_an_assessment_id_group1(step, assessment_id):
+    world.assessment_id = assessment_id
+    world.assessment = world.app.get('/api/anoncare/assessment/by/{}'.format(assessment_id))
+    world.response_json = json.loads(world.assessment.data)
+    assert_equals(world.response_json['status'], 'OK')
 
 
-@step(u'Given the following details of patient')
-def given_the_following_details_of_patient(step):
-    world.patient = step.hashes[0]
-
-
-@step(u'When  I click the add button')
-def when_i_click_the_add_button(step):
+@step(u'When  the doctor click view button')
+def when_the_doctor_click_view_button(step):
     world.browser = TestApp(app)
-    world.response = world.app.post('/api/anoncare/patient', data=json.dumps(world.patient))
+    world.response = world.app.get('/api/anoncare/assessment/by/{}'.format(world.assessment_id))
 
 
-@step(u'Given the patient file with school id \'([^\']*)\'')
-def given_the_patient_file_with_school_id_group1(step, school_id):
-    world.school_id = school_id
-    world.patient_file = world.app.get('/api/anoncare/patient/{}/'.format(school_id))
-    world.response_json = json.loads(world.patient_file.data)
+""" Scenario: Update assessment """
+@step(u'Given the details of the patient assessment')
+def given_the_details_of_the_patient_assessment(step):
+    world.assessment_oldInfo = step.hashes[0]
 
 
-@step(u'When  the doctor click view patient file')
-def when_the_doctor_click_view_patient_file(step):
+@step(u'And   the new details for the patient assessment')
+def and_the_new_details_for_the_patient_assessment(step):
+    world.assessment_updatedInfo = step.hashes[0]
+
+
+@step(u'When  the doctor clicks the update button')
+def when_the_doctor_clicks_the_update_button(step):
     world.browser = TestApp(app)
-    world.response = world.app.get('/api/anoncare/patient/{}/'.format(world.school_id))
+    world.response = world.app.put('/api/anoncare/assessment', data=json.dumps(world.assessment_updatedInfo))
 
 
 """ Feature : Search User """
@@ -215,22 +202,3 @@ def given_user_with_email(step):
 @step(u'When  the user submits the form')
 def when_the_user_submits_the_form(step):
     world.response = world.app.put('/api/anoncare/forgot_password', data=json.dumps(world.new_password))
-
-
-""" Scenario: Update assessment """
-
-
-@step(u'Given the details of the patient assessment with an id 3')
-def given_the_details_of_the_patient_assessment_with_an_id_3(step):
-    world.assessment_oldInfo = step.hashes[0]
-
-
-@step(u'And   the new details for the patient assessment with an id 3')
-def and_the_new_details_for_the_patient_assessment_with_an_id_3(step):
-    world.assessment_updatedInfo = step.hashes[0]
-
-
-@step(u'When  the doctor clicks the update button')
-def when_the_doctor_clicks_the_update_button(step):
-    world.browser = TestApp(app)
-    world.response = world.app.put('/api/anoncare/assessment', data=json.dumps(world.assessment_updatedInfo))
