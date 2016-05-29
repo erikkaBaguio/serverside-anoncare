@@ -242,15 +242,12 @@ def show_assessmentId(school_id, assessment_id):
     return get_assessment_id
 
 
-<<<<<<< HEAD
 @app.route('/api/anoncare/assessment/by/<int:id>', methods=['GET'])
 # @auth.login_required
 def show_assessment_id(id):
 
     return show_assessment_by_id(id)
 
-=======
->>>>>>> 03aafa496f5ba1e60e8578a10f933770bef33ea7
 
 @app.route('/api/anoncare/assessment/<int:school_id>/', methods =['GET'])
 # @auth.login_required
@@ -258,7 +255,6 @@ def show_assessment_all(school_id):
     get_assessment = show_assessment(school_id)
 
     return get_assessment
-<<<<<<< HEAD
 
 
 @app.route('/api/anoncare/refer/<int:attending_physician>/<int:assessment_id>', methods=['POST'])
@@ -266,14 +262,14 @@ def show_assessment_all(school_id):
 def physician_refer(attending_physician, assessment_id):
 
     return referral(attending_physician, assessment_id)
-=======
+
 
 @app.route('/api/anoncare/assessment/<int:school_id>/', methods = ['GET'])
 def get_assessment(school_id):
     response = show_assessment(school_id)
 
     return response
->>>>>>> 03aafa496f5ba1e60e8578a10f933770bef33ea7
+
 
 
 @app.route('/api/anoncare/assessment', methods=['POST'])

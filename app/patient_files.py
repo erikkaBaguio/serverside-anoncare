@@ -186,13 +186,21 @@ def store_patient(school_id, data):
         store_cardiac()
         store_neurologic()
         return jsonify({'status': 'OK', 'message': 'Successfully added new patient'})
+    
     elif school_id_exists[0][0] == 'f' and valid_data is False:
+
         return jsonify({'status': 'FAILED', 'message': 'Please type correct inputs'})
+
     elif school_id_exists[0][0] == 't' and valid_data is True:
+
         return jsonify({'status': 'FAILED', 'message': 'School ID already exists'})
+
     elif school_id_exists[0][0] == 't' and valid_data is False:
+
         return jsonify({'status': 'FAILED', 'message': 'School ID already exists'})
+
     else:
+
         return jsonify({'status': 'FAILED', 'message': 'ERROR', 's': str(school_id_exists[0][0]), 'v':str(valid_data)})
 
 
