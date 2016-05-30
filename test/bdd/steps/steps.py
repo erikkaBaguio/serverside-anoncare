@@ -2,13 +2,16 @@ from lettuce import step, world, before
 from nose.tools import assert_equals
 from webtest import *
 from app import app
+import base64
+import hashlib
 import json
 
 
 @before.all
 def before_all():
     world.app = app.test_client()
-
+    world.headers = {'Authorization': 'Basic %s' % hashlib.md5("erikka:erikka")}
+    world.headers = {'Authorization': 'Basic %s' % hashlib.md5("app-user:admin")}     
 
 """ Common steps for jsonify response """
 
@@ -29,12 +32,12 @@ def and_it_should_get_a_field_group1_containing_group2(step, field, expected_val
 
 @step(u'Given user with id \'([^\']*)\'')
 def given_user_with_id_group1(step, id):
-    world.user = world.app.get('/api/anoncare/user/{}/'.format(id))
+    world.user = world.app.get('/api/anoncare/user/{}/'.format(id), headers = world.headers)
     world.response_json = json.loads(world.user.data)
 
 @step(u'When the admin enter with an id \'([^\']*)\'')
 def when_the_admin_enter_with_an_id_group1(step, id):
-    world.response = world.app.get('/api/anoncare/user/{}/'.format(id))
+    world.response = world.app.get('/api/anoncare/user/{}/'.format(id), headers = world.headers)
 
 @step(u'And the following details will be returned')
 def and_the_following_user_details_will_be_returned(step):
@@ -44,7 +47,7 @@ def and_the_following_user_details_will_be_returned(step):
 
 @step(u'And   school id \'([^\']*)\' exists')
 def and_school_id_group1_exists(step, school_id):
-    world.check_schoolID = world.app.get('/app/anoncare/school_id_exists/{}/'.format(school_id))
+    world.check_schoolID = world.app.get('/app/anoncare/school_id_exists/{}/'.format(school_id), headers = world.headers)
     assert_equals(world.check_schoolID['status'], 'FAILED')
 
 
@@ -59,14 +62,14 @@ def given_the_nurse_have_the_following_assessment_details(step):
 
 @step(u'And school id \'([^\']*)\' exists')
 def and_school_id_group1_exists(step, school_id):
-    world.check_schoolID  = world.app.get('/app/anoncare/school_id_exists/{}/'.format(school_id))
+    world.check_schoolID  = world.app.get('/app/anoncare/school_id_exists/{}/'.format(school_id), headers = world.headers)
 
 
 
 @step(u'When  the nurse clicks the send button')
 def when_the_nurse_clicks_the_send_button(step):
     world.browser = TestApp(app)
-    world.response = world.app.post('/api/anoncare/assessment', data=json.dumps(world.assessment))
+    world.response = world.app.post('/api/anoncare/assessment', headers = world.headers, data=json.dumps(world.assessment))
 
 """ Feature : View Assessment """
 """ Scenario: View all assessment of a patient """
@@ -75,13 +78,13 @@ def when_the_nurse_clicks_the_send_button(step):
 @step(u'Given the assessment of patient with school id \'([^\']*)\'')
 def given_the_assessment_of_patient_with_school_id_group1(step, school_id):
     world.school_id = school_id
-    world.assessment = world.app.get('/api/anoncare/assessment/{}/'.format(school_id))
+    world.assessment = world.app.get('/api/anoncare/assessment/{}/'.format(school_id), headers = world.headers)
 
 
 @step(u'When  the doctor click search button')
 def when_the_doctor_click_search_button(step):
     world.browser = TestApp(app)
-    world.response = world.app.get('/api/anoncare/assessment/{}/'.format(world.school_id))
+    world.response = world.app.get('/api/anoncare/assessment/{}/'.format(world.school_id), headers = world.headers)
 
 
 @step("the following details will be returned")
@@ -97,7 +100,7 @@ def step_impl(step):
 @step(u'Given the patient assessment with an assessment id \'([^\']*)\'')
 def given_the_patient_assessment_with_an_assessment_id_group1(step, assessment_id):
     world.assessment_id = assessment_id
-    world.assessment = world.app.get('/api/anoncare/assessment/by/{}'.format(assessment_id))
+    world.assessment = world.app.get('/api/anoncare/assessment/by/{}'.format(assessment_id), headers = world.headers)
     world.response_json = json.loads(world.assessment.data)
     assert_equals(world.response_json['status'], 'OK')
 
@@ -105,7 +108,7 @@ def given_the_patient_assessment_with_an_assessment_id_group1(step, assessment_i
 @step(u'When  the doctor click view button')
 def when_the_doctor_click_view_button(step):
     world.browser = TestApp(app)
-    world.response = world.app.get('/api/anoncare/assessment/by/{}'.format(world.assessment_id))
+    world.response = world.app.get('/api/anoncare/assessment/by/{}'.format(world.assessment_id), headers = world.headers)
 
 
 """ Scenario: Update assessment """
@@ -122,7 +125,7 @@ def and_the_new_details_for_the_patient_assessment(step):
 @step(u'When  the doctor clicks the update button')
 def when_the_doctor_clicks_the_update_button(step):
     world.browser = TestApp(app)
-    world.response = world.app.put('/api/anoncare/assessment', data=json.dumps(world.assessment_updatedInfo))
+    world.response = world.app.put('/api/anoncare/assessment', headers = world.headers, data=json.dumps(world.assessment_updatedInfo))
 
 
 """ Feature : Search User """
@@ -137,7 +140,7 @@ def given_the_entered_keyword(step):
 @step(u'When  the admin click search button')
 def when_the_admin_click_search_button(step):
     world.browser = TestApp(app)
-    world.response = world.app.post('/api/anoncare/user/search', data=json.dumps(world.user_keyword))
+    world.response = world.app.post('/api/anoncare/user/search', headers = world.headers, data=json.dumps(world.user_keyword))
 
 
 @step(u'And   the following details will be returned')
@@ -157,36 +160,36 @@ def given_the_following_details_of_a_user(step):
 
 @step(u'And   the username \'([^\']*)\' exists')
 def and_the_username_group1_exists(step, group1):
-    world.check_username = world.app.get('/api/anoncare/username/{}'.format(id))
+    world.check_username = world.app.get('/api/anoncare/username/{}'.format(id), headers = world.headers)
 
 
 @step(u'And   the username \'([^\']*)\' does not yet exist')
 def and_the_username_group1_does_not_yet_exist(step, username):
-    world.check_username = world.app.get('/api/anoncare/username/{}'.format(username))
+    world.check_username = world.app.get('/api/anoncare/username/{}'.format(username), headers = world.headers)
 
 
 @step(u'When  admin clicks the register button')
 def when_admin_clicks_the_register_button(step):
     world.browser = TestApp(app)
-    world.response = world.app.post('/api/anoncare/user', data=json.dumps(world.new_user))
+    world.response = world.app.post('/api/anoncare/user', headers = world.headers, data=json.dumps(world.new_user))
 
 
 @step(u'And   the email \'([^\']*)\' exists')
 def and_the_email_group1_exists(step, email):
-    world.check_email = world.app.get('/api/anoncare/email/{}'.format(email))
+    world.check_email = world.app.get('/api/anoncare/email/{}'.format(email), headers = world.headers)
 
 
 @step(u'Given user with id \'([^\']*)\'')
 def given_user_with_id_group1(step, user_id):
     world.user_id = user_id
-    world.user = world.app.get('/api/anoncare/user/{}/'.format(user_id))
+    world.user = world.app.get('/api/anoncare/user/{}/'.format(user_id), headers = world.headers)
     world.response_json = json.loads(world.user.data)
 
 
 @step(u'When  the admin click view user')
 def when_the_admin_click_view_user(step):
     world.browser = TestApp(app)
-    world.response = world.app.get('/api/anoncare/user/{}/'.format(world.user_id))
+    world.response = world.app.get('/api/anoncare/user/{}/'.format(world.user_id), headers = world.headers)
 
 
 @step(u'Given user with email:')
@@ -196,7 +199,7 @@ def given_user_with_email(step):
 
 @step(u'When  the user submits the form')
 def when_the_user_submits_the_form(step):
-    world.response = world.app.put('/api/anoncare/forgot_password', data=json.dumps(world.new_password))
+    world.response = world.app.put('/api/anoncare/forgot_password', headers = world.headers, data=json.dumps(world.new_password))
 
 """ Feature : Patient Files """
 """ Scenario: Create patient file successfully """
@@ -208,20 +211,21 @@ def given_the_following_details_of_patient(step):
 @step(u'When  I click the add button')
 def when_i_click_the_add_button(step):
     world.browser = TestApp(app)
-    world.response = world.app.post('/api/anoncare/patient', data=json.dumps(world.patient))
+    world.response = world.app.post('/api/anoncare/patient', headers= world.headers, data=json.dumps(world.patient))
 
 
 @step(u'Given the patient file with school id \'([^\']*)\'')
 def given_the_patient_file_with_school_id_group1(step, school_id):
+    world.browser = TestApp(app)
     world.school_id = school_id
-    world.patient_file = world.app.get('/api/anoncare/patient/{}/'.format(school_id))
-    world.response_json = json.loads(world.patient_file.data)
+    world.response = world.app.get('/api/anoncare/patient/{}/'.format(school_id), headers = world.headers)
+    world.response_json = json.loads(world.response.data)
 
 
 @step(u'When  the doctor click view patient file')
 def when_the_doctor_click_view_patient_file(step):
     world.browser = TestApp(app)
-    world.response = world.app.get('/api/anoncare/patient/{}/'.format(world.school_id))
+    world.response = world.app.get('/api/anoncare/patient/{}/'.format(world.school_id), headers = world.headers)
 
 
 """ Feature : Login """
