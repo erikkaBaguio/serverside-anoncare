@@ -3,15 +3,13 @@ from nose.tools import assert_equals
 from webtest import *
 from app import app
 import base64
-import hashlib
 import json
 
 
 @before.all
 def before_all():
     world.app = app.test_client()
-    world.headers = {'Authorization': 'Basic %s' % hashlib.md5("erikka:erikka")}
-    world.headers = {'Authorization': 'Basic %s' % hashlib.md5("app-user:admin")}     
+    world.headers = {'Authorization': 'Basic %s' % base64.b64encode("name:pass")}
 
 """ Common steps for jsonify response """
 

@@ -8,7 +8,7 @@ Scenario: Nurse send the assessment to the doctor
           Then I should get '200' response
           And the following details are returned:
             | doctor_id  |assessment_id| is_read |
-            | 3    	   | 6           | False   |
+            | 3    	     | 6           | False   |
 
 Scenario: There is no notification available
           Given the doctor with id 3 click the notification button
