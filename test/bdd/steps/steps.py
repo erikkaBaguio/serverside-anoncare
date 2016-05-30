@@ -250,13 +250,13 @@ def already_assess(step):
     :type step: lettuce.core.Step
     """
     world.browser = TestApp(app)
-    world.assessments = world.browser.get('/api/anoncare/assessment/by/6')
+    world.assessments = world.browser.get('/api/anoncare/assessment/by/6', headers = world.headers)
     world.assessments.charset = 'utf8'
     assert_equals(json.loads(world.assessments.text)[u'status'], "OK")
 
 @step(u'When the nurse request an appointment to the doctor with id 3')
 def request_appointment(step):
-    world.response = world.browser.get('/api/anoncare/notification/61')
+    world.response = world.browser.get('/api/anoncare/notification/61', headers = world.headers)
     world.response.charset = 'utf8'
     assert_equals(json.loads(world.response.text)[u'status'], "OK")
 
@@ -266,14 +266,14 @@ def then_i_should_get_a_group2_response(step, expected_status_code):
 
 @step(u'And the following details are returned:')
 def notification_details(step):
-    world.notification = world.app.get('/api/anoncare/notification/61')
+    world.notification = world.app.get('/api/anoncare/notification/61', headers = world.headers)
     world.resp = json.loads(world.notification.data)[u'entries']
     world.notification_returned = step.hashes[0]
     assert_equals(world.notification_returned, world.resp[0])
 
 @step(u'Given the doctor with id 3 click the notification button')
 def doctor_notification(step):
-    world.notification = world.app.get('/api/anoncare/notification/62')
+    world.notification = world.app.get('/api/anoncare/notification/62', headers = world.headers)
     world.notification.charset = 'utf8'
 
 @step(u'When there is no available notification for doctor with id 3')
