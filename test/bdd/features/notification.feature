@@ -13,5 +13,5 @@ Scenario: Nurse send the assessment to the doctor
 Scenario: There is no notification available
           Given the doctor with id 3 click the notification button
           When there is no available notification for doctor with id 3
-          Then return a '200' response
+          Then I should get '200' response
           And the following message will pop out No available notifications
