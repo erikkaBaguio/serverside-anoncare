@@ -254,3 +254,20 @@ def readNotification(id):
         return jsonify({'status':'FAILED', 'message':'Error reading notification'})
 
     return jsonify({'status':'OK', 'message':'Success reading notification'})
+
+
+def getNotification(id):
+    notification = spcalls.spcall('get_notification', (id,))
+
+    if len(notification) == 0:
+        return jsonify({'status':'FAILED', 'message':'Error reading notification'})
+
+    if notification[0][0] == 'Error':
+        return jsonify({'status':'FAILED', 'message':'Error reading notification'})
+
+    entries = []
+
+    for n in notification:
+        entries.append({'assessment_id':str(n[1]), 'doctor_id':str(n[2]), 'is_read':str(n[3])})
+
+    return jsonify({'status':'OK', 'entries':entries, 'message':'Successfully retrieving notification'})

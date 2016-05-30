@@ -343,6 +343,10 @@ def read_notification(id):
 
     return readNotification(id)
 
+@app.route('/api/anoncare/notification/<int:id>', methods=['GET'])
+def get_notification(id):
+    return getNotification(id)
+
 
 @app.after_request
 def add_cors(resp):

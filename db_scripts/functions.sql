@@ -89,6 +89,12 @@ create or replace function read_notification(in par_id bigint) returns text as
     $$
     language 'plpgsql';
 
+create or replace function get_notification(in par_id bigint, out bigint, out int, out int, out boolean, out text) returns setof record as
+    $$
+        select * from notification where id = par_id;
+    $$
+    language 'sql';
+
 --------------------------------------------------------------- USER -----------------------------------------------------------
 -- this will return set of users that match or slightly match your search
 --source: http://www.tutorialspoint.com/postgresql/postgresql_like_clause.htm
