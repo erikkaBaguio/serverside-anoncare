@@ -268,6 +268,7 @@ def physician_refer(attending_physician, assessment_id):
 
 
 @app.route('/api/anoncare/assessment/<int:school_id>/', methods = ['GET'])
+@auth.login_required
 def get_assessment(school_id):
     response = show_assessment(school_id)
 
@@ -313,6 +314,7 @@ def get_all_doctors():
 
 
 @app.route('/api/anoncare/colleges/', methods=['GET'])
+@auth.login_required
 def get_all_colleges():
     response = show_all_colleges()
 
@@ -345,6 +347,7 @@ def read_notification(id):
     return readNotification(id)
 
 @app.route('/api/anoncare/notification/<int:id>', methods=['GET'])
+@auth.login_required
 def get_notification(id):
     return getNotification(id)
 
